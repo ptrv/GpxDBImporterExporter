@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{7A768B44-0A0C-494E-103E-30B35B84989A}") = "GpxDBImporterExporter", "GpxDBImporterExporter.vcproj", "{F3C25190-44AC-FCDB-8360-5D2D73E4D0A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3C25190-44AC-FCDB-8360-5D2D73E4D0A2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3C25190-44AC-FCDB-8360-5D2D73E4D0A2}.Debug|Win32.Build.0 = Debug|Win32
+		{F3C25190-44AC-FCDB-8360-5D2D73E4D0A2}.Release|Win32.ActiveCfg = Release|Win32
+		{F3C25190-44AC-FCDB-8360-5D2D73E4D0A2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

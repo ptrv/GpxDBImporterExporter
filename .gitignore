@@ -1,0 +1,35 @@
+*.db
+doc/html/*
+bin/*
+*.ncb
+*.suo
+Builds/VisualStudio2008/Debug/*
+Builds/VisualStudio2008/Release/*
+Builds/VisualStudio2008/*.ncb
+Builds/VisualStudio2008/*.suo
+Builds/VisualStudio2008/*.user
+Builds/Linux/*.depend
+Builds/Linux/*.layout
+Builds/Linux/build/*
+Builds/MacOSX/build/*
+*.exe
+*.msi
+ValgrindOut.xml
+cachegrind.out.*
+data/testdata/*
+*.cscope_file_list
+
+# codelite noise
+*.session
+*.tags
+*.workspace.*
+
+# Xcode noise
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata

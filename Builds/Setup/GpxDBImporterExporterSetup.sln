@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup.vdproj", "{10A086E3-8889-43C7-9413-84257D26AA2E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{04342437-7A86-5612-BD8E-5151B0199993} = {04342437-7A86-5612-BD8E-5151B0199993}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GpxDBImporterExporter", "..\VisualStudio2008\GpxDBImporterExporter.vcproj", "{04342437-7A86-5612-BD8E-5151B0199993}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10A086E3-8889-43C7-9413-84257D26AA2E}.Debug|Win32.ActiveCfg = Debug
+		{10A086E3-8889-43C7-9413-84257D26AA2E}.Release|Win32.ActiveCfg = Release
+		{10A086E3-8889-43C7-9413-84257D26AA2E}.Release|Win32.Build.0 = Release
+		{04342437-7A86-5612-BD8E-5151B0199993}.Debug|Win32.ActiveCfg = Debug|Win32
+		{04342437-7A86-5612-BD8E-5151B0199993}.Debug|Win32.Build.0 = Debug|Win32
+		{04342437-7A86-5612-BD8E-5151B0199993}.Release|Win32.ActiveCfg = Release|Win32
+		{04342437-7A86-5612-BD8E-5151B0199993}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

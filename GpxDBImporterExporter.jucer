@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="KjdKAlLg" name="GpxDBImporterExporter" projectType="guiapp"
+              version="1.4.0" juceLinkage="amalg_multi" buildVST="1" buildRTAS="0"
+              buildAU="1" pluginName="Juce Project" pluginDesc="Juce Project"
+              pluginManufacturer="yourcompany" pluginManufacturerCode="abcd"
+              pluginCode="Abcd" pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0"
+              pluginWantsMidiIn="0" pluginProducesMidiOut="0" pluginSilenceInIsSilenceOut="0"
+              pluginTailLength="0" pluginEditorRequiresKeys="0" pluginAUExportPrefix="JuceProjectAU"
+              pluginAUViewClass="JuceProjectAU_V1" pluginRTASCategory="" bundleIdentifier="com.petervasil.GpxDBImporterExporter"
+              jucerVersion="3.0.0">
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" vstFolder="~/SDKs/vstsdk2.4" rtasFolder="~/SDKs/PT_80_SDK"
+               juceFolder="../Common/juce" objCExtraSuffix="ZnrkkT"/>
+    <VS2008 targetFolder="Builds/VisualStudio2008" vstFolder="c:\SDKs\vstsdk2.4"
+            rtasFolder="c:\SDKs\PT_80_SDK" juceFolder="../Common/juce" libraryType="1"/>
+    <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/SDKs/vstsdk2.4" juceFolder="../Common/juce"
+                extraLinkerFlags="" extraCompilerFlags=""/>
+  </EXPORTFORMATS>
+  <CONFIGURATIONS>
+    <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporterD"
+                   osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
+    <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
+                   osxSDK="10.5 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"/>
+  </CONFIGURATIONS>
+  <MAINGROUP id="TmWdmrNln" name="GpxDBImporterExporter">
+    <GROUP id="xOZcXhd" name="sql">
+      <FILE id="soxanFG" name="create_tables.sql" compile="0" resource="1"
+            file="data/sql/create_tables.sql"/>
+      <FILE id="SvcxtL" name="drop_tables.sql" compile="0" resource="0" file="data/sql/drop_tables.sql"/>
+      <FILE id="BCtl6z4" name="insert_predefineddata.sql" compile="0" resource="1"
+            file="data/sql/insert_predefineddata.sql"/>
+    </GROUP>
+    <GROUP id="f7dPoBd5m" name="Source">
+      <FILE id="OnemTN" name="Data.h" compile="0" resource="0" file="Source/Data.h"/>
+      <FILE id="xHwkRX" name="DBConnector.cpp" compile="1" resource="0" file="Source/DBConnector.cpp"/>
+      <FILE id="fWFC7F" name="DBConnector.h" compile="0" resource="0" file="Source/DBConnector.h"/>
+      <FILE id="IpYLfQf" name="FileExporter.h" compile="0" resource="0" file="Source/FileExporter.h"/>
+      <FILE id="hpKYmY" name="FileExporter.cpp" compile="1" resource="0"
+            file="Source/FileExporter.cpp"/>
+      <FILE id="jAUQGf" name="FileImporter.cpp" compile="1" resource="0"
+            file="Source/FileImporter.cpp"/>
+      <FILE id="bZzYiw" name="FileImporter.h" compile="0" resource="0" file="Source/FileImporter.h"/>
+      <FILE id="fgc0Kz" name="HelperFunctions.h" compile="0" resource="0"
+            file="Source/HelperFunctions.h"/>
+      <FILE id="E2gX6r" name="includes.h" compile="0" resource="0" file="Source/includes.h"/>
+      <FILE id="KWRhZ1" name="LocationUpdater.cpp" compile="1" resource="0"
+            file="Source/LocationUpdater.cpp"/>
+      <FILE id="E5A7n0" name="LocationUpdater.h" compile="0" resource="0"
+            file="Source/LocationUpdater.h"/>
+      <FILE id="PNhY4c" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="ieFduP" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="gY1x4J" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="NotUxM" name="PVLogger.h" compile="0" resource="0" file="Source/PVLogger.h"/>
+      <FILE id="7RQwJ4o" name="StoredSettings.cpp" compile="1" resource="0"
+            file="Source/StoredSettings.cpp"/>
+      <FILE id="hjAcsXP" name="StoredSettings.h" compile="0" resource="0"
+            file="Source/StoredSettings.h"/>
+    </GROUP>
+    <GROUP id="KifVG4Cbi" name="sqlite3x">
+      <FILE id="J9wFV" name="sqlite3.c" compile="1" resource="0" file="Source/sqlite3x/sqlite3.c"/>
+      <FILE id="gow2iU" name="sqlite3.h" compile="0" resource="0" file="Source/sqlite3x/sqlite3.h"/>
+      <FILE id="AQJEOo" name="sqlite3ext.h" compile="0" resource="0" file="Source/sqlite3x/sqlite3ext.h"/>
+      <FILE id="kWJ9pe" name="sqlite3x.hpp" compile="0" resource="0" file="Source/sqlite3x/sqlite3x.hpp"/>
+      <FILE id="UypJDm" name="sqlite3x_command.cpp" compile="1" resource="0"
+            file="Source/sqlite3x/sqlite3x_command.cpp"/>
+      <FILE id="LuiBNz" name="sqlite3x_connection.cpp" compile="1" resource="0"
+            file="Source/sqlite3x/sqlite3x_connection.cpp"/>
+      <FILE id="Z9EMNy" name="sqlite3x_exception.cpp" compile="1" resource="0"
+            file="Source/sqlite3x/sqlite3x_exception.cpp"/>
+      <FILE id="aY6XOe" name="sqlite3x_reader.cpp" compile="1" resource="0"
+            file="Source/sqlite3x/sqlite3x_reader.cpp"/>
+      <FILE id="vT2sRp" name="sqlite3x_transaction.cpp" compile="1" resource="0"
+            file="Source/sqlite3x/sqlite3x_transaction.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_ASIO="disabled" JUCE_WASAPI="disabled" JUCE_DIRECTSOUND="disabled"
+               JUCE_ALSA="disabled" JUCE_QUICKTIME="disabled" JUCE_OPENGL="disabled"
+               JUCE_USE_FLAC="disabled" JUCE_USE_OGGVORBIS="disabled" JUCE_USE_CDBURNER="disabled"
+               JUCE_USE_CDREADER="disabled" JUCE_USE_CAMERA="disabled" JUCE_PLUGINHOST_VST="disabled"
+               JUCE_PLUGINHOST_AU="disabled" JUCE_ONLY_BUILD_CORE_LIBRARY="disabled"
+               JUCE_WEB_BROWSER="disabled" JUCE_DIRECT2D="disabled" JUCE_DIRECTSHOW="disabled"
+               JUCE_MEDIAFOUNDATION="disabled"/>
+  <MODULES>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_audio" showAllCode="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+  </MODULES>
+</JUCERPROJECT>
