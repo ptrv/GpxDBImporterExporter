@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  25 Dec 2011 10:01:35pm
+  Creation date:  26 Dec 2011 1:00:14pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -264,7 +264,7 @@ void MainComponent::resized()
     m_labelExport->setBounds (376, 80, 216, 24);
     m_btExport->setBounds (376, 233, 236, 24);
     m_labelSqlQuery->setBounds (372, 112, 244, 24);
-    m_btHelp->setBounds (576, 16, 40, 16);
+    m_btHelp->setBounds (581, 16, 40, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -709,7 +709,7 @@ BEGIN_JUCER_METADATA
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
   <TEXTBUTTON name="btHelp" id="61093d1c9c1ac51d" memberName="m_btHelp" virtualName=""
-              explicitFocusOrder="0" pos="576 16 40 16" buttonText="Help" connectedEdges="0"
+              explicitFocusOrder="0" pos="581 16 40 16" buttonText="Help" connectedEdges="0"
               needsCallback="0" radioGroupId="0"/>
 </JUCER_COMPONENT>
 

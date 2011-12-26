@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Dec 2011 1:51:36am
+  Creation date:  26 Dec 2011 12:59:08pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_HELPCOMPONENT_HELPCOMPONENT_CA09544E__
-#define __JUCER_HEADER_HELPCOMPONENT_HELPCOMPONENT_CA09544E__
+#ifndef __JUCER_HEADER_HELPCOMPONENT_HELPCOMPONENT_1B735544__
+#define __JUCER_HEADER_HELPCOMPONENT_HELPCOMPONENT_1B735544__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "includes.h"
@@ -61,7 +61,11 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    Label* label;
+    Label* m_exportExample;
+    Label* m_exportHelp;
+    Label* m_exportTitle;
+    Label* m_importHelp;
+    Label* m_importTitle;
 
 
     //==============================================================================
@@ -71,4 +75,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_HELPCOMPONENT_HELPCOMPONENT_CA09544E__
+#endif   // __JUCER_HEADER_HELPCOMPONENT_HELPCOMPONENT_1B735544__
