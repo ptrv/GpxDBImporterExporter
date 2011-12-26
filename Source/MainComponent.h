@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  20 Dec 2011 4:18:15pm
+  Creation date:  25 Dec 2011 10:01:35pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,12 +19,13 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_A1B5481A__
-#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_A1B5481A__
+#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_A88B20EB__
+#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_A88B20EB__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "includes.h"
 #include "DBConnector.h"
+#include "HelpComponent.h"
 //[/Headers]
 
 
@@ -62,6 +63,7 @@ public:
 	void showAboutWindow();
 	void exportGpxFile();
     void buttonClicked (Button* buttonThatWasClicked);
+    void showHelpWindow();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -85,6 +87,7 @@ private:
 	std::vector<String> m_selectedFilesToImport;
 	bool m_selectFolder;
 	String m_lastExportFolder;
+    HelpComponent* m_helpComponent;
     //[/UserVariables]
 
     //==============================================================================
@@ -104,6 +107,7 @@ private:
     Label* m_labelExport;
     TextButton* m_btExport;
     Label* m_labelSqlQuery;
+    TextButton* m_btHelp;
 
 
     //==============================================================================
@@ -113,4 +117,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_A1B5481A__
+#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_A88B20EB__

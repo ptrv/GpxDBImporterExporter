@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  20 Dec 2011 4:18:15pm
+  Creation date:  25 Dec 2011 10:01:35pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -57,7 +57,8 @@ MainComponent::MainComponent ()
       m_labelImport (0),
       m_labelExport (0),
       m_btExport (0),
-      m_labelSqlQuery (0)
+      m_labelSqlQuery (0),
+      m_btHelp (0)
 {
     addAndMakeVisible (createDbButton = new TextButton (L"createDbButton"));
     createDbButton->setButtonText (L"create new DB");
@@ -144,6 +145,9 @@ MainComponent::MainComponent ()
     m_labelSqlQuery->setColour (TextEditor::textColourId, Colours::black);
     m_labelSqlQuery->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
+    addAndMakeVisible (m_btHelp = new TextButton (L"btHelp"));
+    m_btHelp->setButtonText (L"Help");
+
 
     //[UserPreSize]
     createDbButton->addListener (this);
@@ -155,6 +159,7 @@ MainComponent::MainComponent ()
     m_btUpdateLocations->addListener (this);
     m_btSelectFolder->addListener (this);
     m_btExport->addListener (this);
+    m_btHelp->addListener(this);
 
     m_dbChooser->addListener(this);
     m_userSelectComboBox->setEnabled(false);
@@ -175,6 +180,8 @@ MainComponent::MainComponent ()
 	m_lastImportFolder = StoredSettings::getInstance()->getLastImportFolder();
 	m_btSelectFolder->setToggleState(StoredSettings::getInstance()->getSelectFolders(), false);
 	m_lastExportFolder = StoredSettings::getInstance()->getLastExportFolder();
+
+    m_helpComponent = new HelpComponent();
     //[/Constructor]
 }
 
@@ -210,9 +217,11 @@ MainComponent::~MainComponent()
     deleteAndZero (m_labelExport);
     deleteAndZero (m_btExport);
     deleteAndZero (m_labelSqlQuery);
+    deleteAndZero (m_btHelp);
 
 
     //[Destructor]. You can add your own custom destruction code here..
+    deleteAndZero(m_helpComponent);
     //[/Destructor]
 }
 
@@ -255,6 +264,7 @@ void MainComponent::resized()
     m_labelExport->setBounds (376, 80, 216, 24);
     m_btExport->setBounds (376, 233, 236, 24);
     m_labelSqlQuery->setBounds (372, 112, 244, 24);
+    m_btHelp->setBounds (576, 16, 40, 16);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -334,6 +344,12 @@ void MainComponent::buttonClicked (Button* buttonThatWasClicked)
         //[UserButtonCode_m_btExport] -- add your button handler code here..
 		exportGpxFile();
         //[/UserButtonCode_m_btExport]
+    }
+    else if (buttonThatWasClicked == m_btHelp)
+    {
+        //[UserButtonCode_m_btHelp] -- add your button handler code here..
+		showHelpWindow();
+        //[/UserButtonCode_m_btHelp]
     }
 
     //[UserbuttonClicked_Post]
@@ -606,6 +622,12 @@ void MainComponent::exportGpxFile()
 		}
 	}
 }
+
+void MainComponent::showHelpWindow()
+{
+    Colour color(0,0,0);
+    DialogWindow::showModalDialog("Help", m_helpComponent, nullptr, color, true);
+}
 //[/MiscUserCode]
 
 
@@ -619,7 +641,7 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MainComponent" componentName=""
                  parentClasses="public Component, public FilenameComponentListener, public ButtonListener"
-                 constructorParams="" variableInitialisers="m_statusMessage(String::empty),&#10;m_lastImportedFile(String::empty),&#10;m_selectedUser(0),&#10;m_dbPath(String::empty),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
+                 constructorParams="" variableInitialisers="m_statusMessage(String::empty),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
                  fixedSize="1" initialWidth="630" initialHeight="300">
   <BACKGROUND backgroundColour="ff959d9d">
@@ -686,6 +708,9 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Enter SQL query (beginning with WHERE statement):"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
+  <TEXTBUTTON name="btHelp" id="61093d1c9c1ac51d" memberName="m_btHelp" virtualName=""
+              explicitFocusOrder="0" pos="576 16 40 16" buttonText="Help" connectedEdges="0"
+              needsCallback="0" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

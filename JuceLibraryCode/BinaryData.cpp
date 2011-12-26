@@ -28,7 +28,7 @@ const char* BinaryData::getNamedResource (const char* resourceNameUTF8, int& num
 
 
 //================== create_tables.sql ==================
-static const unsigned char temp_de0ff35b[] =
+static const unsigned char temp_9a9efcd5[] =
 "CREATE TABLE user (\n"
 "\tuserid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
 "\tname TEXT NOT NULL\n"
@@ -63,10 +63,10 @@ static const unsigned char temp_de0ff35b[] =
 "\tUNIQUE (city, country, longitude, latitude )\n"
 ");";
 
-const char* BinaryData::create_tables_sql = (const char*) temp_de0ff35b;
+const char* BinaryData::create_tables_sql = (const char*) temp_9a9efcd5;
 
 //================== insert_predefineddata.sql ==================
-static const unsigned char temp_89c9f49[] =
+static const unsigned char temp_d6af8ec3[] =
 "INSERT INTO location (country, city, latitude, longitude, radius) VALUES ('Unknown', 'Unknown', 0.0, 0.0, 0.0);\n"
 "INSERT INTO location (country, city, latitude, longitude, radius) VALUES ('Germany', 'Berlin', 52.51, 13.37, 0.25);\n"
 "INSERT INTO location (country, city, latitude, longitude, radius) VALUES ('UK', 'London', 51.5, -0.1, 0.25);\n"
@@ -130,4 +130,4 @@ static const unsigned char temp_89c9f49[] =
 "INSERT INTO location (country, city, latitude, longitude, radius) VALUES ('Spain', 'Cadaques', 42.283333, 3.283333, 0.1);\n"
 "INSERT INTO location (country, city, latitude, longitude, radius) VALUES ('Finland', 'Kuopio', 62.8925, 27.678333, 0.06);\n";
 
-const char* BinaryData::insert_predefineddata_sql = (const char*) temp_89c9f49;
+const char* BinaryData::insert_predefineddata_sql = (const char*) temp_d6af8ec3;

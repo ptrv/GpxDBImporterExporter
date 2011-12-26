@@ -152,6 +152,8 @@
         </File>
       </Filter>
       <Filter Name="Source">
+        <File RelativePath="..\..\Source\HelpComponent.cpp"/>
+        <File RelativePath="..\..\Source\HelpComponent.h"/>
         <File RelativePath="..\..\Source\Data.h"/>
         <File RelativePath="..\..\Source\DBConnector.cpp"/>
         <File RelativePath="..\..\Source\DBConnector.h"/>

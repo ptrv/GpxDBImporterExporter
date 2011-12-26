@@ -43,6 +43,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/HelpComponent_6b43a81d.o \
   $(OBJDIR)/DBConnector_8d9b4c70.o \
   $(OBJDIR)/FileExporter_a2d28b06.o \
   $(OBJDIR)/FileImporter_5bc57237.o \
@@ -79,6 +80,11 @@ clean:
 	-@rm -f $(OUTDIR)/$(TARGET)
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
+
+$(OBJDIR)/HelpComponent_6b43a81d.o: ../../Source/HelpComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling HelpComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/DBConnector_8d9b4c70.o: ../../Source/DBConnector.cpp
 	-@mkdir -p $(OBJDIR)
