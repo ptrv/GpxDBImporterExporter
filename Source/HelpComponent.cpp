@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Dec 2011 12:59:08pm
+  Creation date:  27 Dec 2011 1:06:42am
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -46,7 +46,7 @@ HelpComponent::HelpComponent ()
     m_exportExample->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
     addAndMakeVisible (m_exportHelp = new Label (L"exportHelp",
-                                                 L"columns:\n- gpsdataid\n- name\n- latitude\n- longitude\n- elevation\n- segment\n- city\n- time\n- file"));
+                                                 L"columns:\n- gpsdataid INT\n- name TEXT\n- latitude REAL\n- longitude REAL\n- elevation REAL\n- segment INT\n- city TEXT\n- time DATETIME\n- file INT"));
     m_exportHelp->setFont (Font (15.0000f, Font::plain));
     m_exportHelp->setJustificationType (Justification::topLeft);
     m_exportHelp->setEditable (false, false, false);
@@ -158,7 +158,7 @@ BEGIN_JUCER_METADATA
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="9"/>
   <LABEL name="exportHelp" id="e51c35a7616e3536" memberName="m_exportHelp"
          virtualName="" explicitFocusOrder="0" pos="312 48 280 168" edTextCol="ff000000"
-         edBkgCol="0" labelText="columns:&#10;- gpsdataid&#10;- name&#10;- latitude&#10;- longitude&#10;- elevation&#10;- segment&#10;- city&#10;- time&#10;- file"
+         edBkgCol="0" labelText="columns:&#10;- gpsdataid INT&#10;- name TEXT&#10;- latitude REAL&#10;- longitude REAL&#10;- elevation REAL&#10;- segment INT&#10;- city TEXT&#10;- time DATETIME&#10;- file INT"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="9"/>
   <LABEL name="exportTitle" id="1ccf918250a2dfb" memberName="m_exportTitle"
