@@ -8,7 +8,7 @@
     <key>CFBundleIconFile</key>
     <string></string>
     <key>CFBundleIdentifier</key>
-    <string>com.petervasil.GpxDBImporterExporter</string>
+    <string>net.petervasil.GpxDBImporterExporter</string>
     <key>CFBundleName</key>
     <string>GpxDBImporterExporter</string>
     <key>CFBundlePackageType</key>
