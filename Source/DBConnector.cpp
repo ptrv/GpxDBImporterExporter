@@ -118,7 +118,7 @@ const String GpsData::getInsertList() const
 		sqlite3_transaction trans(*m_dbconn);
 		{
 			for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
-				sqlite3_command cmd(*m_dbconn, tmpSqlQueries[i].toUTF8().getAddress());
+				sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
 				cmd.executenonquery();
 				//m_dbconn->executenonquery(tmpSqlQueries[i].toUTF8().getAddress());
 			}
@@ -153,8 +153,7 @@ bool DBConnector::insertPredefinedData()
 		{
 
 			for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
-                std::string stdStr = tmpSqlQueries[i].toUTF8().getAddress();
-				sqlite3_command cmd(*m_dbconn, stdStr);
+				sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
 				cmd.executenonquery();
 				//m_dbconn->executenonquery(tmpSqlQueries[i].toUTF8().getAddress());
 			}
@@ -175,7 +174,7 @@ bool DBConnector::checkIfUserExists(const String& username)
 		{
 			String query;
 			query << "select userid from user where name = '" << username << "';";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
 				result = true;
@@ -196,7 +195,7 @@ bool DBConnector::insertUser(int userid, const String& username)
 		{
 			String query = String::empty;
 			query << "INSERT INTO user (userid, name) VALUES (" << userid << ",'" << username << "');";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			cmd.executenonquery();
 		}
 		trans.commit();
@@ -214,7 +213,7 @@ bool DBConnector::getAvailableUsers(std::vector<String>& users)
 		sqlite3_transaction trans(*m_dbconn);
 		{
 			String query = "Select name from user;";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
 				users.push_back(String((reader.getstring(0)).c_str()));
@@ -236,7 +235,7 @@ bool DBConnector::getLastId(int& lastRowId, const String& tableName)
 		{
 			String query;
 			query << "Select seq from sqlite_sequence where name = '" << tableName << "';";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			//sqlite3_reader reader = cmd.executereader();
 			//lastRowId = reader.getint(0);
 			lastRowId = cmd.executeint();
@@ -256,7 +255,7 @@ bool DBConnector::getLastSegmentId(int& segId, int user)
 		{
 			String query;
 			query << "SELECT segment FROM gpsdata WHERE user = " << user << " ORDER BY segment DESC LIMIT 1";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			segId = cmd.executeint();
 		}
 		trans.commit();
@@ -273,7 +272,7 @@ bool DBConnector::getNameId(int& nameId, const String& name)
 		{
 			String query;
 			query << "select userid from user where name = '" << name << "';";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			nameId = cmd.executeint();
 		}
 		trans.commit();
@@ -291,14 +290,14 @@ bool DBConnector::getGpsLocations(std::vector<GpsLocation>& locations)
 		{
 			String query;
 			query << "select * from location;";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			locations.clear();
 			while (reader.read()) {
 				GpsLocation location;
 				location.index = reader.getint(0);
-				location.city = String(reader.getstring(1).c_str());
-				location.country = String(reader.getstring(2).c_str());
+				location.city = String(CharPointer_UTF8(reader.getstring(1).data()));
+				location.country = String(CharPointer_UTF8(reader.getstring(2).data()));
 				location.longitude = reader.getdouble(3);
 				location.latitude = reader.getdouble(4);
 				location.radius = reader.getdouble(5);
@@ -325,7 +324,7 @@ bool DBConnector::checkIfFileExists(const String& md5hash)
 		{
 			String query;
 			query << "select fileid from file where md5hash = '" << md5hash << "';";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
 				result = true;
@@ -346,7 +345,7 @@ bool DBConnector::checkIfFileNameExists(const String& filename)
 		{
 			String query;
 			query << "select fileid from file where filename = '" << filename << "';";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
 				result = true;
@@ -367,7 +366,7 @@ bool DBConnector::insertFileName(int& fileid, const String& filename, const Stri
 		{
 			String query;
 			query << "INSERT INTO file (fileid, filename, md5hash) VALUES (" << fileid << ",'" << filename << "','" << md5 << "');";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			cmd.executenonquery();
 		}
 		trans.commit();
@@ -384,7 +383,7 @@ bool DBConnector::checkIfGpsDataExsist(const String& timedate, int user)
 		{
 			String query;
 			query << "SELECT time FROM gpsdata WHERE time = '" << timedate << "' AND user = " << user << ";";
-			sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
 				result = true;
@@ -401,7 +400,7 @@ void DBConnector::insertGpsData(GpsData& gpsData)
 	try{
 
 		query << "INSERT INTO gpsdata " << gpsData.getInsertList();// <<  ")";
-		sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+		sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 		cmd.executenonquery();
 	}
 	CATCHDBERRORSQ(query)
@@ -454,7 +453,7 @@ bool DBConnector::executeSqlScript(const File& sqlFile)
 
         for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
 			try {
-			sqlite3_command cmd(*m_dbconn, tmpSqlQueries[i].toUTF8().getAddress());
+			sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
 			//DBG_VAL(tmpSqlQueries[i]);
 			cmd.executenonquery();
 			}
@@ -480,7 +479,7 @@ bool DBConnector::getGpsDataUnknownLocation(std::vector<GpsData>& gpsDataVec)
         {
             String query = "SELECT gpsdataid, latitude, longitude, time, elevation, segment, user, file, location ";
             query += "FROM gpsdata WHERE location = 1;";
-            sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+            sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
             sqlite3_reader reader = cmd.executereader();
             while (reader.read()) {
                 GpsData gpsData;
@@ -519,7 +518,7 @@ bool DBConnector::updateGpsDataLocation(int gpsdataid, int location)
             query << "WHERE gpsdataid = '";
             query << gpsdataid;
             query << "';";
-            sqlite3_command cmd(*m_dbconn, query.toUTF8().getAddress());
+            sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
             cmd.executenonquery();
         }
         trans.commit();
@@ -575,7 +574,7 @@ bool DBConnector::getGpsDataForExport(Array<GpsData>& gpsDatas, GpsMinMax& gpsMi
 		
 		//DBG_VAL(queryMinMax);
 		
-		sqlite3_command cmd2(*m_dbconn, queryMinMax.toUTF8().getAddress());
+		sqlite3_command cmd2(*m_dbconn, std::string(queryMinMax.toUTF8().getAddress()));
 		sqlite3_reader readerMinMax=cmd2.executereader();
 		
 		while(readerMinMax.read())
