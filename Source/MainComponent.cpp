@@ -513,6 +513,9 @@ void MainComponent::importFile()
         dbCon->setupDbConnection();
         int userid = -1;
         dbCon->getLastId(userid, "user");
+        if(userid == -1){
+            ++userid;
+        }
         ++userid;
         if (!dbCon->checkIfUserExists(tmpUsertext))
         {
