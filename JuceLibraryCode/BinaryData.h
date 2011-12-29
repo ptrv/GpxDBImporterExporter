@@ -11,7 +11,7 @@ namespace BinaryData
     const int            create_tables_sqlSize = 1002;
 
     extern const char*   insert_predefineddata_sql;
-    const int            insert_predefineddata_sqlSize = 7376;
+    const int            insert_predefineddata_sqlSize = 13206;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

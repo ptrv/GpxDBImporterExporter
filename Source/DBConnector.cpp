@@ -133,7 +133,7 @@ const String GpsData::getInsertList() const
 bool DBConnector::insertPredefinedData()
 {
 	bool result = false;
-	String insertPredfinedDataFile(BinaryData::insert_predefineddata_sql);
+	String insertPredfinedDataFile((CharPointer_UTF8(BinaryData::insert_predefineddata_sql)));
 	std::vector<String> tmpSqlQueries;
 	String tmpStr = "";
 	for (int i = 0; i < insertPredfinedDataFile.length(); ++i) {
@@ -153,7 +153,8 @@ bool DBConnector::insertPredefinedData()
 		{
 
 			for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
-				sqlite3_command cmd(*m_dbconn, tmpSqlQueries[i].toUTF8().getAddress());
+                std::string stdStr = tmpSqlQueries[i].toUTF8().getAddress();
+				sqlite3_command cmd(*m_dbconn, stdStr);
 				cmd.executenonquery();
 				//m_dbconn->executenonquery(tmpSqlQueries[i].toUTF8().getAddress());
 			}
