@@ -18,7 +18,7 @@ using namespace sqlite3x;
 	catch(exception &ex)																\
 	{																					\
 		String msg = "Database error: ";												\
-		LOG_ERROR((msg << ex.what()).toUTF8().getAddress());													\
+		LOG_ERROR((msg << ex.what()).toUTF8().getAddress());							\
 	}																					\
 // --------------------------------------------------------------------------------------
 #define CATCHDBERRORSQ(query)															\
@@ -26,7 +26,7 @@ using namespace sqlite3x;
 	{																					\
 		String msg = "Database error: ";												\
 		msg << ex.what() << " \nquery: " << query;										\
-		LOG_ERROR(msg.toUTF8().getAddress());																	\
+		LOG_ERROR(msg.toUTF8().getAddress());											\
 	}																					\
 // --------------------------------------------------------------------------------------
 
@@ -185,7 +185,7 @@ bool DBConnector::checkIfUserExists(const String& username)
 		trans.commit();
 	}
 	CATCHDBERRORS
-		return result;
+    return result;
 
 }
 bool DBConnector::insertUser(int userid, const String& username)
@@ -203,7 +203,7 @@ bool DBConnector::insertUser(int userid, const String& username)
 		result = true;
 	}
 	CATCHDBERRORS
-		return result;
+    return result;
 
 }
 bool DBConnector::getAvailableUsers(std::vector<String>& users)
@@ -454,7 +454,7 @@ bool DBConnector::executeSqlScript(const File& sqlFile)
 
         for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
 			try {
-			sqlite3_command cmd(*m_dbconn, tmpSqlQueries[i].toUTF8());
+			sqlite3_command cmd(*m_dbconn, tmpSqlQueries[i].toUTF8().getAddress());
 			//DBG_VAL(tmpSqlQueries[i]);
 			cmd.executenonquery();
 			}
