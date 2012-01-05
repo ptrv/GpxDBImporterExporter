@@ -86,7 +86,6 @@
                JUCE_WEB_BROWSER="disabled" JUCE_DIRECT2D="disabled" JUCE_DIRECTSHOW="disabled"
                JUCE_MEDIAFOUNDATION="disabled"/>
   <MODULES>
-    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_audio" showAllCode="1"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
@@ -94,5 +93,6 @@
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
 </JUCERPROJECT>
