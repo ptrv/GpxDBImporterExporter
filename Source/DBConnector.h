@@ -9,7 +9,7 @@
 #include <vector>
 #include "Data.h"
 
-#include "sqlite3x/sqlite3x.hpp"
+#include "sqlite3x.hpp"
 using namespace sqlite3x;
 
 class DBConnector

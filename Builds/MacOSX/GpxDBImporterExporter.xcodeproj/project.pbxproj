@@ -1495,7 +1495,7 @@
 				0E9F8CD3FF8DFAB32813C301,
 				2DECD85E9A336C92CA9E56D1 ); name = Source; sourceTree = "<group>"; };
 		19AEC4646A74BD58725138C9 = { isa = XCBuildConfiguration; buildSettings = {
-				HEADER_SEARCH_PATHS = "../../JuceLibraryCode ../../libs $(inherited)";
+				HEADER_SEARCH_PATHS = "../../JuceLibraryCode ../../libs/sqlite3x $(inherited)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1510,7 +1510,7 @@
 				"JUCE_ObjCExtraSuffix=ZnrkkT",
 				"JUCER_XCODE_MAC_F6D2F4CF=1"); }; name = Debug; };
 		7E448590F2A3B52125D26765 = { isa = XCBuildConfiguration; buildSettings = {
-				HEADER_SEARCH_PATHS = "../../JuceLibraryCode ../../libs $(inherited)";
+				HEADER_SEARCH_PATHS = "../../JuceLibraryCode ../../libs/sqlite3x $(inherited)";
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";

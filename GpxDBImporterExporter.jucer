@@ -20,10 +20,10 @@
   <CONFIGURATIONS>
     <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporterD"
                    osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                   headerPath="../../libs"/>
+                   headerPath="../../libs/sqlite3x"/>
     <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
                    osxSDK="10.5 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"
-                   headerPath="../../libs"/>
+                   headerPath="../../libs/sqlite3x"/>
   </CONFIGURATIONS>
   <MAINGROUP id="TmWdmrNln" name="GpxDBImporterExporter">
     <GROUP id="xOZcXhd" name="sql">
