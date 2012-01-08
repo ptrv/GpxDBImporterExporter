@@ -17,12 +17,12 @@ ifeq ($(CONFIG),Debug)
   LIBDIR := build
   OBJDIR := build/intermediate/Debug
   OUTDIR := build
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode"
+  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode" -I "../../libs"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -ggdb -O0
   CXXFLAGS += $(CFLAGS) 
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"/usr/X11R6/lib/" -L"../../../Common/juce/bin" -lfreetype -lpthread -lrt -lX11 -lGL -lGLU -lXinerama -lasound -lXext 
   LDDEPS :=
-  RESFLAGS :=  -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode"
+  RESFLAGS :=  -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode" -I "../../libs"
   TARGET := GpxDBImporterExporterD
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
@@ -32,12 +32,12 @@ ifeq ($(CONFIG),Release)
   LIBDIR := build
   OBJDIR := build/intermediate/Release
   OUTDIR := build
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "NDEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode"
+  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "NDEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode" -I "../../libs"
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -Os
   CXXFLAGS += $(CFLAGS) 
   LDFLAGS += -L$(BINDIR) -L$(LIBDIR) -L"/usr/X11R6/lib/" -L"../../../Common/juce/bin" -lfreetype -lpthread -lrt -lX11 -lGL -lGLU -lXinerama -lasound -lXext 
   LDDEPS :=
-  RESFLAGS :=  -D "LINUX=1" -D "NDEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode"
+  RESFLAGS :=  -D "LINUX=1" -D "NDEBUG=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I "/usr/include" -I "/usr/include/freetype2" -I "../../JuceLibraryCode" -I "../../libs"
   TARGET := GpxDBImporterExporter
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
 endif
@@ -51,12 +51,12 @@ OBJECTS := \
   $(OBJDIR)/Main_90ebc5c2.o \
   $(OBJDIR)/MainComponent_a6ffb4a5.o \
   $(OBJDIR)/StoredSettings_dfdf196f.o \
-  $(OBJDIR)/sqlite3_60b4edb2.o \
-  $(OBJDIR)/sqlite3x_command_3258e75c.o \
-  $(OBJDIR)/sqlite3x_connection_ca02d237.o \
-  $(OBJDIR)/sqlite3x_exception_45f76f60.o \
-  $(OBJDIR)/sqlite3x_reader_36a7a39c.o \
-  $(OBJDIR)/sqlite3x_transaction_98a90b6f.o \
+  $(OBJDIR)/sqlite3_ba71ec7f.o \
+  $(OBJDIR)/sqlite3x_command_1672966f.o \
+  $(OBJDIR)/sqlite3x_connection_12df6644.o \
+  $(OBJDIR)/sqlite3x_exception_8a61a5b3.o \
+  $(OBJDIR)/sqlite3x_reader_b9e24629.o \
+  $(OBJDIR)/sqlite3x_transaction_6b5ef902.o \
   $(OBJDIR)/BinaryData_ce4232d4.o \
   $(OBJDIR)/juce_core_aff681cc.o \
   $(OBJDIR)/juce_cryptography_25c7e826.o \
@@ -121,32 +121,32 @@ $(OBJDIR)/StoredSettings_dfdf196f.o: ../../Source/StoredSettings.cpp
 	@echo "Compiling StoredSettings.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/sqlite3_60b4edb2.o: ../../Source/sqlite3x/sqlite3.c
+$(OBJDIR)/sqlite3_ba71ec7f.o: ../../libs/sqlite3x/sqlite3.c
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling sqlite3.c"
 	@$(CC) $(CFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/sqlite3x_command_3258e75c.o: ../../Source/sqlite3x/sqlite3x_command.cpp
+$(OBJDIR)/sqlite3x_command_1672966f.o: ../../libs/sqlite3x/sqlite3x_command.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling sqlite3x_command.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/sqlite3x_connection_ca02d237.o: ../../Source/sqlite3x/sqlite3x_connection.cpp
+$(OBJDIR)/sqlite3x_connection_12df6644.o: ../../libs/sqlite3x/sqlite3x_connection.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling sqlite3x_connection.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/sqlite3x_exception_45f76f60.o: ../../Source/sqlite3x/sqlite3x_exception.cpp
+$(OBJDIR)/sqlite3x_exception_8a61a5b3.o: ../../libs/sqlite3x/sqlite3x_exception.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling sqlite3x_exception.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/sqlite3x_reader_36a7a39c.o: ../../Source/sqlite3x/sqlite3x_reader.cpp
+$(OBJDIR)/sqlite3x_reader_b9e24629.o: ../../libs/sqlite3x/sqlite3x_reader.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling sqlite3x_reader.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/sqlite3x_transaction_98a90b6f.o: ../../Source/sqlite3x/sqlite3x_transaction.cpp
+$(OBJDIR)/sqlite3x_transaction_6b5ef902.o: ../../libs/sqlite3x/sqlite3x_transaction.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling sqlite3x_transaction.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"

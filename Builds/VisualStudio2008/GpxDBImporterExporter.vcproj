@@ -32,7 +32,7 @@
             Optimization="0"
             BufferSecurityCheck=""
             DebugInformationFormat="4"
-            AdditionalIncludeDirectories="..\..\JuceLibraryCode"
+            AdditionalIncludeDirectories="..\..\JuceLibraryCode;../../libs"
             PreprocessorDefinitions="WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2008_78A5006=1"
             RuntimeLibrary="1"
             RuntimeTypeInfo="true"
@@ -88,7 +88,7 @@
             Optimization="1"
             InlineFunctionExpansion="1"
             StringPooling="true"
-            AdditionalIncludeDirectories="..\..\JuceLibraryCode"
+            AdditionalIncludeDirectories="..\..\JuceLibraryCode;../../libs"
             PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;JUCER_VS2008_78A5006=1"
             RuntimeLibrary="0"
             RuntimeTypeInfo="true"
@@ -173,15 +173,15 @@
         <File RelativePath="..\..\Source\StoredSettings.h"/>
       </Filter>
       <Filter Name="sqlite3x">
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3.c"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3.h"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3ext.h"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3x.hpp"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3x_command.cpp"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3x_connection.cpp"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3x_exception.cpp"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3x_reader.cpp"/>
-        <File RelativePath="..\..\Source\sqlite3x\sqlite3x_transaction.cpp"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3.c"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3.h"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3ext.h"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3x.hpp"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3x_command.cpp"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3x_connection.cpp"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3x_exception.cpp"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3x_reader.cpp"/>
+        <File RelativePath="..\..\libs\sqlite3x\sqlite3x_transaction.cpp"/>
       </Filter>
     </Filter>
     <Filter Name="Juce Modules">

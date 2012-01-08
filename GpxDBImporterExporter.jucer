@@ -19,9 +19,11 @@
   </EXPORTFORMATS>
   <CONFIGURATIONS>
     <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporterD"
-                   osxSDK="default" osxCompatibility="default" osxArchitecture="default"/>
+                   osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                   headerPath="../../libs"/>
     <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
-                   osxSDK="10.5 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"/>
+                   osxSDK="10.5 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"
+                   headerPath="../../libs"/>
   </CONFIGURATIONS>
   <MAINGROUP id="TmWdmrNln" name="GpxDBImporterExporter">
     <GROUP id="xOZcXhd" name="sql">
@@ -62,20 +64,20 @@
             file="Source/StoredSettings.h"/>
     </GROUP>
     <GROUP id="KifVG4Cbi" name="sqlite3x">
-      <FILE id="J9wFV" name="sqlite3.c" compile="1" resource="0" file="Source/sqlite3x/sqlite3.c"/>
-      <FILE id="gow2iU" name="sqlite3.h" compile="0" resource="0" file="Source/sqlite3x/sqlite3.h"/>
-      <FILE id="AQJEOo" name="sqlite3ext.h" compile="0" resource="0" file="Source/sqlite3x/sqlite3ext.h"/>
-      <FILE id="kWJ9pe" name="sqlite3x.hpp" compile="0" resource="0" file="Source/sqlite3x/sqlite3x.hpp"/>
-      <FILE id="UypJDm" name="sqlite3x_command.cpp" compile="1" resource="0"
-            file="Source/sqlite3x/sqlite3x_command.cpp"/>
-      <FILE id="LuiBNz" name="sqlite3x_connection.cpp" compile="1" resource="0"
-            file="Source/sqlite3x/sqlite3x_connection.cpp"/>
-      <FILE id="Z9EMNy" name="sqlite3x_exception.cpp" compile="1" resource="0"
-            file="Source/sqlite3x/sqlite3x_exception.cpp"/>
-      <FILE id="aY6XOe" name="sqlite3x_reader.cpp" compile="1" resource="0"
-            file="Source/sqlite3x/sqlite3x_reader.cpp"/>
-      <FILE id="vT2sRp" name="sqlite3x_transaction.cpp" compile="1" resource="0"
-            file="Source/sqlite3x/sqlite3x_transaction.cpp"/>
+      <FILE id="WYLyiJ" name="sqlite3.c" compile="1" resource="0" file="libs/sqlite3x/sqlite3.c"/>
+      <FILE id="pLfomG" name="sqlite3.h" compile="0" resource="0" file="libs/sqlite3x/sqlite3.h"/>
+      <FILE id="n7sim8" name="sqlite3ext.h" compile="0" resource="0" file="libs/sqlite3x/sqlite3ext.h"/>
+      <FILE id="oW5T2Y" name="sqlite3x.hpp" compile="0" resource="0" file="libs/sqlite3x/sqlite3x.hpp"/>
+      <FILE id="lCW31s" name="sqlite3x_command.cpp" compile="1" resource="0"
+            file="libs/sqlite3x/sqlite3x_command.cpp"/>
+      <FILE id="F9EaoV" name="sqlite3x_connection.cpp" compile="1" resource="0"
+            file="libs/sqlite3x/sqlite3x_connection.cpp"/>
+      <FILE id="L9KeYf" name="sqlite3x_exception.cpp" compile="1" resource="0"
+            file="libs/sqlite3x/sqlite3x_exception.cpp"/>
+      <FILE id="FESqnc" name="sqlite3x_reader.cpp" compile="1" resource="0"
+            file="libs/sqlite3x/sqlite3x_reader.cpp"/>
+      <FILE id="LeV9p9" name="sqlite3x_transaction.cpp" compile="1" resource="0"
+            file="libs/sqlite3x/sqlite3x_transaction.cpp"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_ASIO="disabled" JUCE_WASAPI="disabled" JUCE_DIRECTSOUND="disabled"
