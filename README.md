@@ -7,3 +7,7 @@ Thanks to Daniel Belasco Rogers for the location list.
 ## Screenshot
 
 ![GpxDBImporterExporter](https://github.com/ptrv/GpxDBImporterExporter/raw/master/screenshot.png "GpxDBImporterExporter")
+
+## Development
+
+To change project properties, JUCE source code and Introjucer (JUCE's project creation tool) are required.
