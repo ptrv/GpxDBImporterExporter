@@ -398,17 +398,20 @@ public:
     void paste();
 
     //==============================================================================
-    /** Moves the caret to be in front of a given character.
-
-        @see getCaretPosition
-    */
-    void setCaretPosition (int newIndex);
-
     /** Returns the current index of the caret.
-
         @see setCaretPosition
     */
     int getCaretPosition() const;
+
+    /** Moves the caret to be in front of a given character.
+        @see getCaretPosition, moveCaretToEnd
+    */
+    void setCaretPosition (int newIndex);
+
+    /** Moves the caret to be the end of all the text.
+        @see setCaretPosition
+    */
+    void moveCaretToEnd();
 
     /** Attempts to scroll the text editor so that the caret ends up at
         a specified position.
@@ -588,6 +591,15 @@ public:
         @see addPopupMenuItems, setPopupMenuEnabled, isPopupMenuEnabled
     */
     virtual void performPopupMenuAction (int menuItemID);
+
+    //==============================================================================
+    struct Ids
+    {
+        static const Identifier tagType, text, font, mode, readOnly, scrollbarsShown,
+                                caretVisible, popupMenuEnabled;
+    };
+
+    void refreshFromValueTree (const ValueTree&, ComponentBuilder&);
 
 
 protected:

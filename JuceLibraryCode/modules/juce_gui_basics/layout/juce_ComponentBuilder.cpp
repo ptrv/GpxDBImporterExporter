@@ -48,15 +48,15 @@ namespace ComponentBuilderHelpers
         return nullptr;
     }
 
-    Component* findComponentWithID (Component* const c, const String& compId)
+    Component* findComponentWithID (Component& c, const String& compId)
     {
         jassert (compId.isNotEmpty());
-        if (c->getComponentID() == compId)
-            return c;
+        if (c.getComponentID() == compId)
+            return &c;
 
-        for (int i = c->getNumChildComponents(); --i >= 0;)
+        for (int i = c.getNumChildComponents(); --i >= 0;)
         {
-            Component* const child = findComponentWithID (c->getChildComponent (i), compId);
+            Component* const child = findComponentWithID (*c.getChildComponent (i), compId);
 
             if (child != nullptr)
                 return child;
@@ -91,17 +91,77 @@ namespace ComponentBuilderHelpers
             }
             else
             {
-                Component* const changedComp = findComponentWithID (topLevelComp, uid);
+                Component* const changedComp = findComponentWithID (*topLevelComp, uid);
 
                 if (changedComp != nullptr)
                     type->updateComponentFromState (changedComp, state);
             }
         }
     }
+
+    void updateComponentColours (Component& component, const ValueTree& colourState)
+    {
+        NamedValueSet& properties = component.getProperties();
+
+        for (int i = properties.size(); --i >= 0;)
+        {
+            const Identifier name (properties.getName (i));
+
+            if (name.toString().startsWith ("jcclr_"))
+            {
+                const String colourName (name.toString().substring (6));
+
+                if (colourState [colourName].isVoid())
+                    component.removeColour (colourName.getHexValue32());
+            }
+        }
+
+        for (int i = 0; i < colourState.getNumProperties(); ++i)
+        {
+            const Identifier colourName (colourState.getPropertyName (i));
+            const String colour (colourState [colourName].toString());
+
+            if (colour.isNotEmpty())
+                component.setColour (colourName.toString().getHexValue32(), Colour::fromString (colour));
+        }
+    }
+
+    template <class ComponentClass>
+    class StandardTypeHandler  : public ComponentBuilder::TypeHandler
+    {
+    public:
+        StandardTypeHandler()  : ComponentBuilder::TypeHandler (ComponentClass::Ids::tagType)
+        {}
+
+        Component* addNewComponentFromState (const ValueTree& state, Component* parent)
+        {
+            ComponentClass* const c = new ComponentClass();
+
+            if (parent != nullptr)
+                parent->addAndMakeVisible (c);
+
+            updateComponentFromState (c, state);
+            return c;
+        }
+
+        void updateComponentFromState (Component* component, const ValueTree& state)
+        {
+            ComponentClass* const c = dynamic_cast <ComponentClass*> (component);
+            jassert (c != nullptr);
+
+            c->setComponentID (state [ComponentBuilder::idProperty]);
+            c->refreshFromValueTree (state, *this->getBuilder());
+        }
+    };
 }
 
 //=============================================================================
 const Identifier ComponentBuilder::idProperty ("id");
+
+ComponentBuilder::ComponentBuilder()
+    : imageProvider (nullptr)
+{
+}
 
 ComponentBuilder::ComponentBuilder (const ValueTree& state_)
     : state (state_), imageProvider (nullptr)
@@ -164,7 +224,7 @@ ComponentBuilder::TypeHandler* ComponentBuilder::getHandlerForState (const Value
     {
         TypeHandler* const t = types.getUnchecked(i);
 
-        if (t->getType() == targetType)
+        if (t->type == targetType)
             return t;
     }
 
@@ -179,6 +239,23 @@ int ComponentBuilder::getNumHandlers() const noexcept
 ComponentBuilder::TypeHandler* ComponentBuilder::getHandler (const int index) const noexcept
 {
     return types [index];
+}
+
+void ComponentBuilder::registerStandardComponentTypes()
+{
+    Drawable::registerDrawableTypeHandlers (*this);
+
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <ComboBox>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <Slider>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <Label>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <Slider>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <TextEditor>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <GroupComponent>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <TextButton>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <ToggleButton>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <ImageButton>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <ImageComponent>());
+    registerTypeHandler (new ComponentBuilderHelpers::StandardTypeHandler <HyperlinkButton>());
 }
 
 void ComponentBuilder::setImageProvider (ImageProvider* newImageProvider) noexcept
@@ -217,9 +294,8 @@ void ComponentBuilder::valueTreeParentChanged (ValueTree& tree)
 }
 
 //==============================================================================
-ComponentBuilder::TypeHandler::TypeHandler (const Identifier& valueTreeType_)
-   : builder (nullptr),
-     valueTreeType (valueTreeType_)
+ComponentBuilder::TypeHandler::TypeHandler (const Identifier& valueTreeType)
+   : type (valueTreeType), builder (nullptr)
 {
 }
 
@@ -255,19 +331,19 @@ void ComponentBuilder::updateChildComponents (Component& parent, const ValueTree
         for (i = 0; i < newNumChildren; ++i)
         {
             const ValueTree childState (children.getChild (i));
+            Component* c = findComponentWithID (existingComponents, getStateId (childState));
 
-            ComponentBuilder::TypeHandler* const type = getHandlerForState (childState);
-            jassert (type != nullptr);
-
-            if (type != nullptr)
+            if (c == nullptr)
             {
-                Component* c = findComponentWithID (existingComponents, getStateId (childState));
+                TypeHandler* const type = getHandlerForState (childState);
+                jassert (type != nullptr);
 
-                if (c == nullptr)
-                    c = createNewComponent (*type, childState, &parent);
-
-                componentsInOrder.add (c);
+                if (type != nullptr)
+                    c = ComponentBuilderHelpers::createNewComponent (*type, childState, &parent);
             }
+
+            if (c != nullptr)
+                componentsInOrder.add (c);
         }
 
         // (remaining unused items in existingComponents get deleted here as it goes out of scope)
@@ -283,5 +359,80 @@ void ComponentBuilder::updateChildComponents (Component& parent, const ValueTree
     }
 }
 
+static void updateMarkers (MarkerList* const list, const ValueTree& state)
+{
+    if (list != nullptr)
+        MarkerList::ValueTreeWrapper (state).applyTo (*list);
+}
+
+void ComponentBuilder::initialiseFromValueTree (Component& comp,
+                                                const ValueTree& state,
+                                                ImageProvider* const imageProvider)
+{
+    using namespace ComponentBuilderHelpers;
+
+    ComponentBuilder builder;
+    builder.setImageProvider (imageProvider);
+    builder.registerStandardComponentTypes();
+
+    updateMarkers (comp.getMarkers (true),  state.getChildWithName ("MARKERS_X"));
+    updateMarkers (comp.getMarkers (false), state.getChildWithName ("MARKERS_Y"));
+
+    const ValueTree childList (state.getChildWithName ("COMPONENTS"));
+    builder.updateChildComponents (comp, childList);
+
+    for (int i = 0; i < childList.getNumChildren(); ++i)
+    {
+        const ValueTree state (childList.getChild(i));
+        Component* const c = findComponentWithID (comp, getStateId (state));
+
+        if (c != nullptr)
+        {
+            ComponentBuilder::TypeHandler* const type = builder.getHandlerForState (state);
+
+            if (type != nullptr)
+                type->updateComponentFromState (c, state);
+            else
+                refreshBasicComponentProperties (*c, state);
+        }
+    }
+
+}
+
+RelativeRectangle ComponentBuilder::getComponentBounds (const ValueTree& state)
+{
+    static const Identifier positionID ("position");
+
+    try
+    {
+        return RelativeRectangle (state [positionID].toString());
+    }
+    catch (Expression::ParseError&)
+    {}
+
+    return RelativeRectangle();
+}
+
+void ComponentBuilder::refreshBasicComponentProperties (Component& comp, const ValueTree& state)
+{
+    static const Identifier focusOrderID ("focusOrder");
+    static const Identifier tooltipID ("tooltip");
+    static const Identifier nameID ("name");
+
+    comp.setName (state [nameID].toString());
+    getComponentBounds (state).applyToComponent (comp);
+
+    comp.setExplicitFocusOrder (state [focusOrderID]);
+    const var tip (state [tooltipID]);
+
+    if (! tip.isVoid())
+    {
+        SettableTooltipClient* tooltipClient = dynamic_cast <SettableTooltipClient*> (&comp);
+        if (tooltipClient != nullptr)
+            tooltipClient->setTooltip (tip.toString());
+    }
+
+    ComponentBuilderHelpers::updateComponentColours (comp, state.getChildWithName ("COLOURS"));
+}
 
 END_JUCE_NAMESPACE

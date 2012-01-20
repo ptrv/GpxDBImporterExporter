@@ -55,16 +55,16 @@ public:
     */
     explicit ComponentBuilder (const ValueTree& state);
 
+    /** Creates a builder that doesn't have a state object. */
+    ComponentBuilder();
+
     /** Destructor. */
     ~ComponentBuilder();
 
+    /** This is the ValueTree data object that the builder is working with. */
+    ValueTree state;
+
     //==============================================================================
-    /** Returns the ValueTree that this builder is working with. */
-    ValueTree& getState() noexcept              { return state; }
-
-    /** Returns the ValueTree that this builder is working with. */
-    const ValueTree& getState() const noexcept  { return state; }
-
     /** Returns the builder's component (creating it if necessary).
 
         The first time that this method is called, the builder will attempt to create a component
@@ -111,7 +111,7 @@ public:
         virtual ~TypeHandler();
 
         /** Returns the type of the ValueTrees that this handler can parse. */
-        const Identifier& getType() const noexcept          { return valueTreeType; }
+        const Identifier type;
 
         /** Returns the builder that this type is registered with. */
         ComponentBuilder* getBuilder() const noexcept;
@@ -144,7 +144,6 @@ public:
         //==============================================================================
         friend class ComponentBuilder;
         ComponentBuilder* builder;
-        const Identifier valueTreeType;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TypeHandler);
     };
@@ -167,6 +166,9 @@ public:
         @see getNumHandlers, registerTypeHandler
     */
     TypeHandler* getHandler (int index) const noexcept;
+
+    /** Registers handlers for various standard juce components. */
+    void registerStandardComponentTypes();
 
     //=============================================================================
     /** This class is used when references to images need to be stored in ValueTrees.
@@ -225,6 +227,13 @@ public:
     */
     static const Identifier idProperty;
 
+    /**
+    */
+    static void initialiseFromValueTree (Component& component,
+                                         const ValueTree& state,
+                                         ImageProvider* imageProvider);
+
+    //=============================================================================
     /** @internal */
     void valueTreePropertyChanged (ValueTree& treeWhosePropertyHasChanged, const Identifier& property);
     /** @internal */
@@ -235,10 +244,13 @@ public:
     void valueTreeChildOrderChanged (ValueTree& parentTree);
     /** @internal */
     void valueTreeParentChanged (ValueTree& treeWhoseParentHasChanged);
+    /** @internal */
+    static void refreshBasicComponentProperties (Component&, const ValueTree&);
+    /** @internal */
+    static RelativeRectangle getComponentBounds (const ValueTree&);
 
 private:
     //=============================================================================
-    ValueTree state;
     OwnedArray <TypeHandler> types;
     ScopedPointer<Component> component;
     ImageProvider* imageProvider;
@@ -248,6 +260,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComponentBuilder);
 };
-
 
 #endif   // __JUCE_COMPONENTBUILDER_JUCEHEADER__

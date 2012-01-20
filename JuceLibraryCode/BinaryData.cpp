@@ -5,30 +5,11 @@
 
 */
 
-#include "BinaryData.h"
-
-
-const char* BinaryData::getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
+namespace BinaryData
 {
-    int hash = 0;
-    if (resourceNameUTF8 != 0)
-        while (*resourceNameUTF8 != 0)
-            hash = 31 * hash + *resourceNameUTF8++;
-
-    switch (hash)
-    {
-        case 0xb1f7f017:  numBytes = BinaryData::create_tables_sqlSize; return BinaryData::create_tables_sql;
-        case 0xcc1fbf05:  numBytes = BinaryData::insert_predefineddata_sqlSize; return BinaryData::insert_predefineddata_sql;
-        default: break;
-    }
-
-    numBytes = 0;
-    return 0;
-}
-
 
 //================== create_tables.sql ==================
-static const unsigned char temp_9a9efcd5[] =
+static const unsigned char temp_be7d28e2[] =
 "CREATE TABLE user (\n"
 "\tuserid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
 "\tname TEXT NOT NULL\n"
@@ -63,10 +44,10 @@ static const unsigned char temp_9a9efcd5[] =
 "\tUNIQUE (city, country, longitude, latitude )\n"
 ");";
 
-const char* BinaryData::create_tables_sql = (const char*) temp_9a9efcd5;
+const char* create_tables_sql = (const char*) temp_be7d28e2;
 
 //================== insert_predefineddata.sql ==================
-static const unsigned char temp_d6af8ec3[] =
+static const unsigned char temp_871b5dd0[] =
 "INSERT INTO \"location\" VALUES(1,'Unknown','Unknown',0.0,0.0,0.0);\n"
 "INSERT INTO \"location\" VALUES(2,'Berlin','Germany',13.37,52.51,0.25);\n"
 "INSERT INTO \"location\" VALUES(3,'London','UK',-0.1,51.5,0.25);\n"
@@ -236,4 +217,27 @@ static const unsigned char temp_d6af8ec3[] =
 "INSERT INTO \"location\" VALUES(168,'Mannheim','Germany',8.471618,49.511818,0.1);\n"
 "INSERT INTO \"location\" VALUES(169,'Frankfurt-Hahn Airport','Germany',7.269645,49.947258,0.02);\n";
 
-const char* BinaryData::insert_predefineddata_sql = (const char*) temp_d6af8ec3;
+const char* insert_predefineddata_sql = (const char*) temp_871b5dd0;
+
+
+const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
+{
+    int hash = 0;
+    if (resourceNameUTF8 != 0)
+        while (*resourceNameUTF8 != 0)
+            hash = 31 * hash + *resourceNameUTF8++;
+
+    switch (hash)
+    {
+        case 0xb1f7f017:
+        case 0x2d7e39eb:  numBytes = 1002; return create_tables_sql;
+        case 0xcc1fbf05:
+        case 0xc2237d38:  numBytes = 13206; return insert_predefineddata_sql;
+        default: break;
+    }
+
+    numBytes = 0;
+    return 0;
+}
+
+}
