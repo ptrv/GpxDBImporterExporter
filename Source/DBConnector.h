@@ -21,7 +21,7 @@ public:
 	void setDatabase(const String &db);
 	void setupDbConnection();
 	void closeDbConnection();
-	bool insertPredefinedData();
+    bool insertLocationData();
 	bool checkIfFileExists(const String& md5hash);
 	bool checkIfFileNameExists(const String& filename);
 	bool checkIfGpsDataExsist(const String& timedate, int user);

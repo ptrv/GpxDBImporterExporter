@@ -126,44 +126,46 @@ const String GpsData::getInsertList() const
 		trans.commit();
 		result = true;
     }
-    CATCHDBERRORS
+    CATCHDBERRORS;
 	return result;
 }
 
-bool DBConnector::insertPredefinedData()
+bool DBConnector::insertLocationData()
 {
-	bool result = false;
-	String insertPredfinedDataFile((CharPointer_UTF8(BinaryData::insert_predefineddata_sql)));
-	std::vector<String> tmpSqlQueries;
-	String tmpStr = "";
-	for (int i = 0; i < insertPredfinedDataFile.length(); ++i) {
-		if (insertPredfinedDataFile[i] != ';')
-		{
-			tmpStr += insertPredfinedDataFile[i];
-		}
-		else
-		{
-            //DBG(tmpStr);
-			tmpSqlQueries.push_back(tmpStr+";");
-			tmpStr = "";
-		}
-	}
-	try{
-		sqlite3_transaction trans(*m_dbconn);
-		{
+    bool result = false;
+    String locationsStr((CharPointer_UTF8(BinaryData::locations_csv)));
+    std::vector<String> tmpLocations;
+    String tmpStr = "";
+    for (int i = 0; i < locationsStr.length(); ++i) {
+        if (locationsStr[i] != '\n')
+        {
+            tmpStr << locationsStr[i];
+        }
+        else
+        {
+            tmpLocations.push_back(tmpStr);
+            tmpStr = "";
+        }
+    }
+    try{
+        sqlite3_transaction trans(*m_dbconn);
+        {
 
-			for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
-				sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
-				cmd.executenonquery();
-				//m_dbconn->executenonquery(tmpSqlQueries[i].toUTF8().getAddress());
-			}
+            for (unsigned int i = 1; i < tmpLocations.size(); ++i) {
+                String query = "INSERT INTO 'location' VALUES(";
+                query << tmpLocations[i];
+                query << ");";
+                sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
+                cmd.executenonquery();
+            }
 
-		}
-		trans.commit();
-		result = true;
-	}
-	CATCHDBERRORS
-	return result;
+        }
+        trans.commit();
+        result = true;
+    }
+    CATCHDBERRORS
+    return result;
+
 }
 
 bool DBConnector::checkIfUserExists(const String& username)

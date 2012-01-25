@@ -488,7 +488,7 @@ void MainComponent::createNewDb()
         DBConnector* dbCon = new DBConnector(dbFile.getFullPathName());
         dbCon->setupDbConnection();
         dbCon->createNewDb();
-        dbCon->insertPredefinedData();
+        dbCon->insertLocationData();
         dbCon->closeDbConnection();
         delete dbCon;
         m_dbChooser->setCurrentFile(File(dbFile.getFullPathName()), true, true);
