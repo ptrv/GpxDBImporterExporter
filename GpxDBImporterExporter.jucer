@@ -26,6 +26,9 @@
                    headerPath="../../libs/sqlite3x"/>
   </CONFIGURATIONS>
   <MAINGROUP id="TmWdmrNln" name="GpxDBImporterExporter">
+    <GROUP id="{0FF7D83A-B8D3-039D-BDEE-5438D4733FCA}" name="BinaryData">
+      <FILE id="Bh6Z8R" name="locations.csv" compile="0" resource="1" file="data/locations.csv"/>
+    </GROUP>
     <GROUP id="xOZcXhd" name="sql">
       <FILE id="soxanFG" name="create_tables.sql" compile="0" resource="1"
             file="data/sql/create_tables.sql"/>

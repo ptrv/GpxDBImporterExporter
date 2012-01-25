@@ -1,0 +1,169 @@
+number,city,country,longitude,latitude,radius
+1,'Unknown','Unknown',0.0,0.0,0.0
+2,'Berlin','Germany',13.37,52.51,0.25
+3,'London','UK',-0.1,51.5,0.25
+4,'Luton','UK',-0.4,51.85,0.05
+5,'Stansted','UK',0.235,51.885,0.05
+6,'Kortrijk','Belgium',3.25,50.85,0.1
+7,'Arnside','UK',-2.832,54.199,0.05
+8,'Kendal','UK',-2.745048,54.326069,0.05
+9,'Burham','UK',0.48308,51.32971,0.05
+10,'Windermere','UK',-2.9076,54.3761,0.04
+11,'Nottingham','UK',-1.2,52.95,0.15
+12,'Brussels','Belgium',4.3525,50.846667,0.1
+13,'Leuven','Belgium',4.7,50.883333,0.1
+14,'Ghent','Belgium',3.733333,51.05,0.1
+15,'Manchester','UK',-2.233333,53.466667,0.15
+16,'Zurich','Switzerland',8.55,47.35,0.1
+17,'Bristol','UK',-2.6,51.45,0.15
+18,'Graz','Austria',15.438889,47.070278,0.1
+19,'Vienna','Austria',16.373056,48.208333,0.21
+20,'Barcelona','Spain',2.15,41.35,0.15
+21,'Potsdam','Germany',13.06,52.4,0.05
+22,'Luebben','Germany',13.9,51.95,0.05
+23,'Hamburg','Germany',9.983,53.583,0.15
+24,'Kursdorf','Germany',12.236389,51.423889,0.06
+25,'Leipzig','Germany',12.383333,51.333333,0.1
+26,'Brighton','UK',-0.131312,50.842941,0.1
+27,'Lewes','UK',0.017855,50.875627,0.05
+28,'Wittenberge','Germany',11.694,53.0,0.1
+29,'Brandenburg','Germany',12.552,52.412,0.05
+30,'Cologne','Germany',6.9583,50.9413,0.1
+31,'Dusseldorf','Germany',6.783333,51.233333,0.1
+32,'Essen','Germany',7.013056,51.450833,0.1
+33,'Frankfurt (Oder)','Germany',14.55,52.35,0.1
+34,'Calgary','Canada',-114.1,51.1,0.2
+35,'Banff','Canada',-115.55,51.15,0.1
+36,'Schwedt','Germany',14.266667,53.05,0.1
+37,'Luebeck','Germany',10.686389,53.869722,0.1
+38,'Magdeburg','Germany',11.616667,52.133333,0.05
+39,'Krems','Austria',15.610278,48.410833,0.05
+40,'Prague','Czech Republic',14.4,50.1,0.1
+41,'Cardiff','UK',-3.186667,51.485278,0.15
+42,'Newport (Pembrokeshire)','UK',-4.83607,52.01975,0.1
+43,'Copenhagen','Denmark',12.6,55.65,0.15
+44,'Ludlow','UK',-2.7176,52.3681,0.1
+45,'Newcastle upon Tyne','UK',-1.6132,54.974,0.15
+46,'Glasgow','UK',-4.259,55.858,0.15
+47,'Aberdeen','UK',-2.15,57.15,0.1
+48,'Exeter','UK',-3.533617,50.7218,0.15
+49,'Plymouth','UK',-4.142431,50.371397,0.1
+50,'Leeds','UK',-1.549167,53.799722,0.15
+51,'Schoenberg','Germany',12.45,50.9,0.05
+52,'Tokyo','Japan',139.95,35.65,0.45
+53,'New York','USA',-74.0,40.716667,0.25
+54,'San Francisco','USA',-122.4192,37.7793,0.25
+55,'Novigrad','Croatia',13.563299,45.316853,0.03
+56,'Lancaster','UK',-2.799614,54.047958,0.1
+57,'Palamos','Spain',3.133154,41.854975,0.025
+58,'Gatwick Airport','UK',-0.183237,51.151692,0.02
+59,'East Midlands Airport','UK',-1.330149,52.826892,0.03
+60,'Begur','Spain',3.206753,41.95401,0.025
+61,'Liverpool','UK',-2.975137,53.405175,0.15
+62,'Aberystwyth','UK',-4.082053,52.413227,0.15
+63,'Sheffield','UK',-1.470332,53.380778,0.15
+64,'Ljubljana','Slovenia',14.505556,46.051389,0.15
+65,'Munich','Germany',11.574709,48.138531,0.2
+66,'Warnitz','Germany',13.872697,53.178113,0.025
+67,'Derby','UK',-1.475547,52.921855,0.15
+68,'Fribourg','Switzerland',7.151282,46.803645,0.1
+69,'Columbia Ice Field','Canada',-117.313266,52.17849,0.05
+71,'Shrewsbury','UK',-2.748072,52.710341,0.05
+72,'Frankfurt am Main','Germany',8.679683,50.11345,0.2
+73,'Umag','Croatia',13.522272,45.432364,0.03
+74,'Lake Louise','Canada',-116.174636,51.423413,0.05
+75,'Helsinki','Finland',24.942539,60.16741,0.2
+76,'Monistrol de Montserrat','Spain',1.843934,41.602143,0.05
+77,'Vrsar','Croatia',13.606909,45.149608,0.03
+78,"La Bisbal d'Emporda",'Spain',3.027239,41.959905,0.05
+79,'Athens','Greece',23.724622,37.985004,0.25
+80,'Rovinj','Croatia',13.643894,45.083141,0.03
+81,'Palafrugell','Spain',3.160362,41.918181,0.025
+82,'Cadaques','Spain',3.280353,42.284555,0.03
+83,'Kuopio','Finland',27.677448,62.892152,0.1
+84,'Birmingham','UK',-1.89955,52.479468,0.25
+85,'Porec','Croatia',13.596344,45.227607,0.03
+86,'Syros','Greece',24.923506,37.439379,0.25
+87,'Figueres','Spain',2.971835,42.262697,0.025
+88,'Lille','France',3.070347,50.636799,0.1
+89,'Amsterdam','Netherlands',4.899914,52.372535,0.2
+90,'Luzern','Switzerland',8.309172,47.051974,0.1
+91,'Bern','Switzerland',7.44754,46.948084,0.1
+92,'Schwarzenburg','Switzerland',7.342976,46.819145,0.05
+93,'Perth','Australia',115.848948,-31.985434,0.25
+94,'Sydney','Australia',151.208595,-33.868761,0.25
+95,'Singapore Changi Airport','Singapore',103.989303,1.36299,0.025
+96,'Pasewalk','Germany',13.993509,53.505442,0.05
+97,'Broellin','Germany',14.049985,53.461045,0.05
+98,'Prenzlau','Germany',13.86575,53.316784,0.05
+99,'Joachimsthal','Germany',13.749277,52.979352,0.05
+100,'Bernau','Germany',13.588259,52.678965,0.05
+101,'Liepnitzsee','Germany',13.498866,52.743275,0.03
+102,'Biesnethal','Germany',13.629976,52.766476,0.05
+103,'Travemuende','Germany',10.878155,53.962638,0.05
+104,'Edwinstowe','UK',-1.064069,53.195613,0.03
+105,'Montpelier','France',3.877332,43.610747,0.1
+106,'Tossa de Mar','Spain',2.933403,41.719739,0.05
+107,'Lloret de Mar','Spain',2.838947,41.700587,0.05
+108,'Nice Airport','France',7.203866,43.659862,0.05
+109,'Cavaillon','France',5.039388,43.83156,0.05
+110,'Avignon','France',4.808761,43.948818,0.15
+111,'Bollene','France',4.75074,44.283242,0.05
+112,'Saint-Julien-de-Peyrolas','France',4.565174,44.286878,0.03
+113,"Saint-Martin-d'Ardeche",'France',4.567663,44.301429,0.03
+114,'Lyon','France',4.84142,45.757705,0.15
+115,'Paris','France',2.346665,48.855256,0.25
+116,'Charles de Gaulle Airport','France',2.552615,49.010104,0.03
+117,'Antwerp','Belgium',4.414755,51.217423,0.15
+118,'Rotterdam','Netherlands',4.454667,51.910239,0.15
+119,'Utrecht','Netherlands',5.111014,52.091156,0.15
+120,'Harlingen','Netherlands',5.431162,53.176363,0.15
+121,'Terschelling','Netherlands',5.308296,53.389072,0.15
+122,'Bremen','Germany',8.804094,53.079257,0.15
+123,'Stechlinsee','Germany',13.033744,53.148186,0.05
+124,'Edinburgh','UK',-3.195637,55.950845,0.15
+125,'Harwich','UK',1.287471,51.945824,0.1
+126,"St David's",'UK',-5.266001,51.88109,0.05
+127,'St Feliu de Guixols','Spain',3.033441,41.781755,0.05
+128,'Basel','Switzerland',7.587102,47.553297,0.1
+129,'Waedenswill','Switzerland',8.675006,47.230148,0.05
+130,'Liezen','Austria',14.24207,47.568022,0.05
+131,'Fohnsdorf','Austria',14.678262,47.207852,0.05
+132,'Weiz','Austria',15.624803,47.217544,0.05
+133,'Feldbach','Austria',15.888732,46.955077,0.05
+134,'Kirchbach in Steiermark','Austria',15.661452,46.931996,0.05
+135,'Spielfeld','Austria',15.630553,46.709056,0.05
+136,'Havnsø','Denmark',11.33171,55.75132,0.05
+137,'Ordrup','Denmark',11.38134,55.80825,0.05
+138,'Asnæs','Denmark',11.49822,55.81248,0.05
+139,'Holbaek','Denmark',11.71082,55.71793,0.1
+140,'Høje Tåstrup','Denmark',12.26849,55.6474,0.1
+141,'Bochum','Germany',7.217538,51.481966,0.15
+142,'Burgess Hill','UK',-0.13078,50.954159,0.1
+143,'Haywards Heath','UK',-0.10527,51.005268,0.1
+144,'Bexhill','UK',0.46823,50.845348,0.1
+145,'Hastings','UK',0.57734,50.857151,0.1
+146,'Rye','UK',0.73083,50.95219,0.05
+147,'Dungeness','UK',0.97628,50.914909,0.05
+148,'Lydd','UK',0.91202,50.951389,0.05
+149,'Hythe','UK',1.0763,51.07095,0.05
+150,'Winchester','UK',-1.323144,51.06308,0.1
+151,'Hathersage','UK',-1.656039,53.330105,0.05
+152,'Bamford','UK',-1.688719,53.349289,0.025
+153,'Bergen','Norway',5.32594,60.394871,0.2
+154,'Budapest','Hungary',19.062161,47.497951,0.25
+155,'Pecs','Hungary',18.2213,46.075481,0.1
+156,'Belo Horizonte','Brazil',-43.936901,-19.921667,0.2
+157,'Inhotim','Brazil',-44.21875,-20.12431,0.1
+158,'São Paulo','Brazil',-46.65585,-23.562691,0.3
+159,'Wells-Next-the-Sea','UK',0.854037,52.955067,0.05
+160,'Mundford','UK',0.656948,52.512138,0.05
+161,'Thetford','UK',0.749624,52.416157,0.07
+162,'Ely','UK',0.262299,52.399677,0.1
+163,'Bath','UK',-2.358112,51.382862,0.1
+164,'South Lancing','UK',-0.325191,50.832046,0.02
+165,'Kiel','Germay',10.137377,54.319431,0.07
+166,'Laboe','Germany',10.225224,54.402344,0.02
+167,'Strande','Germany',10.17409,54.438801,0.02
+168,'Mannheim','Germany',8.471618,49.511818,0.1
+169,'Frankfurt-Hahn Airport','Germany',7.269645,49.947258,0.02

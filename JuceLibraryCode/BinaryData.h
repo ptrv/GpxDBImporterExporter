@@ -7,6 +7,9 @@
 
 namespace BinaryData
 {
+    extern const char*   locations_csv;
+    const int            locations_csvSize = 7876;
+
     extern const char*   create_tables_sql;
     const int            create_tables_sqlSize = 1002;
 
