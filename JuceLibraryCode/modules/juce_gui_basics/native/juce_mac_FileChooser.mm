@@ -193,7 +193,7 @@ void FileChooser::showPlatformDialog (Array<File>& results,
         filename = currentFileOrDirectory.getFileName();
     }
 
-   #if defined (MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
+   #if defined (MAC_OS_X_VERSION_10_6) && (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6)
     [panel setDirectoryURL: [NSURL fileURLWithPath: juceStringToNS (directory)]];
     [panel setNameFieldStringValue: juceStringToNS (filename)];
 
@@ -241,7 +241,7 @@ void FileChooser::showPlatformDialog (Array<File>& results,
 {
     JUCE_AUTORELEASEPOOL
 
-    jassertfalse; //xxx to do
+    jassertfalse; //there's no such thing in iOS
 }
 
 #endif
