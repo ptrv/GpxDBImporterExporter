@@ -152,16 +152,7 @@
           </FileConfiguration>
         </File>
         <File RelativePath="..\..\data\sql\drop_tables.sql"/>
-        <File RelativePath="..\..\data\sql\insert_predefineddata.sql">
-          <FileConfiguration Name="Debug|Win32"
-                             ExcludedFromBuild="true">
-            <Tool Name="VCCLCompilerTool"/>
-          </FileConfiguration>
-          <FileConfiguration Name="Release|Win32"
-                             ExcludedFromBuild="true">
-            <Tool Name="VCCLCompilerTool"/>
-          </FileConfiguration>
-        </File>
+        <File RelativePath="..\..\data\sql\insert_predefineddata.sql"/>
       </Filter>
       <Filter Name="Source">
         <File RelativePath="..\..\Source\HelpComponent.cpp"/>

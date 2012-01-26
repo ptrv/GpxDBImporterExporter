@@ -33,7 +33,7 @@
       <FILE id="soxanFG" name="create_tables.sql" compile="0" resource="1"
             file="data/sql/create_tables.sql"/>
       <FILE id="SvcxtL" name="drop_tables.sql" compile="0" resource="0" file="data/sql/drop_tables.sql"/>
-      <FILE id="BCtl6z4" name="insert_predefineddata.sql" compile="0" resource="1"
+      <FILE id="BCtl6z4" name="insert_predefineddata.sql" compile="0" resource="0"
             file="data/sql/insert_predefineddata.sql"/>
     </GROUP>
     <GROUP id="f7dPoBd5m" name="Source">
