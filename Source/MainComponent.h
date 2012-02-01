@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Dec 2011 1:00:14pm
+  Creation date:  1 Feb 2012 11:03:40pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,13 +19,15 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_5A7C9782__
-#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_5A7C9782__
+#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_4AC0F2D5__
+#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_4AC0F2D5__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "includes.h"
 #include "DBConnector.h"
 #include "HelpComponent.h"
+
+class DBImporterWindow;
 //[/Headers]
 
 
@@ -41,11 +43,13 @@
 class MainComponent  : public Component,
                        public FilenameComponentListener,
                        public ButtonListener,
+                       public MenuBarModel,
+                       public ApplicationCommandTarget,
                        public ComboBoxListener
 {
 public:
     //==============================================================================
-    MainComponent ();
+    MainComponent (DBImporterWindow* mainWindow);
     ~MainComponent();
 
     //==============================================================================
@@ -77,6 +81,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    DBImporterWindow* m_mainWindow;
     //DBConnector* m_dbCon;
 	String m_statusMessage;
 	String m_lastImportedFile;
@@ -88,6 +93,16 @@ private:
 	bool m_selectFolder;
 	String m_lastExportFolder;
     HelpComponent* m_helpComponent;
+    
+    void getAllCommands (Array <CommandID>& commands){}
+    const PopupMenu getMenuForIndex (int topLevelMenuIndex,
+                                     const String& menuName){}
+    const StringArray getMenuBarNames(){}
+    void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result){}
+    ApplicationCommandTarget* getNextCommandTarget(){}
+    void menuItemSelected (int menuItemID,
+                           int topLevelMenuIndex){}
+    bool perform (const InvocationInfo& info){}
     //[/UserVariables]
 
     //==============================================================================
@@ -117,4 +132,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_5A7C9782__
+#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_4AC0F2D5__

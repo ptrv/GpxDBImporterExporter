@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  26 Dec 2011 1:00:14pm
+  Creation date:  1 Feb 2012 11:03:40pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -24,6 +24,7 @@
 #include "FileExporter.h"
 #include "LocationUpdater.h"
 #include "StoredSettings.h"
+#include "DBImporterWindow.h"
 //[/Headers]
 
 #include "MainComponent.h"
@@ -33,8 +34,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-MainComponent::MainComponent ()
-    : m_statusMessage(String::empty),
+MainComponent::MainComponent (DBImporterWindow* mainWindow)
+    : m_mainWindow(mainWindow), m_statusMessage(String::empty),
       m_lastImportedFile(String::empty),
       m_dbPath(String::empty),
       m_selectedUser(0),
@@ -631,6 +632,7 @@ void MainComponent::showHelpWindow()
     Colour color(0,0,0);
     DialogWindow::showModalDialog("Help", m_helpComponent, nullptr, color, true);
 }
+
 //[/MiscUserCode]
 
 
@@ -643,8 +645,8 @@ void MainComponent::showHelpWindow()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MainComponent" componentName=""
-                 parentClasses="public Component, public FilenameComponentListener, public ButtonListener"
-                 constructorParams="" variableInitialisers="m_statusMessage(String::empty),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
+                 parentClasses="public Component, public FilenameComponentListener, public ButtonListener, public MenuBarModel, public ApplicationCommandTarget"
+                 constructorParams="DBImporterWindow* mainWindow" variableInitialisers="m_mainWindow(mainWindow), m_statusMessage(String::empty),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
                  fixedSize="1" initialWidth="630" initialHeight="300">
   <BACKGROUND backgroundColour="ff959d9d">
