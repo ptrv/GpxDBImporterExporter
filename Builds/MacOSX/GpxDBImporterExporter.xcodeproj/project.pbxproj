@@ -676,7 +676,7 @@
 		F93DFBFBE7B78002276F70A6 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DragAndDropTarget.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_DragAndDropTarget.h"; sourceTree = "SOURCE_ROOT"; };
 		F9475653D512055694AACB15 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_FileSearchPath.cpp"; path = "../../JuceLibraryCode/modules/juce_core/files/juce_FileSearchPath.cpp"; sourceTree = "SOURCE_ROOT"; };
 		FBC7F719C4B181C0CA6FE6D3 = { isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		91388C3FE1AB5FC38B1C929C = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GpxDBImporterExporterD.app; sourceTree = "BUILT_PRODUCTS_DIR"; };
+		91388C3FE1AB5FC38B1C929C = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GpxDBImporterExporter.app; sourceTree = "BUILT_PRODUCTS_DIR"; };
 		F5D5A33BB3BEDDF47E1A403A = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TextEditorKeyMapper.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/keyboard/juce_TextEditorKeyMapper.h"; sourceTree = "SOURCE_ROOT"; };
 		F77442A80BB912E258E6707B = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_RelativeCoordinatePositioner.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/positioning/juce_RelativeCoordinatePositioner.cpp"; sourceTree = "SOURCE_ROOT"; };
 		F96D2F523899B18AF5094EBF = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_data_structures.mm"; path = "../../JuceLibraryCode/modules/juce_data_structures/juce_data_structures.mm"; sourceTree = "SOURCE_ROOT"; };
@@ -1543,7 +1543,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				ZERO_LINK = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf";
-				PRODUCT_NAME = "GpxDBImporterExporterD"; }; name = Debug; };
+				PRODUCT_NAME = "GpxDBImporterExporter"; }; name = Debug; };
 		32BE2E1ED5E213D0746A8315 = { isa = XCBuildConfiguration; buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;

@@ -18,7 +18,7 @@
                 extraLinkerFlags="" extraCompilerFlags=""/>
   </EXPORTFORMATS>
   <CONFIGURATIONS>
-    <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporterD"
+    <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
                    osxSDK="default" osxCompatibility="default" osxArchitecture="default"
                    headerPath="../../libs/sqlite3x"/>
     <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"

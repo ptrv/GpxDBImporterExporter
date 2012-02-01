@@ -26,7 +26,7 @@
             MkTypLibCompatible="true"
             SuppressStartupBanner="true"
             TargetEnvironment="1"
-            TypeLibraryName=".\Debug\GpxDBImporterExporterD.tlb"
+            TypeLibraryName=".\Debug\GpxDBImporterExporter.tlb"
             HeaderFileName=""/>
       <Tool Name="VCCLCompilerTool"
             Optimization="0"
@@ -37,7 +37,7 @@
             RuntimeLibrary="1"
             RuntimeTypeInfo="true"
             UsePrecompiledHeader="0"
-            PrecompiledHeaderFile=".\Debug\GpxDBImporterExporterD.pch"
+            PrecompiledHeaderFile=".\Debug\GpxDBImporterExporter.pch"
             AssemblerListingLocation=".\Debug\"
             ObjectFile=".\Debug\"
             ProgramDataBaseFileName=".\Debug\"
@@ -48,11 +48,11 @@
             PreprocessorDefinitions="_DEBUG"/>
       <Tool Name="VCPreLinkEventTool"/>
       <Tool Name="VCLinkerTool"
-            OutputFile=".\Debug\GpxDBImporterExporterD.exe"
+            OutputFile=".\Debug\GpxDBImporterExporter.exe"
             SuppressStartupBanner="true"
             IgnoreDefaultLibraryNames="libcmt.lib, msvcrt.lib"
             GenerateDebugInformation="true"
-            ProgramDatabaseFile=".\Debug\GpxDBImporterExporterD.pdb"
+            ProgramDatabaseFile=".\Debug\GpxDBImporterExporter.pdb"
             SubSystem="2"
             TargetMachine="1"/>
       <Tool Name="VCALinkTool"/>
@@ -60,7 +60,7 @@
       <Tool Name="VCXDCMakeTool"/>
       <Tool Name="VCBscMakeTool"
             SuppressStartupBanner="true"
-            OutputFile=".\Debug\GpxDBImporterExporterD.bsc"/>
+            OutputFile=".\Debug\GpxDBImporterExporter.bsc"/>
       <Tool Name="VCFxCopTool"/>
       <Tool Name="VCAppVerifierTool"/>
       <Tool Name="VCPostBuildEventTool"/>
