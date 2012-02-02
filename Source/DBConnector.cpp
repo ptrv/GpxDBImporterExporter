@@ -299,7 +299,7 @@ bool DBConnector::getGpsLocations(std::vector<GpsLocation>& locations)
 				GpsLocation location;
 				location.index = reader.getint(0);
 				location.city = String(CharPointer_UTF8(reader.getstring(1).data()));
-                DBG(location.city);
+//                DBG(location.city);
 				location.country = String(CharPointer_UTF8(reader.getstring(2).data()));
 				location.longitude = reader.getdouble(3);
 				location.latitude = reader.getdouble(4);
