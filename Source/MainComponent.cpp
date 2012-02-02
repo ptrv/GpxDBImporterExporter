@@ -697,7 +697,7 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 		break;
 
     case useLastDatabase:
-        result.setInfo("Start with last", "Use last open database on startup", generalCategory, 0);
+        result.setInfo("Autoload last DB", "Use last open database on startup", generalCategory, 0);
         result.setTicked(m_useLastDB);
         break;
             
