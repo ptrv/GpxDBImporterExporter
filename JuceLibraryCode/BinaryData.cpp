@@ -9,7 +9,7 @@ namespace BinaryData
 {
 
 //================== locations.csv ==================
-static const unsigned char temp_be085a64[] =
+static const unsigned char temp_805e371[] =
 "number,city,country,longitude,latitude,radius\n"
 "1,'Unknown','Unknown',0.0,0.0,0.0\n"
 "2,'Berlin','Germany',13.37,52.51,0.25\n"
@@ -180,10 +180,10 @@ static const unsigned char temp_be085a64[] =
 "168,'Mannheim','Germany',8.471618,49.511818,0.1\n"
 "169,'Frankfurt-Hahn Airport','Germany',7.269645,49.947258,0.02\n";
 
-const char* locations_csv = (const char*) temp_be085a64;
+const char* locations_csv = (const char*) temp_805e371;
 
 //================== create_tables.sql ==================
-static const unsigned char temp_9a9efcd5[] =
+static const unsigned char temp_be7d28e2[] =
 "CREATE TABLE user (\n"
 "\tuserid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
 "\tname TEXT NOT NULL\n"
@@ -218,7 +218,7 @@ static const unsigned char temp_9a9efcd5[] =
 "\tUNIQUE (city, country, longitude, latitude )\n"
 ");";
 
-const char* create_tables_sql = (const char*) temp_9a9efcd5;
+const char* create_tables_sql = (const char*) temp_be7d28e2;
 
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()

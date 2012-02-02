@@ -155,7 +155,7 @@
         <File RelativePath="..\..\data\sql\insert_predefineddata.sql"/>
       </Filter>
       <Filter Name="Source">
-        <File RelativePath="..\..\Source\DBImporterWindow.h"/>
+        <File RelativePath="..\..\Source\MainWindow.h"/>
         <File RelativePath="..\..\Source\HelpComponent.cpp"/>
         <File RelativePath="..\..\Source\HelpComponent.h"/>
         <File RelativePath="..\..\Source\Data.h"/>

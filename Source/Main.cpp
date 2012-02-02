@@ -13,7 +13,7 @@
 
 #include "includes.h"
 #include "MainComponent.h"
-#include "DBImporterWindow.h"
+#include "MainWindow.h"
 
 //==============================================================================
 
@@ -31,7 +31,7 @@ class JUCEDBImporterApplication : public JUCEApplication
        This is because the application object gets created before Juce has been properly
        initialised, so any embedded objects would also get constructed too soon.
    */
-    DBImporterWindow* dbImporterWindow;
+    MainWindow* dbImporterWindow;
 
 public:
     //==============================================================================
@@ -55,7 +55,7 @@ public:
     void initialise (const String& commandLine)
     {
         // just create the main window...
-        dbImporterWindow = new DBImporterWindow();
+        dbImporterWindow = new MainWindow();
 
         /*  ..and now return, which will fall into to the main event
             dispatch loop, and this will run until something calls

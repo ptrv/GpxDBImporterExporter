@@ -37,8 +37,7 @@
             file="data/sql/insert_predefineddata.sql"/>
     </GROUP>
     <GROUP id="f7dPoBd5m" name="Source">
-      <FILE id="g4E8zZ" name="DBImporterWindow.h" compile="0" resource="0"
-            file="Source/DBImporterWindow.h"/>
+      <FILE id="g4E8zZ" name="MainWindow.h" compile="0" resource="0" file="Source/MainWindow.h"/>
       <FILE id="KzQyXs" name="HelpComponent.cpp" compile="1" resource="0"
             file="Source/HelpComponent.cpp"/>
       <FILE id="n6to1w" name="HelpComponent.h" compile="0" resource="0" file="Source/HelpComponent.h"/>

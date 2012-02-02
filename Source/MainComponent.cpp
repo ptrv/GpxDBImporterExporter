@@ -24,7 +24,7 @@
 #include "FileExporter.h"
 #include "LocationUpdater.h"
 #include "StoredSettings.h"
-#include "DBImporterWindow.h"
+#include "MainWindow.h"
 //[/Headers]
 
 #include "MainComponent.h"
@@ -34,7 +34,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-MainComponent::MainComponent (DBImporterWindow* mainWindow)
+MainComponent::MainComponent (MainWindow* mainWindow)
     : m_mainWindow(mainWindow), m_statusMessage(String::empty),
       m_lastImportedFile(String::empty),
       m_dbPath(String::empty),

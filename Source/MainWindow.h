@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef GpxDBImporterExporter_DBImporterWindow_h
-#define GpxDBImporterExporter_DBImporterWindow_h
+#ifndef GpxDBImporterExporter_MainWindow_h
+#define GpxDBImporterExporter_MainWindow_h
 
 #include "includes.h"
 #include "MainComponent.h"
@@ -17,11 +17,11 @@
  show a component from the MainComponent.cpp file (you can open this file using
  the Jucer to edit it).
  */
-class DBImporterWindow  : public DocumentWindow
+class MainWindow  : public DocumentWindow
 {
 public:
 	//==============================================================================
-	DBImporterWindow()
+	MainWindow()
 	: DocumentWindow (ProjectInfo::projectName,
 			Colours::lightgrey,
 			DocumentWindow::allButtons,
@@ -54,7 +54,7 @@ public:
 		setVisible (true);
 	}
 
-	~DBImporterWindow()
+	~MainWindow()
 	{
 		setMenuBar (nullptr);
 
@@ -67,9 +67,6 @@ public:
 	//==============================================================================
 	void closeButtonPressed()
 	{
-		// When the user presses the close button, we'll tell the app to quit. This
-		// window will be deleted by our HelloWorldApplication::shutdown() method
-		//
 		JUCEApplication::getInstance()->systemRequestedQuit();
 	}
 

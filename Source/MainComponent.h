@@ -27,7 +27,7 @@
 #include "DBConnector.h"
 #include "HelpComponent.h"
 
-class DBImporterWindow;
+class MainWindow;
 //[/Headers]
 
 
@@ -49,7 +49,7 @@ class MainComponent  : public Component,
 {
 public:
     //==============================================================================
-    MainComponent (DBImporterWindow* mainWindow);
+    MainComponent (MainWindow* mainWindow);
     ~MainComponent();
 
     //==============================================================================
@@ -81,7 +81,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	DBImporterWindow* m_mainWindow;
+	MainWindow* m_mainWindow;
 	//DBConnector* m_dbCon;
 	String m_statusMessage;
 	String m_lastImportedFile;
