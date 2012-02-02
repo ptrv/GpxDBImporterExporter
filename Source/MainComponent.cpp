@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Feb 2012 3:21:13pm
+  Creation date:  2 Feb 2012 9:17:32pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -35,7 +35,7 @@
 
 //==============================================================================
 MainComponent::MainComponent (MainWindow* mainWindow)
-    : m_mainWindow(mainWindow), m_statusMessage(String::empty),
+    : m_mainWindow(mainWindow),
       m_lastImportedFile(String::empty),
       m_dbPath(String::empty),
       m_selectedUser(0),
@@ -43,29 +43,21 @@ MainComponent::MainComponent (MainWindow* mainWindow)
       m_selectedFileToImport(String::empty),
       m_selectFolder(false),
       m_lastExportFolder(String::empty),
-      createDbButton (0),
-      m_dbChooser (0),
       m_btFileImport (0),
       m_labelName (0),
       m_userSelectComboBox (0),
       m_btHashCheck (0),
-      m_btExecuteSqlScript (0),
       m_btSelectFile (0),
-      m_btUpdateLocations (0),
       m_btSelectFolder (0),
       m_sqlQuery (0),
       m_labelImport (0),
       m_labelExport (0),
       m_btExport (0),
-      m_labelSqlQuery (0)
+      m_labelSqlQuery (0),
+      m_currentDbLabel (0),
+      m_statusLabel (0),
+      m_currentDbLabelTitle (0)
 {
-    addAndMakeVisible (createDbButton = new TextButton (L"createDbButton"));
-    createDbButton->setButtonText (L"create new DB");
-    createDbButton->setColour (TextButton::buttonOnColourId, Colour (0xff003c00));
-
-    addAndMakeVisible (m_dbChooser = new FilenameComponent ("database file", File::nonexistent, true, false, false, "*.sqlite;*.db",String::empty, "(choose database file)"));
-    m_dbChooser->setName (L"dbChooser");
-
     addAndMakeVisible (m_btFileImport = new TextButton (L"btFileImport"));
     m_btFileImport->setButtonText (L"Import");
     m_btFileImport->setColour (TextButton::buttonColourId, Colour (0xffab5757));
@@ -91,14 +83,8 @@ MainComponent::MainComponent (MainWindow* mainWindow)
     m_btHashCheck->setButtonText (L"Check md5");
     m_btHashCheck->setToggleState (true, false);
 
-    addAndMakeVisible (m_btExecuteSqlScript = new TextButton (L"ExecuteSqlScript"));
-    m_btExecuteSqlScript->setButtonText (L"Execute Sql Script");
-
     addAndMakeVisible (m_btSelectFile = new TextButton (L"SelectFile"));
     m_btSelectFile->setButtonText (L"Select file");
-
-    addAndMakeVisible (m_btUpdateLocations = new TextButton (L"UpdateLocations"));
-    m_btUpdateLocations->setButtonText (L"Update locations");
 
     addAndMakeVisible (m_btSelectFolder = new ToggleButton (L"btSelectFolder"));
     m_btSelectFolder->setButtonText (L"Recursive import");
@@ -141,23 +127,41 @@ MainComponent::MainComponent (MainWindow* mainWindow)
     m_labelSqlQuery->setColour (TextEditor::textColourId, Colours::black);
     m_labelSqlQuery->setColour (TextEditor::backgroundColourId, Colour (0x0));
 
+    addAndMakeVisible (m_currentDbLabel = new Label (L"currentDbLabel",
+                                                     L"no database"));
+    m_currentDbLabel->setFont (Font (15.0000f, Font::plain));
+    m_currentDbLabel->setJustificationType (Justification::centredLeft);
+    m_currentDbLabel->setEditable (false, false, false);
+    m_currentDbLabel->setColour (TextEditor::textColourId, Colours::black);
+    m_currentDbLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (m_statusLabel = new Label (L"statusLabel",
+                                                  String::empty));
+    m_statusLabel->setFont (Font (15.0000f, Font::plain));
+    m_statusLabel->setJustificationType (Justification::centredLeft);
+    m_statusLabel->setEditable (false, false, false);
+    m_statusLabel->setColour (TextEditor::textColourId, Colours::black);
+    m_statusLabel->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
+    addAndMakeVisible (m_currentDbLabelTitle = new Label (L"currentDbLabelTitle",
+                                                          L"DB:"));
+    m_currentDbLabelTitle->setFont (Font (15.0000f, Font::plain));
+    m_currentDbLabelTitle->setJustificationType (Justification::centredLeft);
+    m_currentDbLabelTitle->setEditable (false, false, false);
+    m_currentDbLabelTitle->setColour (TextEditor::textColourId, Colours::black);
+    m_currentDbLabelTitle->setColour (TextEditor::backgroundColourId, Colour (0x0));
+
 
     //[UserPreSize]
-	createDbButton->addListener (this);
 	m_btFileImport->addListener (this);
 	m_btHashCheck->addListener (this);
-	m_btExecuteSqlScript->addListener (this);
 	m_btSelectFile->addListener (this);
-	m_btUpdateLocations->addListener (this);
 	m_btSelectFolder->addListener (this);
 	m_btExport->addListener (this);
 
-	m_dbChooser->addListener(this);
 	m_userSelectComboBox->setEnabled(false);
 	m_btSelectFile->setEnabled(false);
 	m_btFileImport->setEnabled(false);
-	m_btExecuteSqlScript->setEnabled(false);
-	m_btUpdateLocations->setEnabled(false);
 	DBG_SCOPE();
 
 #ifdef JUCE_LINUX
@@ -171,9 +175,8 @@ MainComponent::MainComponent (MainWindow* mainWindow)
 
 
     //[Constructor] You can add your own custom stuff here..
-	m_statusMessage = "Ready to import!";
+    setStatusMessage("Ready to import!");
 
-	m_dbChooser->setRecentlyUsedFilenames(StoredSettings::getInstance()->recentFiles.getAllFilenames());
 	m_lastImportFolder = StoredSettings::getInstance()->getLastImportFolder();
 	m_btSelectFolder->setToggleState(StoredSettings::getInstance()->getSelectFolders(), false);
 	m_lastExportFolder = StoredSettings::getInstance()->getLastExportFolder();
@@ -185,11 +188,6 @@ MainComponent::MainComponent (MainWindow* mainWindow)
 MainComponent::~MainComponent()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
-	int recentFileNum = m_dbChooser->getRecentlyUsedFilenames().size();
-	for (int i = 0; i < recentFileNum; ++i)
-	{
-		StoredSettings::getInstance()->recentFiles.addFile(m_dbChooser->getRecentlyUsedFilenames()[recentFileNum-1-i]);
-	}
 	StoredSettings::getInstance()->setLastImportFolder(m_lastImportFolder);
 	StoredSettings::getInstance()->setSelectFolders(m_btSelectFolder->getToggleState());
 	StoredSettings::getInstance()->setLastExportFolder(m_lastExportFolder);
@@ -198,21 +196,20 @@ MainComponent::~MainComponent()
 
     //[/Destructor_pre]
 
-    deleteAndZero (createDbButton);
-    deleteAndZero (m_dbChooser);
     deleteAndZero (m_btFileImport);
     deleteAndZero (m_labelName);
     deleteAndZero (m_userSelectComboBox);
     deleteAndZero (m_btHashCheck);
-    deleteAndZero (m_btExecuteSqlScript);
     deleteAndZero (m_btSelectFile);
-    deleteAndZero (m_btUpdateLocations);
     deleteAndZero (m_btSelectFolder);
     deleteAndZero (m_sqlQuery);
     deleteAndZero (m_labelImport);
     deleteAndZero (m_labelExport);
     deleteAndZero (m_btExport);
     deleteAndZero (m_labelSqlQuery);
+    deleteAndZero (m_currentDbLabel);
+    deleteAndZero (m_statusLabel);
+    deleteAndZero (m_currentDbLabelTitle);
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -229,35 +226,31 @@ void MainComponent::paint (Graphics& g)
     g.fillAll (Colour (0xff959d9d));
 
     g.setColour (Colour (0xffa9c0b6));
-    g.fillRoundedRectangle (365.0f, 45.0f, 256.0f, 195.0f, 10.0000f);
+    g.fillRoundedRectangle (344.0f, 46.0f, 271.0f, 195.0f, 10.0000f);
 
     g.setColour (Colour (0xffb8c4c7));
-    g.fillRoundedRectangle (8.0f, 45.0f, 333.0f, 195.0f, 10.0000f);
+    g.fillRoundedRectangle (18.0f, 46.0f, 302.0f, 195.0f, 10.0000f);
 
     //[UserPaint] Add your own custom painting code here..
-	g.setColour(Colours::black);
-	g.setFont(12);
-	g.drawSingleLineText(m_statusMessage, 15, getHeight()-10);
     //[/UserPaint]
 }
 
 void MainComponent::resized()
 {
-    createDbButton->setBounds (182, 204, 144, 23);
-    m_dbChooser->setBounds (8, 11, 613, 23);
-    m_btFileImport->setBounds (22, 204, 128, 23);
-    m_labelName->setBounds (166, 82, 72, 23);
-    m_userSelectComboBox->setBounds (22, 83, 136, 23);
-    m_btHashCheck->setBounds (232, 83, 96, 23);
-    m_btExecuteSqlScript->setBounds (182, 164, 144, 23);
-    m_btSelectFile->setBounds (22, 168, 128, 23);
-    m_btUpdateLocations->setBounds (182, 125, 144, 23);
-    m_btSelectFolder->setBounds (22, 125, 130, 23);
-    m_sqlQuery->setBounds (376, 107, 236, 87);
+    m_btFileImport->setBounds (32, 208, 272, 23);
+    m_labelName->setBounds (256, 80, 56, 23);
+    m_userSelectComboBox->setBounds (40, 83, 192, 23);
+    m_btHashCheck->setBounds (176, 120, 104, 23);
+    m_btSelectFile->setBounds (32, 168, 272, 23);
+    m_btSelectFolder->setBounds (32, 120, 130, 23);
+    m_sqlQuery->setBounds (360, 107, 240, 87);
     m_labelImport->setBounds (16, 51, 320, 23);
-    m_labelExport->setBounds (376, 51, 216, 23);
-    m_btExport->setBounds (376, 204, 236, 23);
-    m_labelSqlQuery->setBounds (372, 83, 244, 23);
+    m_labelExport->setBounds (376, 56, 216, 23);
+    m_btExport->setBounds (360, 208, 240, 23);
+    m_labelSqlQuery->setBounds (352, 83, 264, 23);
+    m_currentDbLabel->setBounds (56, 8, 552, 24);
+    m_statusLabel->setBounds (16, 248, 600, 24);
+    m_currentDbLabelTitle->setBounds (16, 8, 40, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -280,31 +273,18 @@ void MainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-//const String& MainComponent
 void MainComponent::buttonClicked (Button* buttonThatWasClicked)
 {
-	if (buttonThatWasClicked == createDbButton)
-	{
-		createNewDb();
-	}
-	else if (buttonThatWasClicked == m_btFileImport)
+	if (buttonThatWasClicked == m_btFileImport)
 	{
 		importFile();
 	}
 	else if (buttonThatWasClicked == m_btHashCheck)
 	{
 	}
-	else if (buttonThatWasClicked == m_btExecuteSqlScript)
-	{
-		executeSqlScript();
-	}
 	else if (buttonThatWasClicked == m_btSelectFile)
 	{
 		selectFileToImport();
-	}
-	else if (buttonThatWasClicked == m_btUpdateLocations)
-	{
-		updateLocations();
 	}
 	else if (buttonThatWasClicked == m_btSelectFolder)
 	{
@@ -315,46 +295,6 @@ void MainComponent::buttonClicked (Button* buttonThatWasClicked)
 	}
 }
 
-void MainComponent::filenameComponentChanged (FilenameComponent* fileComponentThatHasChanged)
-{
-	if ( fileComponentThatHasChanged == m_dbChooser )
-	{
-		openDatabase(fileComponentThatHasChanged->getCurrentFile());
-//		m_dbPath = fileComponentThatHasChanged->getCurrentFile().getFullPathName();
-//		DBG_VAL(m_dbPath);
-//		if (fileComponentThatHasChanged->getCurrentFile().existsAsFile())
-//		{
-//			m_userSelectComboBox->setEnabled(true);
-//			m_btSelectFile->setEnabled(true);
-//			m_btExecuteSqlScript->setEnabled(true);
-//			m_btUpdateLocations->setEnabled(true);
-//
-//			DBConnector* dbCon = new DBConnector(m_dbPath);
-//			dbCon->setupDbConnection();
-//
-//			std::vector<String> users;
-//			m_userSelectComboBox->clear();
-//			if (dbCon->getAvailableUsers(users))
-//			{
-//				for (unsigned int i = 0; i < users.size(); ++i)
-//				{
-//					m_userSelectComboBox->addItem(users[i], i+1);
-//				}
-//			}
-//			dbCon->closeDbConnection();
-//			m_userSelectComboBox->setSelectedId(1);
-//			delete dbCon;
-//		}
-//		else
-//		{
-//			m_dbPath = String::empty;
-//			m_userSelectComboBox->setEnabled(false);
-//			m_btSelectFile->setEnabled(false);
-//			m_btExecuteSqlScript->setEnabled(false);
-//			m_btUpdateLocations->setEnabled(false);
-//		}
-	}
-}
 void MainComponent::selectFileToImport()
 {
 	m_selectedFilesToImport.clear();
@@ -382,7 +322,7 @@ void MainComponent::selectFileToImport()
 				}
 			}
 			m_lastImportFolder = importDir.getFullPathName();
-			m_statusMessage = "Selected file: " + m_lastImportedFile;
+			setStatusMessage("Selected file: " + m_lastImportedFile);
 			m_btFileImport->setEnabled(true);
 			repaint();
 		}
@@ -402,15 +342,13 @@ void MainComponent::selectFileToImport()
 					m_selectedFilesToImport.push_back(m_selectedFileToImport);
 					m_lastImportedFile = importFile.getFileName();
 					m_lastImportFolder = importFile.getParentDirectory().getFullPathName();
-					m_statusMessage = "Selected file: " + m_lastImportedFile;
+					setStatusMessage("Selected file: " + m_lastImportedFile);
 					m_btFileImport->setEnabled(true);
-					repaint();
 				}
 				else
 				{
 					m_btFileImport->setEnabled(false);
-					m_statusMessage = "The selected file was not valid!";
-					repaint();
+					setStatusMessage("The selected file was not valid!");
 				}
 
 			}
@@ -447,26 +385,31 @@ void MainComponent::createNewDb()
 		}
 		File dbFile(saveDialog.getResult());
 
+		setCurrentWorkingDb(dbFile);
+
 		DBConnector* dbCon = new DBConnector(dbFile.getFullPathName());
 		dbCon->setupDbConnection();
 		dbCon->createNewDb();
 		dbCon->insertLocationData();
 		dbCon->closeDbConnection();
 		delete dbCon;
-		m_dbChooser->setCurrentFile(File(dbFile.getFullPathName()), true, true);
 	}
 }
 
-void MainComponent::openDatabase(const File& file)
+void MainComponent::setCurrentWorkingDb(const File& file)
 {
 	m_dbPath = file.getFullPathName();
+	m_currentDbLabel->setText(m_dbPath, true);
+	StoredSettings::getInstance()->recentFiles.addFile(file);
+	m_userSelectComboBox->setEnabled(true);
+	m_btSelectFile->setEnabled(true);
 	DBG_VAL(m_dbPath);
+}
+void MainComponent::openDatabase(const File& file)
+{
 	if (file.existsAsFile())
 	{
-		m_userSelectComboBox->setEnabled(true);
-		m_btSelectFile->setEnabled(true);
-		m_btExecuteSqlScript->setEnabled(true);
-		m_btUpdateLocations->setEnabled(true);
+		setCurrentWorkingDb(file);
 
 		DBConnector* dbCon = new DBConnector(m_dbPath);
 		dbCon->setupDbConnection();
@@ -487,10 +430,9 @@ void MainComponent::openDatabase(const File& file)
 	else
 	{
 		m_dbPath = String::empty;
+		m_currentDbLabel->setText("no working database", true);
 		m_userSelectComboBox->setEnabled(false);
 		m_btSelectFile->setEnabled(false);
-		m_btExecuteSqlScript->setEnabled(false);
-		m_btUpdateLocations->setEnabled(false);
 	}
 }
 
@@ -535,13 +477,11 @@ void MainComponent::importFile()
 	DBG_VAL(m_btHashCheck->getToggleState());
 	if (fileImporter.runThread())
 	{
-		m_statusMessage = fileImporter.getStatus();
-		repaint();
+		setStatusMessage(fileImporter.getStatus());
 	}
 	else
 	{
-		m_statusMessage = "Import canceled!";
-		repaint();
+		setStatusMessage("Import canceled!");
 	}
 }
 
@@ -551,8 +491,7 @@ void MainComponent::updateLocations()
 
 	if (locationUpdater.runThread())
 	{
-		m_statusMessage = locationUpdater.getStatus();
-		repaint();
+		setStatusMessage(locationUpdater.getStatus());
 	}
 	else
 	{
@@ -573,18 +512,17 @@ void MainComponent::executeSqlScript()
 			dbcon.setupDbConnection();
 			dbcon.executeSqlScript(sqlFile);
 			dbcon.closeDbConnection();
-			m_statusMessage = "Executed SQL script!";
+			setStatusMessage("Executed SQL script!");
 		}
 		else
 		{
-			m_statusMessage = "File not valid!";
+			setStatusMessage("File not valid!");
 		}
 	}
 }
 void MainComponent::setStatusMessage(const String& statusMessage)
 {
-	m_statusMessage = statusMessage;
-	repaint();
+	m_statusLabel->setText(statusMessage, true);
 }
 void MainComponent::showAboutWindow()
 {
@@ -617,8 +555,7 @@ void MainComponent::exportGpxFile()
 
 		if (fileExporter.runThread())
 		{
-			m_statusMessage = fileExporter.getStatus();
-			repaint();
+			setStatusMessage(fileExporter.getStatus());
 		}
 		else
 		{
@@ -639,7 +576,6 @@ void MainComponent::openDbFileChooser()
 
 	if (dbChooser.browseForFileToOpen()) {
 		openDatabase(dbChooser.getResult());
-		m_dbChooser->setCurrentFile(File(dbChooser.getResult()), true, true);
 	} else {
 
 	}
@@ -693,7 +629,6 @@ void MainComponent::menuItemSelected (int menuItemID, int /*topLevelMenuIndex*/)
 		const File file (StoredSettings::getInstance()->recentFiles.getFile (menuItemID - 100));
 
 		openDatabase(file);
-		m_dbChooser->setCurrentFile(file, true, true);
 	}
 }
 
@@ -814,50 +749,37 @@ bool MainComponent::perform (const InvocationInfo& info)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MainComponent" componentName=""
-                 parentClasses="public Component, public FilenameComponentListener, public ButtonListener, public MenuBarModel, public ApplicationCommandTarget"
-                 constructorParams="MainWindow* mainWindow" variableInitialisers="m_mainWindow(mainWindow), m_statusMessage(String::empty),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
+                 parentClasses="public Component, public ButtonListener, public MenuBarModel, public ApplicationCommandTarget"
+                 constructorParams="MainWindow* mainWindow" variableInitialisers="m_mainWindow(mainWindow),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
                  fixedSize="1" initialWidth="630" initialHeight="300">
   <BACKGROUND backgroundColour="ff959d9d">
-    <ROUNDRECT pos="365 45 256 195" cornerSize="10" fill="solid: ffa9c0b6" hasStroke="0"/>
-    <ROUNDRECT pos="8 45 333 195" cornerSize="10" fill="solid: ffb8c4c7" hasStroke="0"/>
+    <ROUNDRECT pos="344 46 271 195" cornerSize="10" fill="solid: ffa9c0b6" hasStroke="0"/>
+    <ROUNDRECT pos="18 46 302 195" cornerSize="10" fill="solid: ffb8c4c7" hasStroke="0"/>
   </BACKGROUND>
-  <TEXTBUTTON name="createDbButton" id="dc303cca5155d8cc" memberName="createDbButton"
-              virtualName="" explicitFocusOrder="0" pos="182 204 144 23" bgColOn="ff003c00"
-              buttonText="create new DB" connectedEdges="0" needsCallback="0"
-              radioGroupId="0"/>
-  <GENERICCOMPONENT name="dbChooser" id="5d76df185c1046d4" memberName="m_dbChooser"
-                    virtualName="" explicitFocusOrder="0" pos="8 11 613 23" class="FilenameComponent"
-                    params="&quot;database file&quot;, File::nonexistent, true, false, false, &quot;*.sqlite;*.db&quot;,String::empty, &quot;(choose database file)&quot;"/>
   <TEXTBUTTON name="btFileImport" id="aaf7a5d5ad023c70" memberName="m_btFileImport"
-              virtualName="" explicitFocusOrder="0" pos="22 204 128 23" bgColOff="ffab5757"
+              virtualName="" explicitFocusOrder="0" pos="32 208 272 23" bgColOff="ffab5757"
               bgColOn="ff003c00" buttonText="Import" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
   <LABEL name="labelName" id="d12a7f71f2f9072c" memberName="m_labelName"
-         virtualName="" explicitFocusOrder="0" pos="166 82 72 23" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="256 80 56 23" edTextCol="ff000000"
          edBkgCol="0" hiliteCol="ff008000" labelText="Name" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <COMBOBOX name="userSelectComboBox" id="8a20420f87159086" memberName="m_userSelectComboBox"
-            virtualName="" explicitFocusOrder="0" pos="22 83 136 23" editable="1"
+            virtualName="" explicitFocusOrder="0" pos="40 83 192 23" editable="1"
             layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <TOGGLEBUTTON name="btHashCheck" id="f57535ef2b3948a3" memberName="m_btHashCheck"
-                virtualName="" explicitFocusOrder="0" pos="232 83 96 23" buttonText="Check md5"
+                virtualName="" explicitFocusOrder="0" pos="176 120 104 23" buttonText="Check md5"
                 connectedEdges="0" needsCallback="0" radioGroupId="0" state="1"/>
-  <TEXTBUTTON name="ExecuteSqlScript" id="838dae3d1c21f2c4" memberName="m_btExecuteSqlScript"
-              virtualName="" explicitFocusOrder="0" pos="182 164 144 23" buttonText="Execute Sql Script"
-              connectedEdges="0" needsCallback="0" radioGroupId="0"/>
   <TEXTBUTTON name="SelectFile" id="a2ca34bc3838524" memberName="m_btSelectFile"
-              virtualName="" explicitFocusOrder="0" pos="22 168 128 23" buttonText="Select file"
-              connectedEdges="0" needsCallback="0" radioGroupId="0"/>
-  <TEXTBUTTON name="UpdateLocations" id="6d1185f0ad06adc6" memberName="m_btUpdateLocations"
-              virtualName="" explicitFocusOrder="0" pos="182 125 144 23" buttonText="Update locations"
+              virtualName="" explicitFocusOrder="0" pos="32 168 272 23" buttonText="Select file"
               connectedEdges="0" needsCallback="0" radioGroupId="0"/>
   <TOGGLEBUTTON name="btSelectFolder" id="b7267804ee41b214" memberName="m_btSelectFolder"
-                virtualName="" explicitFocusOrder="0" pos="22 125 130 23" buttonText="Recursive import"
+                virtualName="" explicitFocusOrder="0" pos="32 120 130 23" buttonText="Recursive import"
                 connectedEdges="0" needsCallback="0" radioGroupId="0" state="0"/>
   <TEXTEDITOR name="sqlQuery" id="bf020fa85a006130" memberName="m_sqlQuery"
-              virtualName="" explicitFocusOrder="0" pos="376 107 236 87" initialText=""
+              virtualName="" explicitFocusOrder="0" pos="360 107 240 87" initialText=""
               multiline="1" retKeyStartsLine="1" readonly="0" scrollbars="1"
               caret="1" popupmenu="1"/>
   <LABEL name="labelImport" id="4e41f1eb2f8efcb2" memberName="m_labelImport"
@@ -866,19 +788,34 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="24"
          bold="0" italic="0" justification="36"/>
   <LABEL name="labelExport" id="6445d57ea63016db" memberName="m_labelExport"
-         virtualName="" explicitFocusOrder="0" pos="376 51 216 23" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="376 56 216 23" edTextCol="ff000000"
          edBkgCol="0" labelText="EXPORT" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="24"
          bold="0" italic="0" justification="36"/>
   <TEXTBUTTON name="btExport" id="31f23fb02423c975" memberName="m_btExport"
-              virtualName="" explicitFocusOrder="0" pos="376 204 236 23" bgColOff="ff00bf00"
+              virtualName="" explicitFocusOrder="0" pos="360 208 240 23" bgColOff="ff00bf00"
               bgColOn="ff008000" buttonText="Export GPX file" connectedEdges="0"
               needsCallback="0" radioGroupId="0"/>
   <LABEL name="labelSqlQuery" id="8c65361201f22786" memberName="m_labelSqlQuery"
-         virtualName="" explicitFocusOrder="0" pos="372 83 244 23" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="352 83 264 23" edTextCol="ff000000"
          edBkgCol="0" labelText="Enter SQL query (beginning with WHERE statement):"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="currentDbLabel" id="86585fd27c353241" memberName="m_currentDbLabel"
+         virtualName="" explicitFocusOrder="0" pos="56 8 552 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="no database" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <LABEL name="statusLabel" id="9a3c32a95fee571e" memberName="m_statusLabel"
+         virtualName="" explicitFocusOrder="0" pos="16 248 600 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
+  <LABEL name="currentDbLabelTitle" id="648ae203d8899e03" memberName="m_currentDbLabelTitle"
+         virtualName="" explicitFocusOrder="0" pos="16 8 40 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="DB:" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

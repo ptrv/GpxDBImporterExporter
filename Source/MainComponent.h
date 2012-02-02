@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Feb 2012 3:21:13pm
+  Creation date:  2 Feb 2012 9:17:32pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,8 +19,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_CFCEC030__
-#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_CFCEC030__
+#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_DA2E8441__
+#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_DA2E8441__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "includes.h"
@@ -41,7 +41,6 @@ class MainWindow;
                                                                     //[/Comments]
 */
 class MainComponent  : public Component,
-                       public FilenameComponentListener,
                        public ButtonListener,
                        public MenuBarModel,
                        public ApplicationCommandTarget,
@@ -54,7 +53,6 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void filenameComponentChanged (FilenameComponent* fileComponentThatHasChanged);
 	const File getFileToImport();
 	const std::vector<File> getFilesToImport();
 	void createNewDb();
@@ -70,6 +68,7 @@ public:
 	void showHelpWindow();
 	void openDatabase(const File& file);
 	void openDbFileChooser();
+	void setCurrentWorkingDb(const File& file);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -85,7 +84,6 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	MainWindow* m_mainWindow;
 	//DBConnector* m_dbCon;
-	String m_statusMessage;
 	String m_lastImportedFile;
 	String m_dbPath;
 	int m_selectedUser;
@@ -121,21 +119,20 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    TextButton* createDbButton;
-    FilenameComponent* m_dbChooser;
     TextButton* m_btFileImport;
     Label* m_labelName;
     ComboBox* m_userSelectComboBox;
     ToggleButton* m_btHashCheck;
-    TextButton* m_btExecuteSqlScript;
     TextButton* m_btSelectFile;
-    TextButton* m_btUpdateLocations;
     ToggleButton* m_btSelectFolder;
     TextEditor* m_sqlQuery;
     Label* m_labelImport;
     Label* m_labelExport;
     TextButton* m_btExport;
     Label* m_labelSqlQuery;
+    Label* m_currentDbLabel;
+    Label* m_statusLabel;
+    Label* m_currentDbLabelTitle;
 
 
     //==============================================================================
@@ -145,4 +142,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_CFCEC030__
+#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_DA2E8441__
