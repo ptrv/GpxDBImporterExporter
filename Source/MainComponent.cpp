@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Feb 2012 9:17:32pm
+  Creation date:  2 Feb 2012 11:01:52pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -238,7 +238,7 @@ void MainComponent::paint (Graphics& g)
 void MainComponent::resized()
 {
     m_btFileImport->setBounds (32, 208, 272, 23);
-    m_labelName->setBounds (256, 80, 56, 23);
+    m_labelName->setBounds (256, 80, 56, 29);
     m_userSelectComboBox->setBounds (40, 83, 192, 23);
     m_btHashCheck->setBounds (176, 120, 104, 23);
     m_btSelectFile->setBounds (32, 168, 272, 23);
@@ -247,10 +247,10 @@ void MainComponent::resized()
     m_labelImport->setBounds (16, 51, 320, 23);
     m_labelExport->setBounds (376, 56, 216, 23);
     m_btExport->setBounds (360, 208, 240, 23);
-    m_labelSqlQuery->setBounds (352, 83, 264, 23);
+    m_labelSqlQuery->setBounds (352, 83, 256, 23);
     m_currentDbLabel->setBounds (56, 8, 552, 24);
-    m_statusLabel->setBounds (16, 248, 600, 24);
-    m_currentDbLabelTitle->setBounds (16, 8, 40, 24);
+    m_statusLabel->setBounds (24, 248, 584, 24);
+    m_currentDbLabelTitle->setBounds (23, 8, 40, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -597,7 +597,7 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 		menu.addCommandItem (commandManager, openDb);
 		PopupMenu recentFiles;
 		StoredSettings::getInstance()->recentFiles.createPopupMenuItems (recentFiles, 100, true, true);
-		menu.addSubMenu ("Open recent db", recentFiles);
+		menu.addSubMenu ("Recent DBs", recentFiles);
 #if ! JUCE_MAC
         menu.addSeparator();
         menu.addCommandItem (commandManager, StandardApplicationCommandIDs::quit);
@@ -664,12 +664,12 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 	switch (commandID)
 	{
 	case openDb:
-		result.setInfo("Open db", "Open a database", generalCategory, 0);
+		result.setInfo("Open DB", "Open a database", generalCategory, 0);
 		result.addDefaultKeypress('o', ModifierKeys::commandModifier);
 		break;
 
 	case openCreateNewDb:
-		result.setInfo("Create new db", "Create an new database", toolsCategory, 0);
+		result.setInfo("Create new DB", "Create an new database", toolsCategory, 0);
 		break;
 
 	case openExecuteSql:
@@ -762,7 +762,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ff003c00" buttonText="Import" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
   <LABEL name="labelName" id="d12a7f71f2f9072c" memberName="m_labelName"
-         virtualName="" explicitFocusOrder="0" pos="256 80 56 23" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="256 80 56 29" edTextCol="ff000000"
          edBkgCol="0" hiliteCol="ff008000" labelText="Name" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
@@ -797,7 +797,7 @@ BEGIN_JUCER_METADATA
               bgColOn="ff008000" buttonText="Export GPX file" connectedEdges="0"
               needsCallback="0" radioGroupId="0"/>
   <LABEL name="labelSqlQuery" id="8c65361201f22786" memberName="m_labelSqlQuery"
-         virtualName="" explicitFocusOrder="0" pos="352 83 264 23" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="352 83 256 23" edTextCol="ff000000"
          edBkgCol="0" labelText="Enter SQL query (beginning with WHERE statement):"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15" bold="0" italic="0" justification="33"/>
@@ -807,12 +807,12 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15" bold="0" italic="0" justification="33"/>
   <LABEL name="statusLabel" id="9a3c32a95fee571e" memberName="m_statusLabel"
-         virtualName="" explicitFocusOrder="0" pos="16 248 600 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="24 248 584 24" edTextCol="ff000000"
          edBkgCol="0" labelText="" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="currentDbLabelTitle" id="648ae203d8899e03" memberName="m_currentDbLabelTitle"
-         virtualName="" explicitFocusOrder="0" pos="16 8 40 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="23 8 40 24" edTextCol="ff000000"
          edBkgCol="0" labelText="DB:" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
