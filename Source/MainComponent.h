@@ -69,6 +69,7 @@ public:
 	void openDatabase(const File& file);
 	void openDbFileChooser();
 	void setCurrentWorkingDb(const File& file);
+    void toggleUseLastDB();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -92,6 +93,7 @@ private:
 	std::vector<String> m_selectedFilesToImport;
 	bool m_selectFolder;
 	String m_lastExportFolder;
+    String m_lastDBFolder;
 	HelpComponent* m_helpComponent;
 
 	void getAllCommands (Array <CommandID>& commands);
@@ -108,13 +110,15 @@ private:
 	{
 		openDb					= 0x2000,
 		openCreateNewDb			= 0x2001,
-		openExecuteSql			= 0x2002,
-		openUpdateLocations 	= 0x2003,
-		showAbout              	= 0x2004,
-		showHelp		       	= 0x2005
+        useLastDatabase         = 0x2002,
+		openExecuteSql			= 0x2003,
+		openUpdateLocations 	= 0x2004,
+		showAbout              	= 0x2005,
+		showHelp		       	= 0x2006
 	};
 
 	bool m_useNativeFileChooser;
+    bool m_useLastDB;
 
     //[/UserVariables]
 

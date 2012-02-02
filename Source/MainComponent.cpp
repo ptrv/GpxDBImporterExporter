@@ -180,8 +180,18 @@ MainComponent::MainComponent (MainWindow* mainWindow)
 	m_lastImportFolder = StoredSettings::getInstance()->getLastImportFolder();
 	m_btSelectFolder->setToggleState(StoredSettings::getInstance()->getSelectFolders(), false);
 	m_lastExportFolder = StoredSettings::getInstance()->getLastExportFolder();
+    m_useLastDB = StoredSettings::getInstance()->useLastDatabase();
+    m_lastDBFolder = StoredSettings::getInstance()->getLastDBFolder();
 
 	m_helpComponent = new HelpComponent();
+    
+    if (m_useLastDB) 
+    {
+        if (StoredSettings::getInstance()->recentFiles.getNumFiles() > 0) 
+        {
+            openDatabase(File(StoredSettings::getInstance()->recentFiles.getFile(0)));
+        }
+    }
     //[/Constructor]
 }
 
@@ -191,7 +201,9 @@ MainComponent::~MainComponent()
 	StoredSettings::getInstance()->setLastImportFolder(m_lastImportFolder);
 	StoredSettings::getInstance()->setSelectFolders(m_btSelectFolder->getToggleState());
 	StoredSettings::getInstance()->setLastExportFolder(m_lastExportFolder);
-
+    StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
+    StoredSettings::getInstance()->setLastDBFolder(m_lastDBFolder);
+    
 	StoredSettings::deleteInstance();
 
     //[/Destructor_pre]
@@ -403,6 +415,7 @@ void MainComponent::setCurrentWorkingDb(const File& file)
 	StoredSettings::getInstance()->recentFiles.addFile(file);
 	m_userSelectComboBox->setEnabled(true);
 	m_btSelectFile->setEnabled(true);
+    m_lastDBFolder = file.getParentDirectory().getFullPathName();
 	DBG_VAL(m_dbPath);
 }
 void MainComponent::openDatabase(const File& file)
@@ -580,9 +593,16 @@ void MainComponent::openDbFileChooser()
 
 	}
 }
+
+void MainComponent::toggleUseLastDB()
+{
+    m_useLastDB = !m_useLastDB;
+    StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
+}
+
 const StringArray MainComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", "Tools", "Help", nullptr };
+	const char* const names[] = { "Database", "Tools", "Help", nullptr };
 
 	return StringArray (names);
 }
@@ -594,10 +614,18 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 
 	if (menuIndex == 0)
 	{
+        menu.addCommandItem(commandManager, openCreateNewDb);
+        menu.addSeparator();
+
 		menu.addCommandItem (commandManager, openDb);
 		PopupMenu recentFiles;
 		StoredSettings::getInstance()->recentFiles.createPopupMenuItems (recentFiles, 100, true, true);
-		menu.addSubMenu ("Recent DBs", recentFiles);
+		menu.addSubMenu ("Recent", recentFiles);
+        
+        menu.addSeparator();
+        menu.addCommandItem(commandManager, useLastDatabase);
+
+
 #if ! JUCE_MAC
         menu.addSeparator();
         menu.addCommandItem (commandManager, StandardApplicationCommandIDs::quit);
@@ -605,7 +633,6 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	}
 	else if (menuIndex == 1)
 	{
-		menu.addCommandItem(commandManager, openCreateNewDb);
 		menu.addCommandItem(commandManager, openExecuteSql);
 		menu.addCommandItem(commandManager, openUpdateLocations);
 	}
@@ -644,6 +671,7 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 	// this returns the set of all commands that this target can perform..
 	const CommandID ids[] = {
 			openDb,
+            useLastDatabase,
 			openCreateNewDb,
 			openExecuteSql,
 			openUpdateLocations,
@@ -664,12 +692,18 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 	switch (commandID)
 	{
 	case openDb:
-		result.setInfo("Open DB", "Open a database", generalCategory, 0);
+		result.setInfo("Open", "Open a database", generalCategory, 0);
 		result.addDefaultKeypress('o', ModifierKeys::commandModifier);
 		break;
 
+    case useLastDatabase:
+        result.setInfo("Start with last", "Use last open database on startup", generalCategory, 0);
+        result.setTicked(m_useLastDB);
+        break;
+            
 	case openCreateNewDb:
-		result.setInfo("Create new DB", "Create an new database", toolsCategory, 0);
+		result.setInfo("New", "Create an new database", generalCategory, 0);
+        result.addDefaultKeypress('n', ModifierKeys::commandModifier);
 		break;
 
 	case openExecuteSql:
@@ -712,6 +746,9 @@ bool MainComponent::perform (const InvocationInfo& info)
 	case openDb:
 		openDbFileChooser();
 		break;
+    case useLastDatabase:
+        toggleUseLastDB();
+        break;
 	case openCreateNewDb:
 		createNewDb();
 		break;

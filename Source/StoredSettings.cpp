@@ -82,3 +82,25 @@ void StoredSettings::setSelectFolders (bool selectFolder)
 {
 	m_props->setValue("selectFolder", selectFolder);
 }
+
+bool StoredSettings::useLastDatabase() const
+{
+    return m_props->getBoolValue("useLastDatabase", false);
+}
+
+void StoredSettings::useLastDatabase(bool useLastDb)
+{
+    m_props->setValue("useLastDatabase", useLastDb);
+}
+
+const String StoredSettings::getLastDBFolder() const 
+{
+	return m_props->getValue("lastDatabaseFolder",
+							 File::getSpecialLocation(File::userDesktopDirectory).getFullPathName());
+}
+
+void StoredSettings::setLastDBFolder (const String& folder)
+{
+	m_props->setValue("lastDatabaseFolder", folder);
+}
+

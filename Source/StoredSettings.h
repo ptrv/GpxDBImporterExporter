@@ -27,7 +27,13 @@ public:
 
 	bool getSelectFolders() const;
     void setSelectFolders (bool selectFoloder);
-	
+    
+    bool useLastDatabase() const;
+    void useLastDatabase(bool useLastDb);
+
+    const String getLastDBFolder() const;
+    void setLastDBFolder (const String& folder);
+
     //==============================================================================
     juce_UseDebuggingNewOperator
 	
