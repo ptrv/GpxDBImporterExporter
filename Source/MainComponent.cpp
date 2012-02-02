@@ -646,7 +646,7 @@ void MainComponent::openDbFileChooser()
 }
 const StringArray MainComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", "Help", nullptr };
+	const char* const names[] = { "File", "Tools", "Help", nullptr };
 
 	return StringArray (names);
 }
@@ -668,6 +668,12 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 #endif
 	}
 	else if (menuIndex == 1)
+	{
+		menu.addCommandItem(commandManager, openCreateNewDb);
+		menu.addCommandItem(commandManager, openExecuteSql);
+		menu.addCommandItem(commandManager, openUpdateLocations);
+	}
+	else if (menuIndex == 2)
 	{
 		menu.addCommandItem (commandManager, showHelp);
 		menu.addSeparator();
@@ -703,6 +709,9 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 	// this returns the set of all commands that this target can perform..
 	const CommandID ids[] = {
 			openDb,
+			openCreateNewDb,
+			openExecuteSql,
+			openUpdateLocations,
 			showAbout,
 			showHelp
 	};
@@ -715,13 +724,33 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
 	const String generalCategory ("General");
-//	const String demosCategory ("Extras");
+	const String toolsCategory ("Tools");
 
 	switch (commandID)
 	{
 	case openDb:
 		result.setInfo("Open db", "Open a database", generalCategory, 0);
 		result.addDefaultKeypress('o', ModifierKeys::commandModifier);
+		break;
+
+	case openCreateNewDb:
+		result.setInfo("Create new db", "Create an new database", toolsCategory, 0);
+		break;
+
+	case openExecuteSql:
+		result.setInfo("Execute SQL", "Execute SQL commands from a file", toolsCategory, 0);
+		if(m_dbPath.isEmpty())
+		{
+			result.setActive(false);
+		}
+		break;
+
+	case openUpdateLocations:
+		result.setInfo("Update locations", "Update locations table", toolsCategory, 0);
+		if(m_dbPath.isEmpty())
+		{
+			result.setActive(false);
+		}
 		break;
 
 	case showAbout:
@@ -747,6 +776,15 @@ bool MainComponent::perform (const InvocationInfo& info)
 	{
 	case openDb:
 		openDbFileChooser();
+		break;
+	case openCreateNewDb:
+		createNewDb();
+		break;
+	case openExecuteSql:
+		executeSqlScript();
+		break;
+	case openUpdateLocations:
+		updateLocations();
 		break;
 	case showAbout:
 		showAboutWindow();

@@ -109,8 +109,11 @@ private:
 	enum CommandIDs
 	{
 		openDb					= 0x2000,
-		showAbout              = 0x2001,
-		showHelp		       = 0x2002
+		openCreateNewDb			= 0x2001,
+		openExecuteSql			= 0x2002,
+		openUpdateLocations 	= 0x2003,
+		showAbout              	= 0x2004,
+		showHelp		       	= 0x2005
 	};
 
 	bool m_useNativeFileChooser;
