@@ -159,6 +159,12 @@ MainComponent::MainComponent (MainWindow* mainWindow)
 	m_btExecuteSqlScript->setEnabled(false);
 	m_btUpdateLocations->setEnabled(false);
 	DBG_SCOPE();
+
+#ifdef JUCE_LINUX
+	m_useNativeFileChooser = false;
+#else
+	m_useNativeFileChooser = true;
+#endif
     //[/UserPreSize]
 
     setSize (630, 300);
@@ -356,7 +362,8 @@ void MainComponent::selectFileToImport()
 
 	if(m_btSelectFolder->getToggleState())
 	{
-		FileChooser importDialog("Please select folder with gpx files...", File(m_lastImportFolder), "*.gpx", true);
+		FileChooser importDialog("Please select folder with gpx files...",
+				File(m_lastImportFolder), "*.gpx", m_useNativeFileChooser);
 		if (importDialog.browseForDirectory())
 		{
 			File importDir (importDialog.getResult());
@@ -381,7 +388,8 @@ void MainComponent::selectFileToImport()
 	}
 	else
 	{
-		FileChooser importDialog("Please select gpx files...", File(m_lastImportFolder), "*.gpx", true);
+		FileChooser importDialog("Please select gpx files...",
+				File(m_lastImportFolder), "*.gpx", m_useNativeFileChooser);
 		if (importDialog.browseForMultipleFilesToOpen())
 		{
 			for(int i = 0; i < importDialog.getResults().size(); ++i)
@@ -428,7 +436,7 @@ void MainComponent::createNewDb()
 {
 	FileChooser saveDialog ("Please select the file to save new database to...",
 			File::getSpecialLocation (File::userHomeDirectory),
-			"*.sqlite;*.db");
+			"*.sqlite;*.db", m_useNativeFileChooser);
 
 	if (saveDialog.browseForFileToSave(true))
 	{
@@ -517,7 +525,7 @@ void MainComponent::executeSqlScript()
 {
 	FileChooser sqlScriptChooser("Please select the sql file to execute...",
 			File::getSpecialLocation (File::userHomeDirectory),
-			"*.sql");
+			"*.sql", m_useNativeFileChooser);
 	if (sqlScriptChooser.browseForFileToOpen())
 	{
 		File sqlFile (sqlScriptChooser.getResult());
@@ -553,7 +561,7 @@ void MainComponent::exportGpxFile()
 {
 	FileChooser gpxExportChooser("",
 			File(m_lastExportFolder),
-			"*.gpx");
+			"*.gpx", m_useNativeFileChooser);
 	if (gpxExportChooser.browseForFileToSave(true))
 	{
 		File gpxExportFile (gpxExportChooser.getResult());
@@ -566,7 +574,8 @@ void MainComponent::exportGpxFile()
 		m_lastExportFolder = gpxExportFile.getParentDirectory().getFullPathName();
 
 		DBG_VAL(m_sqlQuery->getText());
-		FileExporter fileExporter(m_dbPath, gpxExportFile.getFullPathName(), m_sqlQuery->getText());
+		FileExporter fileExporter(m_dbPath, gpxExportFile.getFullPathName(),
+				m_sqlQuery->getText());
 
 		if (fileExporter.runThread())
 		{

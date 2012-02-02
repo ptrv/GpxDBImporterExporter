@@ -110,6 +110,8 @@ private:
 		showHelp		       = 0x2001
 	};
 
+	bool m_useNativeFileChooser;
+
     //[/UserVariables]
 
     //==============================================================================
