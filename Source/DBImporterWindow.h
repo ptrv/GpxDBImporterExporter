@@ -40,7 +40,12 @@ public:
 
 		setContentOwned (contentComp, true);
 
-		setMenuBar (contentComp);
+#ifdef JUCE_MAC
+        setMenuBar(nullptr);
+        MenuBarModel::setMacMainMenu(contentComp);
+#else
+        setMenuBar (contentComp);
+#endif
 
 		contentComp->setApplicationCommandManagerToWatch (&commandManager);
 

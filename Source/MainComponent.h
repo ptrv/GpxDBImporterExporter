@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  1 Feb 2012 11:03:40pm
+  Creation date:  2 Feb 2012 3:04:06am
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -17,10 +17,10 @@
   Copyright 2004-6 by Raw Material Software ltd.
 
   ==============================================================================
- */
+*/
 
-#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_4AC0F2D5__
-#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_4AC0F2D5__
+#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_551E1191__
+#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_551E1191__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "includes.h"
@@ -39,21 +39,21 @@ class DBImporterWindow;
 
     Describe your class and how it works here!
                                                                     //[/Comments]
- */
+*/
 class MainComponent  : public Component,
-						public FilenameComponentListener,
-						public ButtonListener,
-						public MenuBarModel,
-						public ApplicationCommandTarget,
-						public ComboBoxListener
+                       public FilenameComponentListener,
+                       public ButtonListener,
+                       public MenuBarModel,
+                       public ApplicationCommandTarget,
+                       public ComboBoxListener
 {
 public:
-	//==============================================================================
-	MainComponent (DBImporterWindow* mainWindow);
-	~MainComponent();
+    //==============================================================================
+    MainComponent (DBImporterWindow* mainWindow);
+    ~MainComponent();
 
-	//==============================================================================
-	//[UserMethods]     -- You can add your own custom methods in this section.
+    //==============================================================================
+    //[UserMethods]     -- You can add your own custom methods in this section.
 	void filenameComponentChanged (FilenameComponent* fileComponentThatHasChanged);
 	const File getFileToImport();
 	const std::vector<File> getFilesToImport();
@@ -68,19 +68,19 @@ public:
 	void exportGpxFile();
 	void buttonClicked (Button* buttonThatWasClicked);
 	void showHelpWindow();
-	//[/UserMethods]
+    //[/UserMethods]
 
-	void paint (Graphics& g);
-	void resized();
-	void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void paint (Graphics& g);
+    void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
 
 
 
-	//==============================================================================
-	juce_UseDebuggingNewOperator
+    //==============================================================================
+    juce_UseDebuggingNewOperator
 
 private:
-	//[UserVariables]   -- You can add your own custom variables in this section.
+    //[UserVariables]   -- You can add your own custom variables in this section.
 	DBImporterWindow* m_mainWindow;
 	//DBConnector* m_dbCon;
 	String m_statusMessage;
@@ -110,33 +110,31 @@ private:
 		showHelp		       = 0x2001
 	};
 
-	//[/UserVariables]
+    //[/UserVariables]
 
-	//==============================================================================
-	TextButton* createDbButton;
-	FilenameComponent* m_dbChooser;
-	TextButton* m_btFileImport;
-	Label* m_labelName;
-	ComboBox* m_userSelectComboBox;
-	ToggleButton* m_btHashCheck;
-	TextButton* m_btAbout;
-	TextButton* m_btExecuteSqlScript;
-	TextButton* m_btSelectFile;
-	TextButton* m_btUpdateLocations;
-	ToggleButton* m_btSelectFolder;
-	TextEditor* m_sqlQuery;
-	Label* m_labelImport;
-	Label* m_labelExport;
-	TextButton* m_btExport;
-	Label* m_labelSqlQuery;
-	TextButton* m_btHelp;
+    //==============================================================================
+    TextButton* createDbButton;
+    FilenameComponent* m_dbChooser;
+    TextButton* m_btFileImport;
+    Label* m_labelName;
+    ComboBox* m_userSelectComboBox;
+    ToggleButton* m_btHashCheck;
+    TextButton* m_btExecuteSqlScript;
+    TextButton* m_btSelectFile;
+    TextButton* m_btUpdateLocations;
+    ToggleButton* m_btSelectFolder;
+    TextEditor* m_sqlQuery;
+    Label* m_labelImport;
+    Label* m_labelExport;
+    TextButton* m_btExport;
+    Label* m_labelSqlQuery;
 
 
-	//==============================================================================
-	// (prevent copy constructor and operator= being generated..)
-	MainComponent (const MainComponent&);
-	const MainComponent& operator= (const MainComponent&);
+    //==============================================================================
+    // (prevent copy constructor and operator= being generated..)
+    MainComponent (const MainComponent&);
+    const MainComponent& operator= (const MainComponent&);
 };
 
 
-#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_4AC0F2D5__
+#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_551E1191__
