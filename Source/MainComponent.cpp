@@ -542,7 +542,9 @@ void MainComponent::showAboutWindow()
 	String title = ProjectInfo::projectName;
 	title << " Version " << ProjectInfo::versionString;
 	String message = RC_COMPANY_STR;
-	message += ". All rights reserved.\nhttp://petervasil.net";
+	message += ". All rights reserved.\n";
+    message += "http://petervasil.net\n";
+    message += "http://github.com/ptrv/GpxDBImporterExporter";
 	AlertWindow::showMessageBox(AlertWindow::InfoIcon, title, message, "OK");
 }
 
