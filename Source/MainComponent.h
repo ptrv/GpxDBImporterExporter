@@ -68,6 +68,8 @@ public:
 	void exportGpxFile();
 	void buttonClicked (Button* buttonThatWasClicked);
 	void showHelpWindow();
+	void openDatabase(const File& file);
+	void openDbFileChooser();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -106,8 +108,9 @@ private:
 
 	enum CommandIDs
 	{
-		showAbout              = 0x2000,
-		showHelp		       = 0x2001
+		openDb					= 0x2000,
+		showAbout              = 0x2001,
+		showHelp		       = 0x2002
 	};
 
 	bool m_useNativeFileChooser;

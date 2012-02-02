@@ -319,39 +319,40 @@ void MainComponent::filenameComponentChanged (FilenameComponent* fileComponentTh
 {
 	if ( fileComponentThatHasChanged == m_dbChooser )
 	{
-		m_dbPath = fileComponentThatHasChanged->getCurrentFile().getFullPathName();
-		DBG_VAL(m_dbPath);
-		if (fileComponentThatHasChanged->getCurrentFile().existsAsFile())
-		{
-			m_userSelectComboBox->setEnabled(true);
-			m_btSelectFile->setEnabled(true);
-			m_btExecuteSqlScript->setEnabled(true);
-			m_btUpdateLocations->setEnabled(true);
-
-			DBConnector* dbCon = new DBConnector(m_dbPath);
-			dbCon->setupDbConnection();
-
-			std::vector<String> users;
-			m_userSelectComboBox->clear();
-			if (dbCon->getAvailableUsers(users))
-			{
-				for (unsigned int i = 0; i < users.size(); ++i)
-				{
-					m_userSelectComboBox->addItem(users[i], i+1);
-				}
-			}
-			dbCon->closeDbConnection();
-			m_userSelectComboBox->setSelectedId(1);
-			delete dbCon;
-		}
-		else
-		{
-			m_dbPath = String::empty;
-			m_userSelectComboBox->setEnabled(false);
-			m_btSelectFile->setEnabled(false);
-			m_btExecuteSqlScript->setEnabled(false);
-			m_btUpdateLocations->setEnabled(false);
-		}
+		openDatabase(fileComponentThatHasChanged->getCurrentFile());
+//		m_dbPath = fileComponentThatHasChanged->getCurrentFile().getFullPathName();
+//		DBG_VAL(m_dbPath);
+//		if (fileComponentThatHasChanged->getCurrentFile().existsAsFile())
+//		{
+//			m_userSelectComboBox->setEnabled(true);
+//			m_btSelectFile->setEnabled(true);
+//			m_btExecuteSqlScript->setEnabled(true);
+//			m_btUpdateLocations->setEnabled(true);
+//
+//			DBConnector* dbCon = new DBConnector(m_dbPath);
+//			dbCon->setupDbConnection();
+//
+//			std::vector<String> users;
+//			m_userSelectComboBox->clear();
+//			if (dbCon->getAvailableUsers(users))
+//			{
+//				for (unsigned int i = 0; i < users.size(); ++i)
+//				{
+//					m_userSelectComboBox->addItem(users[i], i+1);
+//				}
+//			}
+//			dbCon->closeDbConnection();
+//			m_userSelectComboBox->setSelectedId(1);
+//			delete dbCon;
+//		}
+//		else
+//		{
+//			m_dbPath = String::empty;
+//			m_userSelectComboBox->setEnabled(false);
+//			m_btSelectFile->setEnabled(false);
+//			m_btExecuteSqlScript->setEnabled(false);
+//			m_btUpdateLocations->setEnabled(false);
+//		}
 	}
 }
 void MainComponent::selectFileToImport()
@@ -453,6 +454,43 @@ void MainComponent::createNewDb()
 		dbCon->closeDbConnection();
 		delete dbCon;
 		m_dbChooser->setCurrentFile(File(dbFile.getFullPathName()), true, true);
+	}
+}
+
+void MainComponent::openDatabase(const File& file)
+{
+	m_dbPath = file.getFullPathName();
+	DBG_VAL(m_dbPath);
+	if (file.existsAsFile())
+	{
+		m_userSelectComboBox->setEnabled(true);
+		m_btSelectFile->setEnabled(true);
+		m_btExecuteSqlScript->setEnabled(true);
+		m_btUpdateLocations->setEnabled(true);
+
+		DBConnector* dbCon = new DBConnector(m_dbPath);
+		dbCon->setupDbConnection();
+
+		std::vector<String> users;
+		m_userSelectComboBox->clear();
+		if (dbCon->getAvailableUsers(users))
+		{
+			for (unsigned int i = 0; i < users.size(); ++i)
+			{
+				m_userSelectComboBox->addItem(users[i], i+1);
+			}
+		}
+		dbCon->closeDbConnection();
+		m_userSelectComboBox->setSelectedId(1);
+		delete dbCon;
+	}
+	else
+	{
+		m_dbPath = String::empty;
+		m_userSelectComboBox->setEnabled(false);
+		m_btSelectFile->setEnabled(false);
+		m_btExecuteSqlScript->setEnabled(false);
+		m_btUpdateLocations->setEnabled(false);
 	}
 }
 
@@ -594,25 +632,36 @@ void MainComponent::showHelpWindow()
 	DialogWindow::showModalDialog("Help", m_helpComponent, nullptr, color, true);
 }
 
+void MainComponent::openDbFileChooser()
+{
+	FileChooser dbChooser("Select a database file...", File::nonexistent,
+			"*.sqlite;*.db", m_useNativeFileChooser);
+
+	if (dbChooser.browseForFileToOpen()) {
+		openDatabase(dbChooser.getResult());
+		m_dbChooser->setCurrentFile(File(dbChooser.getResult()), true, true);
+	} else {
+
+	}
+}
 const StringArray MainComponent::getMenuBarNames()
 {
-	const char* const names[] = { "File", nullptr };
+	const char* const names[] = { "File", "Help", nullptr };
 
 	return StringArray (names);
 }
 
 const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuName*/)
 {
-	//        ApplicationCommandManager* commandManager = (m_mainWindow.commandManager);
-
 	ApplicationCommandManager* commandManager = &m_mainWindow->commandManager;
 	PopupMenu menu;
 
 	if (menuIndex == 0)
 	{
-		menu.addCommandItem (commandManager, showAbout);
-		menu.addCommandItem (commandManager, showHelp);
-
+		menu.addCommandItem (commandManager, openDb);
+		PopupMenu recentFiles;
+		StoredSettings::getInstance()->recentFiles.createPopupMenuItems (recentFiles, 100, true, true);
+		menu.addSubMenu ("Open recent db", recentFiles);
 #if ! JUCE_MAC
         menu.addSeparator();
         menu.addCommandItem (commandManager, StandardApplicationCommandIDs::quit);
@@ -620,7 +669,9 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	}
 	else if (menuIndex == 1)
 	{
-
+		menu.addCommandItem (commandManager, showHelp);
+		menu.addSeparator();
+		menu.addCommandItem (commandManager, showAbout);
 	}
 
 	return menu;
@@ -630,6 +681,14 @@ void MainComponent::menuItemSelected (int menuItemID, int /*topLevelMenuIndex*/)
 {
 	// most of our menu items are invoked automatically as commands, but we can handle the
 	// other special cases here..
+	if (menuItemID >= 100 && menuItemID < 200)
+	{
+		// open a file from the "recent files" menu
+		const File file (StoredSettings::getInstance()->recentFiles.getFile (menuItemID - 100));
+
+		openDatabase(file);
+		m_dbChooser->setCurrentFile(file, true, true);
+	}
 }
 
 ApplicationCommandTarget* MainComponent::getNextCommandTarget()
@@ -643,6 +702,7 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 {
 	// this returns the set of all commands that this target can perform..
 	const CommandID ids[] = {
+			openDb,
 			showAbout,
 			showHelp
 	};
@@ -655,10 +715,15 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo& result)
 {
 	const String generalCategory ("General");
-	//	const String demosCategory ("Demos");
+//	const String demosCategory ("Extras");
 
 	switch (commandID)
 	{
+	case openDb:
+		result.setInfo("Open db", "Open a database", generalCategory, 0);
+		result.addDefaultKeypress('o', ModifierKeys::commandModifier);
+		break;
+
 	case showAbout:
 		result.setInfo ("About", "Shows about dialog", generalCategory, 0);
 		result.addDefaultKeypress ('i', ModifierKeys::commandModifier);
@@ -666,7 +731,7 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 
 	case showHelp:
 		result.setInfo ("Help", "Shows the help winodow", generalCategory, 0);
-		result.addDefaultKeypress ('h', ModifierKeys::commandModifier);
+		result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
 		break;
 
 
@@ -680,6 +745,9 @@ bool MainComponent::perform (const InvocationInfo& info)
 {
 	switch (info.commandID)
 	{
+	case openDb:
+		openDbFileChooser();
+		break;
 	case showAbout:
 		showAboutWindow();
 		break;
