@@ -83,7 +83,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	MainWindow* m_mainWindow;
+    
+    MainWindow* m_mainWindow;
 	//DBConnector* m_dbCon;
 	String m_lastImportedFile;
 	String m_dbPath;

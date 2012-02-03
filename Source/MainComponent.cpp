@@ -289,6 +289,10 @@ void MainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+//==============================================================================
+// GUI
+//==============================================================================
+
 void MainComponent::buttonClicked (Button* buttonThatWasClicked)
 {
 	if (buttonThatWasClicked == m_btFileImport)
@@ -319,12 +323,52 @@ void MainComponent::buttonClicked (Button* buttonThatWasClicked)
 	}
 }
 
+void MainComponent::setStatusMessage(const String& statusMessage)
+{
+	m_statusLabel->setText(statusMessage, true);
+}
+void MainComponent::showAboutWindow()
+{
+	String title = ProjectInfo::projectName;
+	title << " Version " << ProjectInfo::versionString;
+	String message = RC_COMPANY_STR;
+	message += ". All rights reserved.\n";
+    message += "http://petervasil.net\n";
+    message += "http://github.com/ptrv/GpxDBImporterExporter";
+	AlertWindow::showMessageBox(AlertWindow::InfoIcon, title, message, "OK");
+}
+
+void MainComponent::showHelpWindow()
+{
+	Colour color(0,0,0);
+	DialogWindow::showModalDialog("Help", m_helpComponent, nullptr, color, true);
+}
+
+void MainComponent::openDbFileChooser()
+{
+	FileChooser dbChooser("Select a database file...", File::nonexistent,
+                          "*.sqlite;*.db", m_useNativeFileChooser);
+    
+	if (dbChooser.browseForFileToOpen()) {
+		openDatabase(dbChooser.getResult());
+	} else {
+        
+	}
+}
+
+void MainComponent::toggleUseLastDB()
+{
+    m_useLastDB = !m_useLastDB;
+    StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
+}
+
+//==============================================================================
+// Import
+//==============================================================================
+
 void MainComponent::selectFileToImport()
 {
 	m_selectedFilesToImport.clear();
-
-
-
 	if(m_btSelectFolder->getToggleState())
 	{
 		FileChooser importDialog("Please select folder with gpx files...",
@@ -379,6 +423,7 @@ void MainComponent::selectFileToImport()
 		}
 	}
 }
+
 const File MainComponent::getFileToImport()
 {
 	File fileToImport(m_selectedFileToImport);
@@ -395,6 +440,94 @@ const Array<File> MainComponent::getFilesToImport()
 	}
 	return filesToImport;
 }
+
+void MainComponent::importFile()
+{
+    
+	if(m_userSelectComboBox->getSelectedId() == 0)
+	{
+		String tmpUsertext = m_userSelectComboBox->getText();
+		// small hack for empty combobox
+		if(tmpUsertext[0] == '\0')
+		{
+			String title = "Error";
+			String message = "You have to enter a name!";
+			AlertWindow::showMessageBox(AlertWindow::WarningIcon, title, message, "OK");
+			return;
+		}
+		DBConnector* dbCon = new DBConnector(m_dbPath);
+		dbCon->setupDbConnection();
+		int userid = -1;
+		dbCon->getLastId(userid, "user");
+		if(userid == -1){
+			++userid;
+		}
+		++userid;
+		if (!dbCon->checkIfUserExists(tmpUsertext))
+		{
+			dbCon->insertUser(userid, tmpUsertext);
+			int numItems = m_userSelectComboBox->getNumItems();
+			m_userSelectComboBox->addItem(tmpUsertext, numItems+1);
+			m_userSelectComboBox->setSelectedId(numItems+1, true);
+		}
+		dbCon->closeDbConnection();
+		delete dbCon;
+	}
+    
+	FileImporter fileImporter(m_dbPath,
+                              getFilesToImport(),
+                              m_userSelectComboBox->getSelectedId(),
+                              m_btHashCheck->getToggleState(),
+                              false);
+	DBG_VAL(m_btHashCheck->getToggleState());
+	if (fileImporter.runThread())
+	{
+		setStatusMessage(fileImporter.getStatus());
+	}
+	else
+	{
+		setStatusMessage("Import canceled!");
+	}
+}
+
+//==============================================================================
+// Export
+//==============================================================================
+
+void MainComponent::exportGpxFile()
+{
+	FileChooser gpxExportChooser("",
+                                 File(m_lastExportFolder),
+                                 "*.gpx", m_useNativeFileChooser);
+	if (gpxExportChooser.browseForFileToSave(true))
+	{
+		File gpxExportFile (gpxExportChooser.getResult());
+        
+		if (gpxExportFile.existsAsFile())
+		{
+			gpxExportFile.deleteFile();
+		}
+        
+		m_lastExportFolder = gpxExportFile.getParentDirectory().getFullPathName();
+        
+		DBG_VAL(m_sqlQuery->getText());
+		FileExporter fileExporter(m_dbPath, gpxExportFile.getFullPathName(),
+                                  m_sqlQuery->getText());
+        
+		if (fileExporter.runThread())
+		{
+			setStatusMessage(fileExporter.getStatus());
+		}
+		else
+		{
+		}
+	}
+}
+
+//==============================================================================
+// Database 
+//==============================================================================
+
 void MainComponent::createNewDb()
 {
 	FileChooser saveDialog ("Please select the file to save new database to...",
@@ -430,6 +563,7 @@ void MainComponent::setCurrentWorkingDb(const File& file)
     m_lastDBFolder = file.getParentDirectory().getFullPathName();
 	DBG_VAL(m_dbPath);
 }
+
 void MainComponent::openDatabase(const File& file)
 {
 	if (file.existsAsFile())
@@ -458,55 +592,6 @@ void MainComponent::openDatabase(const File& file)
 		m_currentDbLabel->setText("no working database", true);
 		m_userSelectComboBox->setEnabled(false);
 		m_btSelectFile->setEnabled(false);
-	}
-}
-
-void MainComponent::importFile()
-{
-
-	if(m_userSelectComboBox->getSelectedId() == 0)
-	{
-		String tmpUsertext = m_userSelectComboBox->getText();
-		// small hack for empty combobox
-		if(tmpUsertext[0] == '\0')
-		{
-			String title = "Error";
-			String message = "You have to enter a name!";
-			AlertWindow::showMessageBox(AlertWindow::WarningIcon, title, message, "OK");
-			return;
-		}
-		DBConnector* dbCon = new DBConnector(m_dbPath);
-		dbCon->setupDbConnection();
-		int userid = -1;
-		dbCon->getLastId(userid, "user");
-		if(userid == -1){
-			++userid;
-		}
-		++userid;
-		if (!dbCon->checkIfUserExists(tmpUsertext))
-		{
-			dbCon->insertUser(userid, tmpUsertext);
-			int numItems = m_userSelectComboBox->getNumItems();
-			m_userSelectComboBox->addItem(tmpUsertext, numItems+1);
-			m_userSelectComboBox->setSelectedId(numItems+1, true);
-		}
-		dbCon->closeDbConnection();
-		delete dbCon;
-	}
-
-	FileImporter fileImporter(m_dbPath,
-			getFilesToImport(),
-			m_userSelectComboBox->getSelectedId(),
-			m_btHashCheck->getToggleState(),
-			false);
-	DBG_VAL(m_btHashCheck->getToggleState());
-	if (fileImporter.runThread())
-	{
-		setStatusMessage(fileImporter.getStatus());
-	}
-	else
-	{
-		setStatusMessage("Import canceled!");
 	}
 }
 
@@ -545,74 +630,10 @@ void MainComponent::executeSqlScript()
 		}
 	}
 }
-void MainComponent::setStatusMessage(const String& statusMessage)
-{
-	m_statusLabel->setText(statusMessage, true);
-}
-void MainComponent::showAboutWindow()
-{
-	String title = ProjectInfo::projectName;
-	title << " Version " << ProjectInfo::versionString;
-	String message = RC_COMPANY_STR;
-	message += ". All rights reserved.\n";
-    message += "http://petervasil.net\n";
-    message += "http://github.com/ptrv/GpxDBImporterExporter";
-	AlertWindow::showMessageBox(AlertWindow::InfoIcon, title, message, "OK");
-}
 
-void MainComponent::exportGpxFile()
-{
-	FileChooser gpxExportChooser("",
-			File(m_lastExportFolder),
-			"*.gpx", m_useNativeFileChooser);
-	if (gpxExportChooser.browseForFileToSave(true))
-	{
-		File gpxExportFile (gpxExportChooser.getResult());
-
-		if (gpxExportFile.existsAsFile())
-		{
-			gpxExportFile.deleteFile();
-		}
-
-		m_lastExportFolder = gpxExportFile.getParentDirectory().getFullPathName();
-
-		DBG_VAL(m_sqlQuery->getText());
-		FileExporter fileExporter(m_dbPath, gpxExportFile.getFullPathName(),
-				m_sqlQuery->getText());
-
-		if (fileExporter.runThread())
-		{
-			setStatusMessage(fileExporter.getStatus());
-		}
-		else
-		{
-		}
-	}
-}
-
-void MainComponent::showHelpWindow()
-{
-	Colour color(0,0,0);
-	DialogWindow::showModalDialog("Help", m_helpComponent, nullptr, color, true);
-}
-
-void MainComponent::openDbFileChooser()
-{
-	FileChooser dbChooser("Select a database file...", File::nonexistent,
-			"*.sqlite;*.db", m_useNativeFileChooser);
-
-	if (dbChooser.browseForFileToOpen()) {
-		openDatabase(dbChooser.getResult());
-	} else {
-
-	}
-}
-
-void MainComponent::toggleUseLastDB()
-{
-    m_useLastDB = !m_useLastDB;
-    StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
-}
+//==============================================================================
+// Menubar
+//==============================================================================
 
 const StringArray MainComponent::getMenuBarNames()
 {
@@ -787,6 +808,8 @@ bool MainComponent::perform (const InvocationInfo& info)
 
 	return true;
 }
+
+//==============================================================================
 
 //[/MiscUserCode]
 
