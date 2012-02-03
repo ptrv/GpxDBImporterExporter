@@ -54,7 +54,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	const File getFileToImport();
-	const std::vector<File> getFilesToImport();
+	const Array<File> getFilesToImport();
 	void createNewDb();
 	void selectFileToImport();
 	void importFile();
@@ -90,7 +90,7 @@ private:
 	int m_selectedUser;
 	String m_lastImportFolder;
 	String m_selectedFileToImport;
-	std::vector<String> m_selectedFilesToImport;
+	Array<String> m_selectedFilesToImport;
 	bool m_selectFolder;
 	String m_lastExportFolder;
     String m_lastDBFolder;

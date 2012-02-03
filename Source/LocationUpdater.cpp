@@ -30,8 +30,8 @@ void LocationUpdater::run()
     DBConnector* dbCon = new DBConnector(m_dbPath);
     dbCon->setupDbConnection();
 
-    std::vector<GpsData> gpsDataVec;
-    std::vector<GpsLocation> gpsLocationVec;
+    Array<GpsData> gpsDataVec;
+    Array<GpsLocation> gpsLocationVec;
 
     dbCon->getGpsDataUnknownLocation(gpsDataVec);
     dbCon->getGpsLocations(gpsLocationVec);

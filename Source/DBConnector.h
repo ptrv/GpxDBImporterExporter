@@ -6,7 +6,6 @@
 #define _DBCONNECTOR_
 
 #include "includes.h"
-#include <vector>
 #include "Data.h"
 
 #include "sqlite3x.hpp"
@@ -27,18 +26,18 @@ public:
 	bool checkIfGpsDataExsist(const String& timedate, int user);
 	bool checkIfUserExists(const String& username);
 	bool insertUser(int userid, const String& username);
-	bool getAvailableUsers(std::vector<String>& users);
+	bool getAvailableUsers(Array<String>& users);
 	bool getLastId(int& lastRowId, const String& tableName);
 	bool getLastSegmentId(int& segId, int user);
 	bool createNewDb();
 	bool getNameId(int& nameId, const String& name);
-	bool getGpsLocations(std::vector<GpsLocation>& locations);
+	bool getGpsLocations(Array<GpsLocation>& locations);
 	bool insertFileName(int& fileid, const String& filename, const String& md5);
-	void insertGpsData(GpsData& gpsData);
+	void insertGpsData(const GpsData& gpsData);
 	void beginTransaction();
 	bool commitTransaction();
 	bool executeSqlScript(const File& sqlFile);
-	bool getGpsDataUnknownLocation(std::vector<GpsData>& gpsDataVec);
+	bool getGpsDataUnknownLocation(Array<GpsData>& gpsDataVec);
 	bool updateGpsDataLocation(int gpsdataid, int location);
 	bool getGpsDataForExport(Array<GpsData>& gpsDatas, GpsMinMax& gpsMinMax, const String& query);
 

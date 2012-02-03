@@ -23,7 +23,7 @@ public:
 //	return squareDistance < squareRadius;
     }
 
-    static int findLocation(const std::vector<GpsLocation>& locations, const double lon, const double lat)
+    static int findLocation(const Array<GpsLocation>& locations, const double lon, const double lat)
     {
         int locationId = 0;
         for (unsigned int i = 0; i < locations.size(); ++i)

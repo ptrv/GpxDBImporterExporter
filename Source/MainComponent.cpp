@@ -329,7 +329,7 @@ void MainComponent::selectFileToImport()
 				if(importFile.existsAsFile() && importFile.getFileExtension() == ".gpx")
 				{
 					m_selectedFileToImport = importFile.getFullPathName();
-					m_selectedFilesToImport.push_back(m_selectedFileToImport);
+					m_selectedFilesToImport.add(m_selectedFileToImport);
 					m_lastImportedFile = importFile.getFileName();
 				}
 			}
@@ -351,7 +351,7 @@ void MainComponent::selectFileToImport()
 				if (importFile.existsAsFile() && importFile.getFileExtension() == ".gpx")
 				{
 					m_selectedFileToImport = importFile.getFullPathName();
-					m_selectedFilesToImport.push_back(m_selectedFileToImport);
+					m_selectedFilesToImport.add(m_selectedFileToImport);
 					m_lastImportedFile = importFile.getFileName();
 					m_lastImportFolder = importFile.getParentDirectory().getFullPathName();
 					setStatusMessage("Selected file: " + m_lastImportedFile);
@@ -373,13 +373,13 @@ const File MainComponent::getFileToImport()
 	return fileToImport;
 }
 
-const std::vector<File> MainComponent::getFilesToImport()
+const Array<File> MainComponent::getFilesToImport()
 {
-	std::vector<File> filesToImport;
+	Array<File> filesToImport;
 	for(unsigned int i = 0; i < m_selectedFilesToImport.size(); ++i)
 	{
 		File fileToImport(m_selectedFilesToImport[i]);
-		filesToImport.push_back(fileToImport);
+		filesToImport.add(fileToImport);
 	}
 	return filesToImport;
 }
@@ -427,7 +427,7 @@ void MainComponent::openDatabase(const File& file)
 		DBConnector* dbCon = new DBConnector(m_dbPath);
 		dbCon->setupDbConnection();
 
-		std::vector<String> users;
+		Array<String> users;
 		m_userSelectComboBox->clear();
 		if (dbCon->getAvailableUsers(users))
 		{

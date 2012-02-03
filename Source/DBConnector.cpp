@@ -99,7 +99,7 @@ const String GpsData::getInsertList() const
 {
 	bool result = false;
 	String createTableFile(BinaryData::create_tables_sql);
-	std::vector<String> tmpSqlQueries;
+	Array<String> tmpSqlQueries;
 	String tmpStr = "";
 
 	for (int i = 0; i < createTableFile.length(); ++i) {
@@ -109,7 +109,7 @@ const String GpsData::getInsertList() const
 		}
 		else
 		{
-			tmpSqlQueries.push_back(tmpStr);
+			tmpSqlQueries.add(tmpStr);
 			tmpStr = "";
 		}
 	}
@@ -134,7 +134,7 @@ bool DBConnector::insertLocationData()
 {
     bool result = false;
     String locationsStr((CharPointer_UTF8(BinaryData::locations_csv)));
-    std::vector<String> tmpLocations;
+    Array<String> tmpLocations;
     String tmpStr = "";
     for (int i = 0; i < locationsStr.length(); ++i) {
         if (locationsStr[i] != '\n')
@@ -143,7 +143,7 @@ bool DBConnector::insertLocationData()
         }
         else
         {
-            tmpLocations.push_back(tmpStr);
+            tmpLocations.add(tmpStr);
             tmpStr = "";
         }
     }
@@ -207,7 +207,7 @@ bool DBConnector::insertUser(int userid, const String& username)
     return result;
 
 }
-bool DBConnector::getAvailableUsers(std::vector<String>& users)
+bool DBConnector::getAvailableUsers(Array<String>& users)
 {
 	bool result = false;
 	users.clear();
@@ -218,7 +218,7 @@ bool DBConnector::getAvailableUsers(std::vector<String>& users)
 			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
-				users.push_back(String((reader.getstring(0)).c_str()));
+				users.add(String((reader.getstring(0)).c_str()));
 			}
 		}
 		trans.commit();
@@ -284,7 +284,7 @@ bool DBConnector::getNameId(int& nameId, const String& name)
 	return result;
 }
 
-bool DBConnector::getGpsLocations(std::vector<GpsLocation>& locations)
+bool DBConnector::getGpsLocations(Array<GpsLocation>& locations)
 {
 	bool result = false;
 	try{
@@ -304,7 +304,7 @@ bool DBConnector::getGpsLocations(std::vector<GpsLocation>& locations)
 				location.longitude = reader.getdouble(3);
 				location.latitude = reader.getdouble(4);
 				location.radius = reader.getdouble(5);
-				locations.push_back(location);
+				locations.add(location);
 //				DBG_VAL(location.index);
 //				DBG_VAL(location.city);
 //				DBG_VAL(location.country);
@@ -397,7 +397,7 @@ bool DBConnector::checkIfGpsDataExsist(const String& timedate, int user)
 	CATCHDBERRORS
 	return result;
 }
-void DBConnector::insertGpsData(GpsData& gpsData)
+void DBConnector::insertGpsData(const GpsData& gpsData)
 {
 	String query;
 	try{
@@ -435,7 +435,7 @@ bool DBConnector::executeSqlScript(const File& sqlFile)
 	bool result = false;
 	String sqlScriptString = sqlFile.loadFileAsString();
 	//DBG_VAL(sqlScriptString);
-	std::vector<String> tmpSqlQueries;
+	Array<String> tmpSqlQueries;
 	String tmpStr = "";
 
 	for (int i = 0; i < sqlScriptString.length(); ++i) {
@@ -445,7 +445,7 @@ bool DBConnector::executeSqlScript(const File& sqlFile)
 		}
 		else
 		{
-			tmpSqlQueries.push_back(tmpStr);
+			tmpSqlQueries.add(tmpStr);
 			tmpStr = "";
 		}
 	}
@@ -472,7 +472,7 @@ bool DBConnector::executeSqlScript(const File& sqlFile)
 	return result;
 }
 
-bool DBConnector::getGpsDataUnknownLocation(std::vector<GpsData>& gpsDataVec)
+bool DBConnector::getGpsDataUnknownLocation(Array<GpsData>& gpsDataVec)
 {
     bool result = false;
     gpsDataVec.clear();
@@ -497,7 +497,7 @@ bool DBConnector::getGpsDataUnknownLocation(std::vector<GpsData>& gpsDataVec)
                                    reader.getint(7),
                                    reader.getint(8));
 
-                gpsDataVec.push_back(gpsData);
+                gpsDataVec.add(gpsData);
             }
         }
         trans.commit();

@@ -18,7 +18,7 @@ m_checkDuplicate(checkDuplicate)
 {
 }
 
-FileImporter::FileImporter(const String& dbPath, const std::vector<File>& xmlFiles, int user, bool checkMd5, bool checkDuplicate)
+FileImporter::FileImporter(const String& dbPath, const Array<File>& xmlFiles, int user, bool checkMd5, bool checkDuplicate)
 :
 		ThreadWithProgressWindow("GPX Import", true, false),
 		m_xmlFile(String::empty),
@@ -57,7 +57,7 @@ void FileImporter::run()
 		setProgress(0.0);
 		if (xmlRootElem != NULL)
 		{
-			std::vector<GpsData> gpsDataVec;
+			Array<GpsData> gpsDataVec;
 			DBConnector* dbCon = new DBConnector(m_dbPath);
 			dbCon->setupDbConnection();
 			int lastFileId = -1;
@@ -106,7 +106,7 @@ void FileImporter::run()
 				// -----------------------------------------------------------------------------
 				// get locations from database
 				// -----------------------------------------------------------------------------
-				std::vector<GpsLocation> locations;
+				Array<GpsLocation> locations;
 				dbCon->getGpsLocations(locations);
 				// -----------------------------------------------------------------------------
 				forEachXmlChildElementWithTagName(*xmlRootElem, child, "trk")
@@ -137,7 +137,7 @@ void FileImporter::run()
 									lastFileId,
 									(loc == 0 ? 1: loc));
 
-							gpsDataVec.push_back(gpsData);
+							gpsDataVec.add(gpsData);
 							++countGpxPoints;
 							setProgress(progressNum * numTrk);
 						}

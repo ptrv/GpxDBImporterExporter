@@ -12,7 +12,7 @@ class FileImporter : public ThreadWithProgressWindow
 {
 public:
 	FileImporter(const String& dbPath, const File& xmlFile, int user, bool checkMd5, bool checkDuplicate);
-	FileImporter(const String& dbPath, const std::vector<File>& xmlFiles, int user, bool checkMd5, bool checkDuplicate);
+	FileImporter(const String& dbPath, const Array<File>& xmlFiles, int user, bool checkMd5, bool checkDuplicate);
 	~FileImporter();
 
 	void run();
@@ -20,14 +20,8 @@ public:
 	const String& getStatus() const;
 private:
 
-//	int findLocation(const std::vector<GpsLocation>& locations, const double lon, const double lat);
-//	bool isInCircle(const double centreX,
-//					const double centreY,
-//					const double radius,
-//					const double lon,
-//					const double lat);
 	File m_xmlFile;
-	std::vector<File> m_xmlFiles;
+	Array<File> m_xmlFiles;
 	String m_dbPath;
 	String m_status;
 	int m_user;
