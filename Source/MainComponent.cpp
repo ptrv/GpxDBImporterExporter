@@ -192,6 +192,10 @@ MainComponent::MainComponent (MainWindow* mainWindow)
             openDatabase(File(StoredSettings::getInstance()->recentFiles.getFile(0)));
         }
     }
+    if(m_btSelectFolder->getToggleState())
+    {
+        m_btSelectFile->setButtonText("Select folder with files");
+    }
     //[/Constructor]
 }
 
@@ -300,7 +304,15 @@ void MainComponent::buttonClicked (Button* buttonThatWasClicked)
 	}
 	else if (buttonThatWasClicked == m_btSelectFolder)
 	{
-	}
+        if(m_btSelectFolder->getToggleState())
+        {
+            m_btSelectFile->setButtonText("Select folder with files");
+        }
+        else
+        {
+            m_btSelectFile->setButtonText("Select file");
+        }
+    }
 	else if (buttonThatWasClicked == m_btExport)
 	{
 		exportGpxFile();
