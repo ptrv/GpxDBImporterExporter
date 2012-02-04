@@ -24,11 +24,13 @@ public:
 	MainWindow()
 	: DocumentWindow (ProjectInfo::projectName,
 			Colours::lightgrey,
-			DocumentWindow::allButtons,
+			DocumentWindow::minimiseButton | DocumentWindow::closeButton,
 			true)
 	{
 		// Create an instance of our main content component, and add it
 		// to our window.
+
+		setResizable(false, false);
 
 		MainComponent* contentComp = new MainComponent(this);
 
