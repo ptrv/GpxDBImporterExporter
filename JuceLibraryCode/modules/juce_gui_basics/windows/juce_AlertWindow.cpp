@@ -23,9 +23,7 @@
   ==============================================================================
 */
 
-BEGIN_JUCE_NAMESPACE
 
-//==============================================================================
 class AlertWindowTextEditor  : public TextEditor
 {
 public:
@@ -114,14 +112,6 @@ void AlertWindow::setMessage (const String& message)
     if (text != newMessage)
     {
         text = newMessage;
-
-        font = getLookAndFeel().getAlertWindowMessageFont();
-
-        AttributedString newText;
-        newText.append (getName() + "\n\n", Font (font.getHeight() * 1.1f, Font::bold));
-        newText.append (text, font);
-        attributedText = newText;
-
         updateLayout (true);
         repaint();
     }
@@ -191,7 +181,7 @@ void AlertWindow::addTextEditor (const String& name,
     allComps.add (tc);
 
     tc->setColour (TextEditor::outlineColourId, findColour (ComboBox::outlineColourId));
-    tc->setFont (font);
+    tc->setFont (getLookAndFeel().getAlertWindowMessageFont());
     tc->setText (initialContents);
     tc->setCaretPosition (initialContents.length());
     addAndMakeVisible (tc);
@@ -288,7 +278,7 @@ private:
 
 void AlertWindow::addTextBlock (const String& textBlock)
 {
-    AlertTextComp* const c = new AlertTextComp (textBlock, font);
+    AlertTextComp* const c = new AlertTextComp (textBlock, getLookAndFeel().getAlertWindowMessageFont());
     textBlocks.add (c);
     allComps.add (c);
 
@@ -391,6 +381,8 @@ void AlertWindow::updateLayout (const bool onlyIncreaseSize)
     const int titleH = 24;
     const int iconWidth = 80;
 
+    const Font font (getLookAndFeel().getAlertWindowMessageFont());
+
     const int wid = jmax (font.getStringWidth (text),
                           font.getStringWidth (getName()));
 
@@ -399,6 +391,12 @@ void AlertWindow::updateLayout (const bool onlyIncreaseSize)
     const int edgeGap = 10;
     const int labelHeight = 18;
     int iconSpace = 0;
+
+    AttributedString attributedText;
+    attributedText.append (getName(), Font (font.getHeight() * 1.1f, Font::bold));
+
+    if (text.isNotEmpty())
+        attributedText.append ("\n\n" + text, font);
 
     attributedText.setColour (findColour (textColourId));
 
@@ -760,5 +758,3 @@ bool AlertWindow::showNativeDialogBox (const String& title,
     }
 }
 #endif
-
-END_JUCE_NAMESPACE

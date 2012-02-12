@@ -23,9 +23,6 @@
   ==============================================================================
 */
 
-BEGIN_JUCE_NAMESPACE
-
-//==============================================================================
 #define CHECK_MESSAGE_MANAGER_IS_LOCKED     jassert (MessageManager::getInstance()->currentThreadHasLockedMessageManager());
 
 Component* Component::currentlyFocusedComponent = nullptr;
@@ -191,10 +188,8 @@ private:
 
 
 //==============================================================================
-class Component::ComponentHelpers
+struct Component::ComponentHelpers
 {
-public:
-    //==============================================================================
    #if JUCE_MODAL_LOOPS_PERMITTED
     static void* runModalLoopCallback (void* userData)
     {
@@ -3041,6 +3036,3 @@ bool Component::BailOutChecker::shouldBailOut() const noexcept
 {
     return safePointer == nullptr;
 }
-
-
-END_JUCE_NAMESPACE

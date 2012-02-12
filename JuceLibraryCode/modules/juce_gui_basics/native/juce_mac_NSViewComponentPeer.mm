@@ -30,8 +30,7 @@ extern AppFocusChangeCallback appFocusChangeCallback;
 typedef bool (*CheckEventBlockedByModalComps) (NSEvent*);
 extern CheckEventBlockedByModalComps isEventBlockedByModalComps;
 
-//==============================================================================
-END_JUCE_NAMESPACE
+} // (juce namespace)
 
 @interface NSEvent (JuceDeviceDelta)
  - (CGFloat) deviceDeltaX;
@@ -141,7 +140,8 @@ END_JUCE_NAMESPACE
 - (void) zoom: (id) sender;
 @end
 
-BEGIN_JUCE_NAMESPACE
+namespace juce
+{
 
 //==============================================================================
 class NSViewComponentPeer  : public ComponentPeer
@@ -419,9 +419,9 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NSViewComponentPeer);
 };
 
-//==============================================================================
-END_JUCE_NAMESPACE
+} // (juce namespace)
 
+//==============================================================================
 @implementation JuceNSView
 
 - (JuceNSView*) initWithOwner: (NSViewComponentPeer*) owner_
@@ -851,7 +851,8 @@ END_JUCE_NAMESPACE
 
 //==============================================================================
 //==============================================================================
-BEGIN_JUCE_NAMESPACE
+namespace juce
+{
 
 //==============================================================================
 ModifierKeys NSViewComponentPeer::currentModifiers;
@@ -981,6 +982,11 @@ NSViewComponentPeer::NSViewComponentPeer (Component* const component_,
 
         [window setExcludedFromWindowsMenu: (windowStyleFlags & windowIsTemporary) != 0];
         [window setIgnoresMouseEvents: (windowStyleFlags & windowIgnoresMouseClicks) != 0];
+
+       #if defined (MAC_OS_X_VERSION_10_7) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7)
+        if ((windowStyleFlags & (windowHasMaximiseButton | windowHasTitleBar)) == (windowHasMaximiseButton | windowHasTitleBar))
+            [window setCollectionBehavior: NSWindowCollectionBehaviorFullScreenPrimary];
+       #endif
     }
 
     const float alpha = component->getAlpha();
@@ -1117,7 +1123,11 @@ Point<int> NSViewComponentPeer::globalToLocal (const Point<int>& screenPosition)
 
 NSRect NSViewComponentPeer::constrainRect (NSRect r)
 {
-    if (constrainer != nullptr)
+    if (constrainer != nullptr
+        #if defined (MAC_OS_X_VERSION_10_7) && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_7)
+         && ([window styleMask] & NSFullScreenWindowMask) == 0
+        #endif
+        )
     {
         NSRect current = [window frame];
         current.origin.y = [[[NSScreen screens] objectAtIndex: 0] frame].size.height - current.origin.y - current.size.height;

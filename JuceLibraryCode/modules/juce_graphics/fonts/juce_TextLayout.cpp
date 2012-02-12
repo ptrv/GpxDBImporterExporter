@@ -23,8 +23,6 @@
   ==============================================================================
 */
 
-BEGIN_JUCE_NAMESPACE
-
 TextLayout::Glyph::Glyph (const int glyphCode_, const Point<float>& anchor_, float width_) noexcept
     : glyphCode (glyphCode_), anchor (anchor_), width (width_)
 {
@@ -575,7 +573,8 @@ void TextLayout::createLayoutWithBalancedLineLengths (const AttributedString& te
 
         const float line1 = lines.getUnchecked (lines.size() - 1)->getLineBoundsX().getLength();
         const float line2 = lines.getUnchecked (lines.size() - 2)->getLineBoundsX().getLength();
-        const float prop = jmax (line1, line2) / jmin (line1, line2);
+        const float shortestLine = jmin (line1, line2);
+        const float prop = (shortestLine > 0) ? jmax (line1, line2) / shortestLine : 1.0f;
 
         if (prop > 0.9f)
             return;
@@ -616,5 +615,3 @@ void TextLayout::recalculateWidth()
         width = range.getLength();
     }
 }
-
-END_JUCE_NAMESPACE
