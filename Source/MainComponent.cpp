@@ -334,7 +334,9 @@ void MainComponent::showAboutWindow()
 	String message = RC_COMPANY_STR;
 	message += ". All rights reserved.\n";
     message += "http://petervasil.net\n";
-    message += "http://github.com/ptrv/GpxDBImporterExporter";
+    message += "http://github.com/ptrv/GpxDBImporterExporter\n\n";
+    message += "JUCE v" + String(JUCE_MAJOR_VERSION) + "." +
+    		String(JUCE_MINOR_VERSION) + "." + String(JUCE_BUILDNUMBER);
 	AlertWindow::showMessageBox(AlertWindow::InfoIcon, title, message, "OK");
 }
 
