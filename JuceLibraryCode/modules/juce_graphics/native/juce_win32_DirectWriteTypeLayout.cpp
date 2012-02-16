@@ -72,15 +72,14 @@ namespace DirectWriteTypeLayout
                 lastOriginY = baselineOriginY;
                 ++currentLine;
 
-                if (currentLine == layout->getNumLines())
-                    return S_OK;
-
-                // The x value is only correct when dealing with LTR text
-                layout->getLine (currentLine).lineOrigin = Point<float> (baselineOriginX, baselineOriginY);
-            }
-
-            if (currentLine < 0)
-                return S_OK;
+				if (currentLine >= layout->getNumLines())
+				{
+					jassert (currentLine == layout->getNumLines());
+					TextLayout::Line* const newLine = new TextLayout::Line();
+					layout->addLine (newLine);
+					newLine->lineOrigin = Point<float> (baselineOriginX, baselineOriginY); // The x value is only correct when dealing with LTR text
+				}
+			}
 
             TextLayout::Line& glyphLine = layout->getLine (currentLine);
 
@@ -153,8 +152,8 @@ namespace DirectWriteTypeLayout
             HRESULT hr = fontCollection->GetFontFromFontFace (glyphRun->fontFace, dwFont.resetAndGetPointerAddress());
             jassert (dwFont != nullptr);
 
-            if (dwFont->GetWeight() == DWRITE_FONT_WEIGHT_BOLD) styleFlags &= Font::bold;
-            if (dwFont->GetStyle() == DWRITE_FONT_STYLE_ITALIC) styleFlags &= Font::italic;
+            if (dwFont->GetWeight() == DWRITE_FONT_WEIGHT_BOLD) styleFlags |= Font::bold;
+            if (dwFont->GetStyle() == DWRITE_FONT_STYLE_ITALIC) styleFlags |= Font::italic;
 
             ComSmartPtr<IDWriteFontFamily> dwFontFamily;
             hr = dwFont->GetFontFamily (dwFontFamily.resetAndGetPointerAddress());
@@ -248,12 +247,17 @@ namespace DirectWriteTypeLayout
         range.startPosition = attr.range.getStart();
         range.length = jmin (attr.range.getLength(), textLen - attr.range.getStart());
 
-        if (attr.getFont() != nullptr)
-        {
-            textLayout->SetFontFamilyName (attr.getFont()->getTypefaceName().toWideCharPointer(), range);
+        const Font* const font = attr.getFont();
 
-            const float fontHeightToEmSizeFactor = getFontHeightToEmSizeFactor (*attr.getFont(), *fontCollection);
-            textLayout->SetFontSize (attr.getFont()->getHeight() * fontHeightToEmSizeFactor, range);
+        if (font != nullptr)
+        {
+            textLayout->SetFontFamilyName (font->getTypefaceName().toWideCharPointer(), range);
+
+            const float fontHeightToEmSizeFactor = getFontHeightToEmSizeFactor (*font, *fontCollection);
+            textLayout->SetFontSize (font->getHeight() * fontHeightToEmSizeFactor, range);
+
+            if (font->isBold())     textLayout->SetFontWeight (DWRITE_FONT_WEIGHT_BOLD, range);
+            if (font->isItalic())   textLayout->SetFontStyle (DWRITE_FONT_STYLE_ITALIC, range);
         }
 
         if (attr.getColour() != nullptr)
@@ -315,23 +319,21 @@ namespace DirectWriteTypeLayout
 
         layout.ensureStorageAllocated (actualLineCount);
 
+		{
+	        ComSmartPtr<CustomDirectWriteTextRenderer> textRenderer (new CustomDirectWriteTextRenderer (fontCollection));
+	        hr = dwTextLayout->Draw (&layout, textRenderer, 0, 0);
+		}
+
         HeapBlock <DWRITE_LINE_METRICS> dwLineMetrics (actualLineCount);
         hr = dwTextLayout->GetLineMetrics (dwLineMetrics, actualLineCount, &actualLineCount);
         int lastLocation = 0;
+		const int numLines = jmin ((int) actualLineCount, layout.getNumLines());
 
-        for (UINT32 i = 0; i < actualLineCount; ++i)
+        for (int i = 0; i < numLines; ++i)
         {
-            const Range<int> lineStringRange (lastLocation, (int) lastLocation + dwLineMetrics[i].length);
             lastLocation = dwLineMetrics[i].length;
-
-            TextLayout::Line* glyphLine = new TextLayout::Line();
-            layout.addLine (glyphLine);
-            glyphLine->stringRange = lineStringRange;
+            layout.getLine(i).stringRange = Range<int> (lastLocation, (int) lastLocation + dwLineMetrics[i].length);
         }
-
-        ComSmartPtr<CustomDirectWriteTextRenderer> textRenderer (new CustomDirectWriteTextRenderer (fontCollection));
-
-        hr = dwTextLayout->Draw (&layout, textRenderer, 0, 0);
     }
 }
 #endif
