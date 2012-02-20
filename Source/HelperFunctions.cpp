@@ -8,47 +8,42 @@
 #include "includes.h"
 #include "HelperFunctions.h"
 
-
-extern double distance(double lat1, double lon1, double lat2, double lon2, char unit);
-
+extern double distance(double lat1, double lon1, double lat2, double lon2,
+		char unit);
 
 bool Helper::isInCircle(const double centreX, const double centreY,
-		const double radius, const double lon, const double lat)
-{
-    double squareDistance = pow((centreX - lon), 2) + pow((centreY - lat), 2);
-    return squareDistance < pow(radius, 2);
+		const double radius, const double lon, const double lat) {
+	double squareDistance = pow((centreX - lon), 2) + pow((centreY - lat), 2);
+	return squareDistance < pow(radius, 2);
 }
 
 bool Helper::isInCircle2(const double centreX, const double centreY,
-		const double radius, const double lon, const double lat, const char unit)
-{
+		const double radius, const double lon, const double lat,
+		const char unit) {
 	double dist = distance(centreY, centreX, lat, lon, unit);
 	return dist < radius;
 }
 
-int Helper::findLocation(const Array<GpsLocation>& locations,
-		const double lon, const double lat)
-{
-    int locationId = 0;
-    for (unsigned int i = 0; i < locations.size(); ++i)
-    {
-        if(isInCircle(locations[i].longitude, locations[i].latitude, locations[i].radius, lon, lat))
-        {
-            locationId = locations[i].index;
-            break;
-        }
-    }
-    return locationId;
+int Helper::findLocation(const Array<GpsLocation>& locations, const double lon,
+		const double lat) {
+	int locationId = 0;
+	for (unsigned int i = 0; i < locations.size(); ++i) {
+		if (isInCircle(locations[i].longitude, locations[i].latitude,
+				locations[i].radius, lon, lat)) {
+			locationId = locations[i].index;
+			break;
+		}
+	}
+	return locationId;
 }
 
-
 //==============================================================================
-#if UNIT_TESTING
+#if UNIT_TESTS
 
-class HelperFunctionsTester  : public UnitTest
+class HelperFunctionsTester : public UnitTest
 {
 public:
-	HelperFunctionsTester()  : UnitTest ("HelperFunctions") {}
+	HelperFunctionsTester() : UnitTest ("HelperFunctions") {}
 
 	void runTest()
 	{
@@ -59,9 +54,7 @@ public:
 		double cY2 = 52.535;
 		double cX2 = 13.407;
 
-
 		beginTest ("isInCircle");
-
 
 		expect(Helper::isInCircle(cX, cY, 0.09,cX2, cY2));
 

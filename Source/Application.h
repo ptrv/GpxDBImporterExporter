@@ -55,7 +55,7 @@ public:
 	//==============================================================================
 	void initialise (const String& commandLine)
 	{
-#if UNIT_TESTING
+#if UNIT_TESTS
 		if(commandLine.contains("--test"))
 		{
 			UnitTestRunner runner;
