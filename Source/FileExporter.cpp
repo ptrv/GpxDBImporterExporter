@@ -135,7 +135,14 @@ void FileExporter::generateGpxFile(Array< Array<GpsData> >& segAndPoint, GpsMinM
 		XmlElement* trkName = new XmlElement("name");
 		String nameElem = "ACTIVE LOG #";
 		nameElem += i;
-		trkName->addTextElement(nameElem);
+		if(segAndPoint[i].size() > 0)
+		{
+			trkName->addTextElement(segAndPoint[i][0].getTime());
+		}
+		else
+		{
+			trkName->addTextElement(nameElem);
+		}
 		XmlElement* trkNum = new XmlElement("number");
 		trkNum->addTextElement(String(i));
 		XmlElement* trkSeg = new XmlElement("trkseg");
