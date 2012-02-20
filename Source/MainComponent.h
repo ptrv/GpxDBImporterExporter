@@ -70,6 +70,7 @@ public:
 	void openDbFileChooser();
 	void setCurrentWorkingDb(const File& file);
     void toggleUseLastDB();
+    void toggleRadiusDegree();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -112,14 +113,16 @@ private:
 		openDb					= 0x2000,
 		openCreateNewDb			= 0x2001,
         useLastDatabase         = 0x2002,
-		openExecuteSql			= 0x2003,
-		openUpdateLocations 	= 0x2004,
-		showAbout              	= 0x2005,
-		showHelp		       	= 0x2006
+        useOldStyleRadius		= 0x2003,
+		openExecuteSql			= 0x2004,
+		openUpdateLocations 	= 0x2005,
+		showAbout              	= 0x2006,
+		showHelp		       	= 0x2007
 	};
 
 	bool m_useNativeFileChooser;
     bool m_useLastDB;
+    bool m_useRadiusDegree;
 
     //[/UserVariables]
 

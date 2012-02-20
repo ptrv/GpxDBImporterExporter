@@ -182,6 +182,7 @@ MainComponent::MainComponent (MainWindow* mainWindow)
 	m_lastExportFolder = StoredSettings::getInstance()->getLastExportFolder();
     m_useLastDB = StoredSettings::getInstance()->useLastDatabase();
     m_lastDBFolder = StoredSettings::getInstance()->getLastDBFolder();
+    m_useRadiusDegree = StoredSettings::getInstance()->useRadiusDegree();
 
 	m_helpComponent = new HelpComponent();
     
@@ -207,6 +208,7 @@ MainComponent::~MainComponent()
 	StoredSettings::getInstance()->setLastExportFolder(m_lastExportFolder);
     StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
     StoredSettings::getInstance()->setLastDBFolder(m_lastDBFolder);
+    StoredSettings::getInstance()->useLastDatabase(m_useRadiusDegree);
     
 	StoredSettings::deleteInstance();
 
@@ -362,6 +364,12 @@ void MainComponent::toggleUseLastDB()
 {
     m_useLastDB = !m_useLastDB;
     StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
+}
+
+void MainComponent::toggleRadiusDegree()
+{
+    m_useRadiusDegree = !m_useRadiusDegree;
+    StoredSettings::getInstance()->useRadiusDegree(m_useRadiusDegree);
 }
 
 //==============================================================================
@@ -662,6 +670,9 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
         menu.addSeparator();
         menu.addCommandItem(commandManager, useLastDatabase);
 
+        menu.addSeparator();
+        menu.addCommandItem(commandManager, useOldStyleRadius);
+
 
 #if ! JUCE_MAC
         menu.addSeparator();
@@ -709,6 +720,7 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 	const CommandID ids[] = {
 			openDb,
             useLastDatabase,
+            useOldStyleRadius,
 			openCreateNewDb,
 			openExecuteSql,
 			openUpdateLocations,
@@ -738,6 +750,11 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
         result.setTicked(m_useLastDB);
         break;
             
+    case useOldStyleRadius:
+        result.setInfo("Use degree radius", "Use old style radius in degrees.", generalCategory, 0);
+        result.setTicked(m_useRadiusDegree);
+        break;
+
 	case openCreateNewDb:
 		result.setInfo("New", "Create an new database", generalCategory, 0);
         result.addDefaultKeypress('n', ModifierKeys::commandModifier);
@@ -785,6 +802,9 @@ bool MainComponent::perform (const InvocationInfo& info)
 		break;
     case useLastDatabase:
         toggleUseLastDB();
+        break;
+    case useOldStyleRadius:
+        toggleRadiusDegree();
         break;
 	case openCreateNewDb:
 		createNewDb();

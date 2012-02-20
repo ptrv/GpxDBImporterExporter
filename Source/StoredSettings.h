@@ -34,6 +34,9 @@ public:
     const String getLastDBFolder() const;
     void setLastDBFolder (const String& folder);
 
+    bool useRadiusDegree() const;
+    void useRadiusDegree(bool useRadiusDegree);
+
     //==============================================================================
     juce_UseDebuggingNewOperator
 	
