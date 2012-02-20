@@ -13,8 +13,4 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
-//#include "SqlScripts.h"
-
-#include "PVLogger.h"
-
 #endif // _DBIMPORTERHEADERS_

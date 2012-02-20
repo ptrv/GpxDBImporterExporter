@@ -18,7 +18,7 @@ using namespace sqlite3x;
 	catch(exception &ex)																\
 	{																					\
 		String msg = "Database error: ";												\
-		LOG_ERROR((msg << ex.what()).toUTF8().getAddress());							\
+		DBG((msg << ex.what()).toUTF8().getAddress());							\
 	}																					\
 // --------------------------------------------------------------------------------------
 #define CATCHDBERRORSQ(query)															\
@@ -26,7 +26,7 @@ using namespace sqlite3x;
 	{																					\
 		String msg = "Database error: ";												\
 		msg << ex.what() << " \nquery: " << query;										\
-		LOG_ERROR(msg.toUTF8().getAddress());											\
+		DBG(msg.toUTF8().getAddress());											\
 	}																					\
 // --------------------------------------------------------------------------------------
 

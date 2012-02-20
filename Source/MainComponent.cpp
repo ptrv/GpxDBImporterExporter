@@ -481,7 +481,7 @@ void MainComponent::importFile()
                               m_userSelectComboBox->getSelectedId(),
                               m_btHashCheck->getToggleState(),
                               false);
-	DBG_VAL(m_btHashCheck->getToggleState());
+	DBG(m_btHashCheck->getToggleState());
 	if (fileImporter.runThread())
 	{
 		setStatusMessage(fileImporter.getStatus());
@@ -512,7 +512,7 @@ void MainComponent::exportGpxFile()
         
 		m_lastExportFolder = gpxExportFile.getParentDirectory().getFullPathName();
         
-		DBG_VAL(m_sqlQuery->getText());
+		DBG(m_sqlQuery->getText());
 		FileExporter fileExporter(m_dbPath, gpxExportFile.getFullPathName(),
                                   m_sqlQuery->getText());
         
@@ -563,7 +563,7 @@ void MainComponent::setCurrentWorkingDb(const File& file)
 	m_userSelectComboBox->setEnabled(true);
 	m_btSelectFile->setEnabled(true);
     m_lastDBFolder = file.getParentDirectory().getFullPathName();
-	DBG_VAL(m_dbPath);
+	DBG(m_dbPath);
 }
 
 void MainComponent::openDatabase(const File& file)

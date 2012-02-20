@@ -67,9 +67,9 @@ void FileImporter::run()
 			}
 			++lastFileId;
 			MD5 md5hash(m_xmlFiles[fileNum]);
-			DBG_VAL(md5hash.toHexString());
+			DBG(md5hash.toHexString());
 			bool res;
-			DBG_VAL(m_checkMd5);
+			DBG(m_checkMd5);
 			if (m_checkMd5)
 			{
 				res = dbCon->checkIfFileExists(md5hash.toHexString());
@@ -102,7 +102,7 @@ void FileImporter::run()
 				dbCon->getLastId(gpsdataid, "gpsdata");
 				int segment = 0;
 				dbCon->getLastSegmentId(segment, m_user);
-				DBG_VAL(segment);
+				DBG(segment);
 				// -----------------------------------------------------------------------------
 				// get locations from database
 				// -----------------------------------------------------------------------------

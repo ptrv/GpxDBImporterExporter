@@ -544,7 +544,6 @@
 		BEE2C75EEE0CC8118F746B93 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DropShadowEffect.h"; path = "../../JuceLibraryCode/modules/juce_graphics/effects/juce_DropShadowEffect.h"; sourceTree = "SOURCE_ROOT"; };
 		BEF5908CAAEAD0746E568EA6 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_Path.cpp"; path = "../../JuceLibraryCode/modules/juce_graphics/geometry/juce_Path.cpp"; sourceTree = "SOURCE_ROOT"; };
 		BF02A9D6B3300C98EE4FD374 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_StringPool.cpp"; path = "../../JuceLibraryCode/modules/juce_core/text/juce_StringPool.cpp"; sourceTree = "SOURCE_ROOT"; };
-		BFCE21130447CF201395BFBB = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PVLogger.h; path = ../../Source/PVLogger.h; sourceTree = "SOURCE_ROOT"; };
 		C017FBC78991BFBA496BB8DC = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = "SOURCE_ROOT"; };
 		C0892DAFDB318BEE642C39BE = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_MenuBarModel.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/menus/juce_MenuBarModel.cpp"; sourceTree = "SOURCE_ROOT"; };
 		C1CD289469F9D4442CB75008 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_TopLevelWindow.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_TopLevelWindow.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -722,7 +721,6 @@
 				69A05D5AEAA294150CB9D53B,
 				EC8D3E3DA762BF53B5CB7373,
 				E278E6C3DA531C2EDC5E49AB,
-				BFCE21130447CF201395BFBB,
 				E821F64663774233560796EB,
 				4F3229F99E3955343F80C8A9 ); name = Source; sourceTree = "<group>"; };
 		3CA964B8379E5A9664B479DD = { isa = PBXGroup; children = (

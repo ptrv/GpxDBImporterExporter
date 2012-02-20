@@ -176,7 +176,6 @@
         <File RelativePath="..\..\Source\Main.cpp"/>
         <File RelativePath="..\..\Source\MainComponent.cpp"/>
         <File RelativePath="..\..\Source\MainComponent.h"/>
-        <File RelativePath="..\..\Source\PVLogger.h"/>
         <File RelativePath="..\..\Source\StoredSettings.cpp"/>
         <File RelativePath="..\..\Source\StoredSettings.h"/>
       </Filter>
