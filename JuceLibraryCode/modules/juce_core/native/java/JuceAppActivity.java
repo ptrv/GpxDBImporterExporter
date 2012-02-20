@@ -28,18 +28,11 @@ package com.juce;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.content.Context;
-import android.view.ViewGroup;
-import android.graphics.Paint;
-import android.graphics.Canvas;
-import android.graphics.Path;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.RectF;
-import android.graphics.Rect;
+import android.os.Bundle;
+import android.view.*;
+import android.graphics.*;
 import android.text.ClipboardManager;
-import com.juce.ComponentPeerView;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,17 +91,10 @@ public final class JuceAppActivity   extends Activity
         messageHandler.post (new MessageCallback (value));
     }
 
-    final class MessageCallback  implements Runnable
+    private final class MessageCallback  implements Runnable
     {
-        public MessageCallback (long value_)
-        {
-            value = value_;
-        }
-
-        public final void run()
-        {
-            deliverMessage (value);
-        }
+        public MessageCallback (long value_)        { value = value_; }
+        public final void run()                     { deliverMessage (value); }
 
         private long value;
     }
@@ -251,7 +237,91 @@ public final class JuceAppActivity   extends Activity
     public native void alertDismissed (long callback, int id);
 
     //==============================================================================
-    public final int[] renderGlyph (char glyph, Paint paint, Matrix matrix, Rect bounds)
+    public class ComponentPeerView extends View
+                                   implements View.OnFocusChangeListener
+    {
+        public ComponentPeerView (Context context, boolean opaque_)
+        {
+            super (context);
+            opaque = opaque_;
+
+            setFocusable (true);
+            setFocusableInTouchMode (true);
+            setOnFocusChangeListener (this);
+            requestFocus();
+        }
+
+        //==============================================================================
+        private native void handlePaint (Canvas canvas);
+
+        @Override
+        public void draw (Canvas canvas)
+        {
+            handlePaint (canvas);
+        }
+
+        @Override
+        public boolean isOpaque()
+        {
+            return opaque;
+        }
+
+        private boolean opaque;
+
+        //==============================================================================
+        private native void handleMouseDown (float x, float y, long time);
+        private native void handleMouseDrag (float x, float y, long time);
+        private native void handleMouseUp (float x, float y, long time);
+
+        @Override
+        public boolean onTouchEvent (MotionEvent event)
+        {
+            switch (event.getAction())
+            {
+                case MotionEvent.ACTION_DOWN:  handleMouseDown (event.getX(), event.getY(), event.getEventTime()); return true;
+                case MotionEvent.ACTION_MOVE:  handleMouseDrag (event.getX(), event.getY(), event.getEventTime()); return true;
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:    handleMouseUp (event.getX(), event.getY(), event.getEventTime()); return true;
+                default: break;
+            }
+
+            return false;
+        }
+
+        //==============================================================================
+        @Override
+        protected void onSizeChanged (int w, int h, int oldw, int oldh)
+        {
+            viewSizeChanged();
+        }
+
+        @Override
+        protected void onLayout (boolean changed, int left, int top, int right, int bottom) {}
+
+        private native void viewSizeChanged();
+
+        @Override
+        public void onFocusChange (View v, boolean hasFocus)
+        {
+            if (v == this)
+                focusChanged (hasFocus);
+        }
+
+        private native void focusChanged (boolean hasFocus);
+
+        public void setViewName (String newName)    {}
+
+        public boolean isVisible()                  { return getVisibility() == VISIBLE; }
+        public void setVisible (boolean b)          { setVisibility (b ? VISIBLE : INVISIBLE); }
+
+        public boolean containsPoint (int x, int y)
+        {
+            return true; //xxx needs to check overlapping views
+        }
+    }
+
+    //==============================================================================
+    public final int[] renderGlyph (char glyph, Paint paint, android.graphics.Matrix matrix, Rect bounds)
     {
         Path p = new Path();
         paint.getTextPath (String.valueOf (glyph), 0, 1, 0.0f, 0.0f, p);
