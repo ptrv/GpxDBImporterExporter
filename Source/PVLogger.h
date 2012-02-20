@@ -29,6 +29,8 @@
 # define UInt32 uint32
 #endif
 
+#include "includes.h"
+
 #define PVL_DVAL			"DBG_VAL"
 #define PVL_DSCOPE			"DBG_SCOPE"
 #define PVL_VAL				"LOG_VAL"

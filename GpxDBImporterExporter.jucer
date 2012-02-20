@@ -15,7 +15,7 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       headerPath="../../libs/sqlite3x"/>
+                       headerPath="../../libs/sqlite3x" defines="UNIT_TESTS=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
                        osxSDK="10.5 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"
                        headerPath="../../libs/sqlite3x"/>
@@ -25,16 +25,18 @@
             rtasFolder="c:\SDKs\PT_80_SDK" juceFolder="../Common/juce" libraryType="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
-                       headerPath="../../libs/sqlite3x" winWarningLevel="4" generateManifest="1"/>
+                       headerPath="../../libs/sqlite3x" winWarningLevel="4" generateManifest="1"
+                       defines="UNIT_TESTS=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
                        headerPath="../../libs/sqlite3x" winWarningLevel="4" generateManifest="1"/>
       </CONFIGURATIONS>
     </VS2008>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/SDKs/vstsdk2.4" juceFolder="../Common/juce"
-                extraLinkerFlags="" extraCompilerFlags="">
+                extraLinkerFlags="" extraCompilerFlags="" extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
-                       headerPath="../../libs/sqlite3x" libraryPath="/usr/X11R6/lib/"/>
+                       headerPath="../../libs/sqlite3x" libraryPath="/usr/X11R6/lib/"
+                       defines="UNIT_TESTS=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
                        headerPath="../../libs/sqlite3x" libraryPath="/usr/X11R6/lib/"/>
       </CONFIGURATIONS>
@@ -52,6 +54,9 @@
             file="data/sql/insert_predefineddata.sql"/>
     </GROUP>
     <GROUP id="f7dPoBd5m" name="Source">
+      <FILE id="mcUSVv" name="HelperFunctions.cpp" compile="1" resource="0"
+            file="Source/HelperFunctions.cpp"/>
+      <FILE id="GWe5Wk" name="Distance.cpp" compile="1" resource="0" file="Source/Distance.cpp"/>
       <FILE id="INnt7c" name="Application.h" compile="0" resource="0" file="Source/Application.h"/>
       <FILE id="g4E8zZ" name="MainWindow.h" compile="0" resource="0" file="Source/MainWindow.h"/>
       <FILE id="KzQyXs" name="HelpComponent.cpp" compile="1" resource="0"

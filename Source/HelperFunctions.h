@@ -14,32 +14,21 @@ public:
                     const double centreY,
                     const double radius,
                     const double lon,
-                    const double lat)
-    {
-        double squareDistance = pow((centreX - lon), 2) + pow((centreY - lat), 2);
-        return squareDistance < pow(radius, 2);
-//	double squareDistance = (centreX - lon)*(centreX - lon) + (centreY - lat)*(centreY - lat);
-//	double squareRadius = radius*radius;
-//	return squareDistance < squareRadius;
-    }
+                    const double lat);
 
-    static int findLocation(const Array<GpsLocation>& locations, const double lon, const double lat)
-    {
-        int locationId = 0;
-        for (unsigned int i = 0; i < locations.size(); ++i)
-        {
-            if(isInCircle(locations[i].longitude, locations[i].latitude, locations[i].radius, lon, lat))
-            {
-                locationId = locations[i].index;
-                break;
-            }
-        }
-        return locationId;
-    }
+    static bool isInCircle2(const double centreX,
+                        const double centreY,
+                        const double radius,
+                        const double lon,
+                        const double lat,
+                        const char unit='K');
+
+    static int findLocation(const Array<GpsLocation>& locations,
+    		const double lon, const double lat);
 
 private:
-    Helper();
-    ~Helper();
+    Helper(){}
+    ~Helper(){}
 };
 
 #endif // _HELPERFUNCTIONS_H_

@@ -33,7 +33,7 @@
             BufferSecurityCheck=""
             DebugInformationFormat="4"
             AdditionalIncludeDirectories="..\..\JuceLibraryCode;../../libs/sqlite3x"
-            PreprocessorDefinitions="WIN32;_WINDOWS;DEBUG;_DEBUG;JUCER_VS2008_78A5006=1"
+            PreprocessorDefinitions="WIN32;_WINDOWS;DEBUG;_DEBUG;UNIT_TESTS=1;JUCER_VS2008_78A5006=1"
             RuntimeLibrary="1"
             RuntimeTypeInfo="true"
             UsePrecompiledHeader="0"
@@ -156,6 +156,8 @@
         <File RelativePath="..\..\data\sql\insert_predefineddata.sql"/>
       </Filter>
       <Filter Name="Source">
+        <File RelativePath="..\..\Source\HelperFunctions.cpp"/>
+        <File RelativePath="..\..\Source\Distance.cpp"/>
         <File RelativePath="..\..\Source\Application.h"/>
         <File RelativePath="..\..\Source\MainWindow.h"/>
         <File RelativePath="..\..\Source\HelpComponent.cpp"/>

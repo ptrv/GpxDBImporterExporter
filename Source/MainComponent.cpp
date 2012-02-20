@@ -162,7 +162,7 @@ MainComponent::MainComponent (MainWindow* mainWindow)
 	m_userSelectComboBox->setEnabled(false);
 	m_btSelectFile->setEnabled(false);
 	m_btFileImport->setEnabled(false);
-	DBG_SCOPE();
+//	DBG_SCOPE();
 
 #ifdef JUCE_LINUX
 	m_useNativeFileChooser = false;

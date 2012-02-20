@@ -55,6 +55,16 @@ public:
 	//==============================================================================
 	void initialise (const String& commandLine)
 	{
+#if UNIT_TESTING
+		if(commandLine.contains("--test"))
+		{
+			UnitTestRunner runner;
+			runner.setAssertOnFailure(false);
+			runner.runAllTests();
+
+			JUCEApplication::getInstance()->quit();
+		}
+#endif
 		// just create the main window...
 		dbImporterWindow = new MainWindow();
 
