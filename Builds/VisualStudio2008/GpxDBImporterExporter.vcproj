@@ -3364,6 +3364,7 @@
       <File RelativePath="..\..\JuceLibraryCode\modules\juce_gui_basics\juce_gui_basics.cpp"/>
       <File RelativePath="..\..\JuceLibraryCode\modules\juce_gui_extra\juce_gui_extra.cpp"/>
       <File RelativePath="..\..\JuceLibraryCode\JuceHeader.h"/>
+      <File RelativePath="resources.rc"/>
     </Filter>
   </Files>
   <Globals/>
