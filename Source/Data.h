@@ -59,8 +59,14 @@ struct GpsLocation
 	double longitude;
 	double latitude;
 	double radius;
+	double radiusKm;
+	double radiusMiles;
+	double radiusNautical;
+	Point<double> topLeft;
+	Point<double> bottomRight;
 	String city;
 	String country;
+	Array<Point<double> > polygon;
 };
 
 struct GpsMinMax

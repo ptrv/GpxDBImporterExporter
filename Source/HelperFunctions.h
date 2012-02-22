@@ -10,6 +10,9 @@
 class Helper
 {
 public:
+    static int findLocation(const Array<GpsLocation>& locations,
+    		const double lon, const double lat, const char boundings='U');
+
     static bool isInCircle(const double centreX,
                     const double centreY,
                     const double radius,
@@ -23,9 +26,12 @@ public:
                         const double lat,
                         const char unit='K');
 
-    static int findLocation(const Array<GpsLocation>& locations,
-    		const double lon, const double lat);
+    static bool isInBoundingBox(const double lon, const double lat,
+    		const double lonTopLeft, const double latTopLeft,
+    		const double lonBootonRight, const double latBootonRight);
 
+    static bool isInPolygon(const double lon, const double lat,
+    		const Array<Point<double> >& points);
 private:
     Helper(){}
     ~Helper(){}
