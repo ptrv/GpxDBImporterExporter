@@ -5,10 +5,10 @@
  *      Author: peter
  */
 #include "includes.h"
-#include "GMLParser.h"
+#include "GMLUtils.h"
 #include "HelperFunctions.h"
 
-Array<GpsLocation> GMLParser::parse(const String& gmlFile)
+Array<GpsLocation> GMLUtils::parse(const String& gmlFile)
 {
 	Array<GpsLocation> gpsLocVec;
 	XmlDocument xmlDoc(gmlFile);
@@ -60,7 +60,7 @@ public:
 	void runTest()
 	{
 	    String gmlFile = CharPointer_UTF8(BinaryData::citydefs_gml);
-	    Array<GpsLocation> locs = GMLParser::parse(gmlFile);
+	    Array<GpsLocation> locs = GMLUtils::parse(gmlFile);
 
 	    beginTest("parse");
 

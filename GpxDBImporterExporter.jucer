@@ -55,8 +55,8 @@
             file="data/sql/insert_predefineddata.sql"/>
     </GROUP>
     <GROUP id="f7dPoBd5m" name="Source">
-      <FILE id="ac6iiP" name="GMLParser.cpp" compile="1" resource="0" file="Source/GMLParser.cpp"/>
-      <FILE id="gOhy3R" name="GMLParser.h" compile="0" resource="0" file="Source/GMLParser.h"/>
+      <FILE id="ac6iiP" name="GMLUtils.cpp" compile="1" resource="0" file="Source/GMLUtils.cpp"/>
+      <FILE id="gOhy3R" name="GMLUtils.h" compile="0" resource="0" file="Source/GMLUtils.h"/>
       <FILE id="mcUSVv" name="HelperFunctions.cpp" compile="1" resource="0"
             file="Source/HelperFunctions.cpp"/>
       <FILE id="GWe5Wk" name="Distance.cpp" compile="1" resource="0" file="Source/Distance.cpp"/>

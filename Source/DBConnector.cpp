@@ -4,7 +4,7 @@
 
 #include "DBConnector.h"
 #include "includes.h"
-#include "GMLParser.h"
+#include "GMLUtils.h"
 #include "HelperFunctions.h"
 
 #include <string>
@@ -176,7 +176,7 @@ bool DBConnector::insertLocationDataGML()
     bool result = false;
 
     String gmlFile = CharPointer_UTF8(BinaryData::citydefs_gml);
-    Array<GpsLocation> locs = GMLParser::parse(gmlFile);
+    Array<GpsLocation> locs = GMLUtils::parse(gmlFile);
 
     Array<String> tmpLocations;
     String tmpStr = "";
