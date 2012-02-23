@@ -127,8 +127,8 @@ void Helper::getPointsFromPolygonString(const String& polyStr,
 	 {
 	    Point<double> point;
 	    int commaIndex = tokens[i].indexOfChar(',');
-	    double py = tokens[i].substring(0,commaIndex).getDoubleValue();
-	    double px = tokens[i].substring(commaIndex+1).getDoubleValue();
+	    double px = tokens[i].substring(0,commaIndex).getDoubleValue();
+	    double py = tokens[i].substring(commaIndex+1).getDoubleValue();
 	    point.addXY(px, py);
 	    points.add(point);
 	 }
@@ -168,13 +168,13 @@ public:
 		beginTest ("isInPolygon");
 
 	    Array<Point<double> > points;
-	    points.add(Point<double>(52.37048433239088,13.101559835297458));
-	    points.add(Point<double>(52.657235386769905,13.101559835297458));
-	    points.add(Point<double>(52.657235386769905,13.700291048547339));
-	    points.add(Point<double>(52.37048433239088,13.700291048547339));
-	    points.add(Point<double>(52.37048433239088,13.101559835297458));
+	    points.add(Point<double>(13.101559835297458,52.37048433239088));
+	    points.add(Point<double>(13.101559835297458,52.657235386769905));
+	    points.add(Point<double>(13.700291048547339,52.657235386769905));
+	    points.add(Point<double>(13.700291048547339,52.37048433239088));
+	    points.add(Point<double>(13.101559835297458,52.37048433239088));
 
-	    expect(Helper::isInPolygon(cY2, cX2, points));
+	    expect(Helper::isInPolygon(cX2, cY2, points));
 
 
 	}

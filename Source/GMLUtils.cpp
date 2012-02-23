@@ -67,11 +67,11 @@ public:
 	    String testCity = "Berlin";
 	    String testCountry = "DE";
 	    Array<Point<double> > points;
-	    points.add(Point<double>(52.37048433239088,13.101559835297458));
-	    points.add(Point<double>(52.657235386769905,13.101559835297458));
-	    points.add(Point<double>(52.657235386769905,13.700291048547339));
-	    points.add(Point<double>(52.37048433239088,13.700291048547339));
-	    points.add(Point<double>(52.37048433239088,13.101559835297458));
+	    points.add(Point<double>(13.101559835297458,52.37048433239088));
+	    points.add(Point<double>(13.101559835297458,52.657235386769905));
+	    points.add(Point<double>(13.700291048547339,52.657235386769905));
+	    points.add(Point<double>(13.700291048547339,52.37048433239088));
+	    points.add(Point<double>(13.101559835297458,52.37048433239088));
 	    expectEquals(locs[0].city, testCity);
 	    expectEquals(locs[0].country, testCountry);
 	    expectEquals(locs[0].polygon[0].x, points[0].x);
