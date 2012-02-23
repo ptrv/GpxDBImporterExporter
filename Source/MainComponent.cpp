@@ -372,6 +372,18 @@ void MainComponent::toggleRadiusDegree()
     StoredSettings::getInstance()->useRadiusDegree(m_useRadiusDegree);
 }
 
+const char MainComponent::getBoundingsType()
+{
+	if(m_useRadiusDegree)
+	{
+		return 'U';
+	}
+	else
+	{
+		return 'P';
+	}
+}
+
 //==============================================================================
 // Import
 //==============================================================================
@@ -488,7 +500,7 @@ void MainComponent::importFile()
                               getFilesToImport(),
                               m_userSelectComboBox->getSelectedId(),
                               m_btHashCheck->getToggleState(),
-                              false);
+                              false, getBoundingsType());
 	DBG(m_btHashCheck->getToggleState());
 	if (fileImporter.runThread())
 	{
@@ -557,8 +569,10 @@ void MainComponent::createNewDb()
 		DBConnector* dbCon = new DBConnector(dbFile.getFullPathName());
 		dbCon->setupDbConnection();
 		dbCon->createNewDb();
-		dbCon->insertLocationData();
-//		dbCon->insertLocationDataGML();
+		if(m_useRadiusDegree)
+			dbCon->insertLocationData();
+		else
+			dbCon->insertLocationDataGML();
 		dbCon->closeDbConnection();
 		delete dbCon;
 	}
@@ -608,7 +622,7 @@ void MainComponent::openDatabase(const File& file)
 
 void MainComponent::updateLocations()
 {
-	LocationUpdater locationUpdater(m_dbPath);
+	LocationUpdater locationUpdater(m_dbPath,getBoundingsType());
 
 	if (locationUpdater.runThread())
 	{

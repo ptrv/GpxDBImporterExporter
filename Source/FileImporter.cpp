@@ -7,18 +7,21 @@
 #include "DBConnector.h"
 #include "HelperFunctions.h"
 
-FileImporter::FileImporter(const String& dbPath, const File& xmlFile, int user, bool checkMd5, bool checkDuplicate)
+FileImporter::FileImporter(const String& dbPath, const File& xmlFile, int user,
+		bool checkMd5, bool checkDuplicate, const char boundingsType)
 :
 ThreadWithProgressWindow("GPX Import", true, false),
 m_xmlFile(xmlFile),
 m_dbPath(dbPath),
 m_user(user),
 m_checkMd5(checkMd5),
-m_checkDuplicate(checkDuplicate)
+m_checkDuplicate(checkDuplicate),
+m_boundingsType(boundingsType)
 {
 }
 
-FileImporter::FileImporter(const String& dbPath, const Array<File>& xmlFiles, int user, bool checkMd5, bool checkDuplicate)
+FileImporter::FileImporter(const String& dbPath, const Array<File>& xmlFiles,
+		int user, bool checkMd5, bool checkDuplicate, const char boundingsType)
 :
 		ThreadWithProgressWindow("GPX Import", true, false),
 		m_xmlFile(String::empty),
@@ -26,7 +29,8 @@ FileImporter::FileImporter(const String& dbPath, const Array<File>& xmlFiles, in
 		m_dbPath(dbPath),
 		m_user(user),
 		m_checkMd5(checkMd5),
-		m_checkDuplicate(checkDuplicate)
+		m_checkDuplicate(checkDuplicate),
+		m_boundingsType(boundingsType)
 {
 }
 
@@ -125,7 +129,7 @@ void FileImporter::run()
 							double ele = (subsubchild->getChildElementAllSubText("ele", "0.0")).getDoubleValue();
 							String trkpttime = subsubchild->getChildElementAllSubText("time", String::empty);
 							++numTrk;
-							int loc = Helper::findLocation(locations, lon, lat);
+							int loc = Helper::findLocation(locations, lon, lat, m_boundingsType);
 
 							gpsData.setGpsData(gpsdataid,
 									(float)lat,

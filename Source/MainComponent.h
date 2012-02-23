@@ -71,6 +71,7 @@ public:
 	void setCurrentWorkingDb(const File& file);
     void toggleUseLastDB();
     void toggleRadiusDegree();
+    const char getBoundingsType();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -124,6 +125,7 @@ private:
     bool m_useLastDB;
     bool m_useRadiusDegree;
 
+//    char m_boundingsType;
     //[/UserVariables]
 
     //==============================================================================

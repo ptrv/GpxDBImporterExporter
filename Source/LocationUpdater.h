@@ -11,7 +11,7 @@
 class LocationUpdater : public ThreadWithProgressWindow
 {
 public:
-    LocationUpdater(const String& dbPath);
+    LocationUpdater(const String& dbPath, const char boundingsType);
     ~LocationUpdater();
 
     void run();
@@ -19,6 +19,7 @@ public:
 private:
 	String m_dbPath;
 	String m_status;
+	char m_boundingsType;
 };
 
 #endif // LOCATIONUPDATER_H

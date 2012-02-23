@@ -11,8 +11,10 @@
 class FileImporter : public ThreadWithProgressWindow
 {
 public:
-	FileImporter(const String& dbPath, const File& xmlFile, int user, bool checkMd5, bool checkDuplicate);
-	FileImporter(const String& dbPath, const Array<File>& xmlFiles, int user, bool checkMd5, bool checkDuplicate);
+	FileImporter(const String& dbPath, const File& xmlFile, int user,
+			bool checkMd5, bool checkDuplicate, const char boundingsType);
+	FileImporter(const String& dbPath, const Array<File>& xmlFiles, int user,
+			bool checkMd5, bool checkDuplicate, const char boundingsType);
 	~FileImporter();
 
 	void run();
@@ -27,6 +29,7 @@ private:
 	int m_user;
 	bool m_checkMd5;
 	bool m_checkDuplicate;
+	char m_boundingsType;
 };
 
 #endif // _FILE_IMPORTER_H_

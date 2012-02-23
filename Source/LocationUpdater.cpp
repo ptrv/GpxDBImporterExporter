@@ -6,11 +6,12 @@
 #include "DBConnector.h"
 #include "HelperFunctions.h"
 
-LocationUpdater::LocationUpdater(const String& dbPath)
+LocationUpdater::LocationUpdater(const String& dbPath, const char boundingsType)
 :
 ThreadWithProgressWindow("Busy...", true, false),
 m_dbPath(dbPath),
-m_status(String::empty)
+m_status(String::empty),
+m_boundingsType(boundingsType)
 {
     //ctor
 }
@@ -42,7 +43,8 @@ void LocationUpdater::run()
     {
         int res = Helper::findLocation(gpsLocationVec,
                                gpsDataVec[i].getLongitude(),
-                               gpsDataVec[i].getLatitude());
+                               gpsDataVec[i].getLatitude(),
+                               m_boundingsType);
 
         if (res != 0)
         {
