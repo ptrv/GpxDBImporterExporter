@@ -5,6 +5,7 @@
 #include "DBConnector.h"
 #include "includes.h"
 #include "GMLParser.h"
+#include "HelperFunctions.h"
 
 #include <string>
 #include <iostream>
@@ -353,6 +354,13 @@ bool DBConnector::getGpsLocations(Array<GpsLocation>& locations)
 				location.longitude = reader.getdouble(3);
 				location.latitude = reader.getdouble(4);
 				location.radius = reader.getdouble(5);
+				location.radiusKm = reader.getdouble(6);
+				String polygonStr(CharPointer_UTF8(reader.getstring(7).data()));
+				Helper::getPointsFromPolygonString(polygonStr, location.polygon);
+				location.topLeft.setX(reader.getdouble(8));
+				location.topLeft.setY(reader.getdouble(9));
+				location.bottomRight.setX(reader.getdouble(10));
+				location.bottomRight.setY(reader.getdouble(11));
 				locations.add(location);
 //				DBG_VAL(location.index);
 //				DBG_VAL(location.city);
