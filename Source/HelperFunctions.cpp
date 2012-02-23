@@ -12,10 +12,10 @@ extern double distance(double lat1, double lon1, double lat2, double lon2,
 		char unit);
 
 int Helper::findLocation(const Array<GpsLocation>& locations,
-		const double lon, const double lat, const char boundings) {
+		const double lon, const double lat, const char boundingType) {
 	int locationId = 0;
 	for (unsigned int i = 0; i < locations.size(); ++i) {
-		switch (boundings) {
+		switch (boundingType) {
 			case 'U':
 				if (isInCircle(locations[i].longitude, locations[i].latitude,
 						locations[i].radius, lon, lat))
@@ -164,8 +164,18 @@ public:
 		expect(Helper::isInCircle2(cX, cY, 6.0,cX2, cY2, 'N'));
 
 //		beginTest ("isInBoundingBox");
-//
-//		beginTest ("isInPolygon");
+
+		beginTest ("isInPolygon");
+
+	    Array<Point<double> > points;
+	    points.add(Point<double>(52.37048433239088,13.101559835297458));
+	    points.add(Point<double>(52.657235386769905,13.101559835297458));
+	    points.add(Point<double>(52.657235386769905,13.700291048547339));
+	    points.add(Point<double>(52.37048433239088,13.700291048547339));
+	    points.add(Point<double>(52.37048433239088,13.101559835297458));
+
+	    expect(Helper::isInPolygon(cY2, cX2, points));
+
 
 	}
 };

@@ -11,7 +11,7 @@ class Helper
 {
 public:
     static int findLocation(const Array<GpsLocation>& locations,
-    		const double lon, const double lat, const char boundings='U');
+    		const double lon, const double lat, const char boundingType='U');
 
     static bool isInCircle(const double centreX,
                     const double centreY,
