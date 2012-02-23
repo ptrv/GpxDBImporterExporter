@@ -35,6 +35,11 @@ public:
 
     static void getPointsFromPolygonString(const String& polyStr,
     		Array<Point<double> >& points);
+
+    static String getPolygonStringFromPoints(const Array<Point<double> >& points);
+
+    static GpsMinMax getMinMaxForGpsLocations(const Array<GpsLocation>& locs);
+
 private:
     Helper(){}
     ~Helper(){}

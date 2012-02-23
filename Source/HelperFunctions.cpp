@@ -132,9 +132,50 @@ void Helper::getPointsFromPolygonString(const String& polyStr,
 	    point.addXY(px, py);
 	    points.add(point);
 	 }
-
+}
+String Helper::getPolygonStringFromPoints(const Array<Point<double> >& points)
+{
+	String polyStr = "";
+	for (int j = 0; j < points.size(); ++j) {
+		const Point<double>& p = points[j];
+		polyStr << p.x << "," << p.y;
+		if(j < points.size()-1)
+		{
+			polyStr << " ";
+		}
+	}
+	return polyStr;
 }
 
+
+
+GpsMinMax Helper::getMinMaxForGpsLocations(const Array<GpsLocation>& locs)
+{
+	double minLon = std::numeric_limits<double>::max();
+	double minLat = std::numeric_limits<double>::max();
+	double maxLon = -std::numeric_limits<double>::max();
+	double maxLat = -std::numeric_limits<double>::max();
+
+	for (unsigned int i = 0; i < locs.size(); ++i) {
+		for (unsigned int j = 0; j < locs[i].polygon.size(); ++j)
+		{
+			double x = locs[i].polygon[j].x;
+			double y = locs[i].polygon[j].y;
+			if (x < minLon) minLon = x;
+			if (x > maxLon) maxLon = x;
+			if (y < minLat) minLat = y;
+			if (y > maxLat) maxLat = y;
+		}
+	}
+
+	GpsMinMax gpsMinMax;
+	gpsMinMax.minLat = minLat;
+	gpsMinMax.minLon = minLon;
+	gpsMinMax.maxLat = maxLat;
+	gpsMinMax.maxLon = maxLon;
+
+	return gpsMinMax;
+}
 
 //==============================================================================
 #if UNIT_TESTS
@@ -175,6 +216,13 @@ public:
 	    points.add(Point<double>(13.101559835297458,52.37048433239088));
 
 	    expect(Helper::isInPolygon(cX2, cY2, points));
+
+	    beginTest("IsInBoundingBox");
+
+	    Point<double> topLeft(13.1, 52.9);
+	    Point<double> bottomRight(13.9, 52.1);
+	    expect(Helper::isInBoundingBox(cX2, cY2, topLeft.x, topLeft.y,
+	    		bottomRight.x, bottomRight.y));
 
 
 	}

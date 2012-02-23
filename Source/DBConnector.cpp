@@ -184,14 +184,7 @@ bool DBConnector::insertLocationDataGML()
     for (int i = 0; i < locs.size(); ++i) {
     	tmpStr << locs[i].index+1 << ",\"" << locs[i].city << "\",";
     	tmpStr << "\"" << locs[i].country << "\",\"";
-    	for (int j = 0; j < locs[i].polygon.size(); ++j) {
-    		const Point<double>& p = locs[i].polygon[j];
-    		tmpStr << p.x << "," << p.y;
-    		if(j < locs[i].polygon.size()-1)
-    		{
-    			tmpStr << " ";
-    		}
-		}
+    	tmpStr << Helper::getPolygonStringFromPoints(locs[i].polygon);
     	tmpStr << "\"";
     	tmpLocations.add(tmpStr);
     	tmpStr = "";
