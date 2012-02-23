@@ -149,10 +149,6 @@ public:
 			return false;
 	}
 
-	bool testPolygon(const Point<double>& p1, const Point<double>& p2)
-	{
-
-	}
 	void runTest()
 	{
 	    String gmlFile = CharPointer_UTF8(BinaryData::citydefs_gml);
