@@ -72,6 +72,7 @@ public:
     void toggleUseLastDB();
     void toggleRadiusDegree();
     const char getBoundingsType();
+    void exportLocations();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -118,7 +119,8 @@ private:
 		openExecuteSql			= 0x2004,
 		openUpdateLocations 	= 0x2005,
 		showAbout              	= 0x2006,
-		showHelp		       	= 0x2007
+		showHelp		       	= 0x2007,
+		openExportLocations		= 0x2008
 	};
 
 	bool m_useNativeFileChooser;

@@ -25,6 +25,7 @@
 #include "LocationUpdater.h"
 #include "StoredSettings.h"
 #include "MainWindow.h"
+#include "GMLUtils.h"
 //[/Headers]
 
 #include "MainComponent.h"
@@ -656,6 +657,31 @@ void MainComponent::executeSqlScript()
 	}
 }
 
+void MainComponent::exportLocations()
+{
+	FileChooser exportLocationsChooser("Select file...",
+			File::getSpecialLocation(File::userHomeDirectory),
+			"*.gml", m_useNativeFileChooser);
+	if(exportLocationsChooser.browseForFileToSave(true))
+	{
+		File gmlFile(exportLocationsChooser.getResult());
+		DBConnector dbcon(m_dbPath);
+		dbcon.setupDbConnection();
+
+		Array<GpsLocation> locs;
+		dbcon.getGpsLocations(locs);
+		dbcon.closeDbConnection();
+
+		if(locs.size() > 0)
+			if(locs[0].city.compare("Unknown") == 0)
+				locs.remove(0);
+
+		GMLUtils::write(locs, gmlFile.getFullPathName());
+
+		setStatusMessage("Wrote GML file with locations!");
+	}
+}
+
 //==============================================================================
 // Menubar
 //==============================================================================
@@ -698,6 +724,7 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	{
 		menu.addCommandItem(commandManager, openExecuteSql);
 		menu.addCommandItem(commandManager, openUpdateLocations);
+		menu.addCommandItem(commandManager, openExportLocations);
 	}
 	else if (menuIndex == 2)
 	{
@@ -740,7 +767,8 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 			openExecuteSql,
 			openUpdateLocations,
 			showAbout,
-			showHelp
+			showHelp,
+			openExportLocations
 	};
 
 	commands.addArray (ids, numElementsInArray (ids));
@@ -791,6 +819,14 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 		}
 		break;
 
+	case openExportLocations:
+		result.setInfo("Export locations", "Export location table as GML file", toolsCategory, 0);
+		if(m_dbPath.isEmpty())
+		{
+			result.setActive(false);
+		}
+		break;
+
 	case showAbout:
 		result.setInfo ("About", "Shows about dialog", generalCategory, 0);
 		result.addDefaultKeypress ('i', ModifierKeys::commandModifier);
@@ -829,6 +865,9 @@ bool MainComponent::perform (const InvocationInfo& info)
 		break;
 	case openUpdateLocations:
 		updateLocations();
+		break;
+	case openExportLocations:
+		exportLocations();
 		break;
 	case showAbout:
 		showAboutWindow();
