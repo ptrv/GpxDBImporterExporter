@@ -106,7 +106,7 @@ void StoredSettings::setLastDBFolder (const String& folder)
 
 bool StoredSettings::useRadiusDegree() const
 {
-    return m_props->getBoolValue("useRadiusDegree", false);
+    return m_props->getBoolValue("useRadiusDegree", true);
 }
 
 void StoredSettings::useRadiusDegree(bool useRadiusDegree)
