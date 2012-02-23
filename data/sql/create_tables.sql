@@ -24,10 +24,12 @@ CREATE TABLE gpsdata (
 );
 CREATE TABLE location (
 	locationid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	city INTEGER UNSIGNED NOT NULL,
-	country INTEGER UNSIGNED NOT NULL,
-	longitude REAL NOT NULL,
-	latitude REAL NOT NULL,
-	radius REAL NOT NULL,
-	UNIQUE (city, country, longitude, latitude )
+	city TEXT NOT NULL,
+	country TEXT NOT NULL,
+	longitude REAL,
+	latitude REAL,
+	radius REAL,
+    radiuskm REAL,
+    polygon TEXT,
+	UNIQUE (city, country)
 );
