@@ -558,6 +558,7 @@ void MainComponent::createNewDb()
 		dbCon->setupDbConnection();
 		dbCon->createNewDb();
 		dbCon->insertLocationData();
+//		dbCon->insertLocationDataGML();
 		dbCon->closeDbConnection();
 		delete dbCon;
 	}

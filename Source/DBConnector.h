@@ -21,6 +21,7 @@ public:
 	void setupDbConnection();
 	void closeDbConnection();
     bool insertLocationData();
+    bool insertLocationDataGML();
 	bool checkIfFileExists(const String& md5hash);
 	bool checkIfFileNameExists(const String& filename);
 	bool checkIfGpsDataExsist(const String& timedate, int user);

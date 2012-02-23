@@ -153,7 +153,54 @@ bool DBConnector::insertLocationData()
         {
 
             for (unsigned int i = 1; i < tmpLocations.size(); ++i) {
-                String query = "INSERT INTO 'location' VALUES(";
+                String query = "INSERT INTO 'location' ";
+                query << "(locationid,city,country,longitude,latitude,radius)VALUES(";
+                query << tmpLocations[i];
+                query << ");";
+                sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
+                cmd.executenonquery();
+            }
+
+        }
+        trans.commit();
+        result = true;
+    }
+    CATCHDBERRORS
+    return result;
+
+}
+
+bool DBConnector::insertLocationDataGML()
+{
+    bool result = false;
+
+    String gmlFile = CharPointer_UTF8(BinaryData::citydefs_gml);
+    Array<GpsLocation> locs = GMLParser::parse(gmlFile);
+
+    Array<String> tmpLocations;
+    String tmpStr = "";
+    for (int i = 0; i < locs.size(); ++i) {
+    	tmpStr << locs[i].index << ",\"" << locs[i].city << "\",";
+    	tmpStr << "\"" << locs[i].country << "\",\"";
+    	for (int j = 0; j < locs[i].polygon.size(); ++j) {
+    		const Point<double>& p = locs[i].polygon[j];
+    		tmpStr << p.x << "," << p.y;
+    		if(j < locs[i].polygon.size()-1)
+    		{
+    			tmpStr << " ";
+    		}
+		}
+    	tmpStr << "\"";
+    	tmpLocations.add(tmpStr);
+    	tmpStr = "";
+    }
+    try{
+        sqlite3_transaction trans(*m_dbconn);
+        {
+
+            for (unsigned int i = 1; i < tmpLocations.size(); ++i) {
+                String query = "INSERT INTO 'location' ";
+                query << "(locationid,city,country,polygon)VALUES(";
                 query << tmpLocations[i];
                 query << ");";
                 sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
