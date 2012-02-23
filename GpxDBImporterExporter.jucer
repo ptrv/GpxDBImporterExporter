@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="KjdKAlLg" name="GpxDBImporterExporter" projectType="guiapp"
-              version="1.5.0dev" juceLinkage="amalg_multi" buildVST="1" buildRTAS="0"
+              version="1.5.0" juceLinkage="amalg_multi" buildVST="1" buildRTAS="0"
               buildAU="1" pluginName="Juce Project" pluginDesc="Juce Project"
               pluginManufacturer="yourcompany" pluginManufacturerCode="abcd"
               pluginCode="Abcd" pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0"

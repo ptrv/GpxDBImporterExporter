@@ -5,7 +5,7 @@
 #ifndef _DBIMPORTERHEADERS_
 #define _DBIMPORTERHEADERS_
 
-#define RC_COMPANY_STR "Peter Vasil, 2011"
+#define RC_COMPANY_STR "Peter Vasil, 2012"
 
 #ifdef _WIN32
 # include <windows.h>
