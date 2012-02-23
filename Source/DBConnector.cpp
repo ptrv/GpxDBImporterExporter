@@ -179,8 +179,9 @@ bool DBConnector::insertLocationDataGML()
 
     Array<String> tmpLocations;
     String tmpStr = "";
+    tmpLocations.add("1,'Unknown','Unknown','0.0,0.0 0.0,0.0 0.0,0.0 0.0,0.0 0.0,0.0'");
     for (int i = 0; i < locs.size(); ++i) {
-    	tmpStr << locs[i].index << ",\"" << locs[i].city << "\",";
+    	tmpStr << locs[i].index+1 << ",\"" << locs[i].city << "\",";
     	tmpStr << "\"" << locs[i].country << "\",\"";
     	for (int j = 0; j < locs[i].polygon.size(); ++j) {
     		const Point<double>& p = locs[i].polygon[j];
@@ -198,7 +199,7 @@ bool DBConnector::insertLocationDataGML()
         sqlite3_transaction trans(*m_dbconn);
         {
 
-            for (unsigned int i = 1; i < tmpLocations.size(); ++i) {
+            for (unsigned int i = 0; i < tmpLocations.size(); ++i) {
                 String query = "INSERT INTO 'location' ";
                 query << "(locationid,city,country,polygon)VALUES(";
                 query << tmpLocations[i];
