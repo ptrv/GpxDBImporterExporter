@@ -72,21 +72,21 @@ bool Helper::isInCircle2(const double centreX, const double centreY,
 
 bool Helper::isInBoundingBox(const double lon, const double lat,
 		const double lonTopLeft, const double latTopLeft,
-		const double lonBootonRight, const double latBootonRight)
+		const double lonBottomRight, const double latBottomRight)
 {
 	//checks to see if bounding box crosses 180 degrees
-	  if(lonTopLeft > lonBootonRight)
+	  if(lonTopLeft > lonBottomRight)
 	  {
-	      if(lonTopLeft >= lon && lonBootonRight <= lon
-	         && latTopLeft >= lat && latBootonRight <= lat)
+	      if(lonTopLeft >= lon && lonBottomRight <= lon
+	         && latTopLeft >= lat && latBottomRight <= lat)
 	      {
 	    	  return true;
 	      }
 	  }
 	  else
 	  {
-	      if(lonTopLeft <= lon && lonBootonRight >= lon
-	        && latTopLeft >= lat && latBootonRight <= lat)
+	      if(lonTopLeft <= lon && lonBottomRight >= lon
+	        && latTopLeft >= lat && latBottomRight <= lat)
 	      {
 	    	  return true;
 	       }
