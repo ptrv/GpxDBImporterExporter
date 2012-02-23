@@ -118,6 +118,22 @@ bool Helper::isInPolygon(const double lon, const double lat,
 	return inPoly;
 }
 
+void Helper::getPointsFromPolygonString(const String& polyStr,
+		Array<Point<double> >& points)
+{
+	 StringArray tokens;
+	 tokens.addTokens(polyStr, " ", "\"");
+	 for (int i=0; i<tokens.size(); i++)
+	 {
+	    Point<double> point;
+	    int commaIndex = tokens[i].indexOfChar(',');
+	    double py = tokens[i].substring(0,commaIndex).getDoubleValue();
+	    double px = tokens[i].substring(commaIndex+1).getDoubleValue();
+	    point.addXY(px, py);
+	    points.add(point);
+	 }
+
+}
 
 
 //==============================================================================

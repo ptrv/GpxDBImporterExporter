@@ -32,6 +32,9 @@ public:
 
     static bool isInPolygon(const double lon, const double lat,
     		const Array<Point<double> >& points);
+
+    static void getPointsFromPolygonString(const String& polyStr,
+    		Array<Point<double> >& points);
 private:
     Helper(){}
     ~Helper(){}

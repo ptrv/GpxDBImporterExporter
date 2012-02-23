@@ -6,6 +6,7 @@
  */
 #include "includes.h"
 #include "GMLParser.h"
+#include "HelperFunctions.h"
 
 Array<GpsLocation> GMLParser::parse(const String& gmlFile)
 {
@@ -33,19 +34,9 @@ Array<GpsLocation> GMLParser::parse(const String& gmlFile)
 			 XmlElement* linearRing = outerBoundaryIs->getChildByName("gml:LinearRing");
 			 XmlElement* coordinates = linearRing->getChildByName("gml:coordinates");
 
-
 			 String coordsStr = coordinates->getAllSubText();
-			 StringArray tokens;
-			 tokens.addTokens(coordsStr, " ", "\"");
-			 for (int i=0; i<tokens.size(); i++)
-			 {
-			    Point<double> point;
-			    int commaIndex = tokens[i].indexOfChar(',');
-			    double py = tokens[i].substring(0,commaIndex).getDoubleValue();
-			    double px = tokens[i].substring(commaIndex+1).getDoubleValue();
-			    point.addXY(px, py);
-			    loc.polygon.add(point);
-			 }
+			 Helper::getPointsFromPolygonString(coordsStr, loc.polygon);
+
 			 XmlElement* city = citydefs->getChildByName("ogr:city");
 			 loc.city = city->getAllSubText();
 
