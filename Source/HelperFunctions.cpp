@@ -147,9 +147,9 @@ public:
 		expect(Helper::isInCircle2(cX, cY, 6.0,cX2, cY2, 'M'));
 		expect(Helper::isInCircle2(cX, cY, 6.0,cX2, cY2, 'N'));
 
-		beginTest ("isInBoundingBox");
-
-		beginTest ("isInPolygon");
+//		beginTest ("isInBoundingBox");
+//
+//		beginTest ("isInPolygon");
 
 	}
 };

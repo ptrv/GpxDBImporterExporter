@@ -130,6 +130,16 @@
   <Files>
     <Filter Name="GpxDBImporterExporter">
       <Filter Name="BinaryData">
+        <File RelativePath="..\..\data\citydefs.gml">
+          <FileConfiguration Name="Debug|Win32"
+                             ExcludedFromBuild="true">
+            <Tool Name="VCCLCompilerTool"/>
+          </FileConfiguration>
+          <FileConfiguration Name="Release|Win32"
+                             ExcludedFromBuild="true">
+            <Tool Name="VCCLCompilerTool"/>
+          </FileConfiguration>
+        </File>
         <File RelativePath="..\..\data\locations.csv">
           <FileConfiguration Name="Debug|Win32"
                              ExcludedFromBuild="true">
@@ -156,6 +166,8 @@
         <File RelativePath="..\..\data\sql\insert_predefineddata.sql"/>
       </Filter>
       <Filter Name="Source">
+        <File RelativePath="..\..\Source\GMLParser.cpp"/>
+        <File RelativePath="..\..\Source\GMLParser.h"/>
         <File RelativePath="..\..\Source\HelperFunctions.cpp"/>
         <File RelativePath="..\..\Source\Distance.cpp"/>
         <File RelativePath="..\..\Source\Application.h"/>

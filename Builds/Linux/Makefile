@@ -43,6 +43,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/GMLParser_425af2e6.o \
   $(OBJDIR)/HelperFunctions_844316e.o \
   $(OBJDIR)/Distance_4d9bc3fe.o \
   $(OBJDIR)/HelpComponent_6b43a81d.o \
@@ -82,6 +83,11 @@ clean:
 	-@rm -f $(OUTDIR)/$(TARGET)
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
+
+$(OBJDIR)/GMLParser_425af2e6.o: ../../Source/GMLParser.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling GMLParser.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/HelperFunctions_844316e.o: ../../Source/HelperFunctions.cpp
 	-@mkdir -p $(OBJDIR)

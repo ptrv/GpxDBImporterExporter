@@ -44,6 +44,7 @@
   </EXPORTFORMATS>
   <MAINGROUP id="TmWdmrNln" name="GpxDBImporterExporter">
     <GROUP id="{0FF7D83A-B8D3-039D-BDEE-5438D4733FCA}" name="BinaryData">
+      <FILE id="QOM8GJ" name="citydefs.gml" compile="0" resource="1" file="data/citydefs.gml"/>
       <FILE id="Bh6Z8R" name="locations.csv" compile="0" resource="1" file="data/locations.csv"/>
     </GROUP>
     <GROUP id="xOZcXhd" name="sql">
@@ -54,6 +55,8 @@
             file="data/sql/insert_predefineddata.sql"/>
     </GROUP>
     <GROUP id="f7dPoBd5m" name="Source">
+      <FILE id="ac6iiP" name="GMLParser.cpp" compile="1" resource="0" file="Source/GMLParser.cpp"/>
+      <FILE id="gOhy3R" name="GMLParser.h" compile="0" resource="0" file="Source/GMLParser.h"/>
       <FILE id="mcUSVv" name="HelperFunctions.cpp" compile="1" resource="0"
             file="Source/HelperFunctions.cpp"/>
       <FILE id="GWe5Wk" name="Distance.cpp" compile="1" resource="0" file="Source/Distance.cpp"/>

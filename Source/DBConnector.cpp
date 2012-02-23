@@ -4,6 +4,7 @@
 
 #include "DBConnector.h"
 #include "includes.h"
+#include "GMLParser.h"
 
 #include <string>
 #include <iostream>
