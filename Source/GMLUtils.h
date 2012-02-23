@@ -16,6 +16,8 @@ private:
 	~GMLUtils(){}
 public:
 	static Array<GpsLocation> parse(const String& gmlFile);
+	static bool write(const Array<GpsLocation>& locs,
+			const String& filePathToWrite);
 };
 
 #endif /* GMLPARSER_H_ */
