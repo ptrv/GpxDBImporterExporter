@@ -208,7 +208,7 @@ MainComponent::~MainComponent()
 	StoredSettings::getInstance()->setLastExportFolder(m_lastExportFolder);
     StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
     StoredSettings::getInstance()->setLastDBFolder(m_lastDBFolder);
-    StoredSettings::getInstance()->useLastDatabase(m_useRadiusDegree);
+    StoredSettings::getInstance()->useRadiusDegree(m_useRadiusDegree);
     
 	StoredSettings::deleteInstance();
 
