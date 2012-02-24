@@ -11,3 +11,10 @@ Thanks to Daniel Belasco Rogers for the location list.
 ## Development
 
 To change project properties, JUCE source code and Introjucer (JUCE's project creation tool) are required.
+
+## TODOs
+
+* Menu option to import locations from GML file
+* Test class for DBConnector
+* More unit testing
+* More locations in GML format
