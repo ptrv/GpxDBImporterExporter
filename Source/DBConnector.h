@@ -20,8 +20,10 @@ public:
 	void setDatabase(const String &db);
 	void setupDbConnection();
 	void closeDbConnection();
-    bool insertLocationData();
-    bool insertLocationDataGML();
+    bool insertInitLocationData();
+    bool insertInitLocationDataGML();
+    bool insertLocationData(Array<GpsLocation>& locs);
+    bool checkIfCityExists(const String& cityname);
 	bool checkIfFileExists(const String& md5hash);
 	bool checkIfFileNameExists(const String& filename);
 	bool checkIfGpsDataExsist(const String& timedate, int user);

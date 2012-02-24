@@ -132,7 +132,7 @@ const String GpsData::getInsertList() const
 	return result;
 }
 
-bool DBConnector::insertLocationData()
+bool DBConnector::insertInitLocationData()
 {
     bool result = false;
     String locationsStr((CharPointer_UTF8(BinaryData::locations_csv)));
@@ -171,7 +171,7 @@ bool DBConnector::insertLocationData()
 
 }
 
-bool DBConnector::insertLocationDataGML()
+bool DBConnector::insertInitLocationDataGML()
 {
     bool result = false;
 
@@ -211,6 +211,62 @@ bool DBConnector::insertLocationDataGML()
 
 }
 
+bool DBConnector::insertLocationData(Array<GpsLocation>& locs)
+{
+	bool result = false;
+
+    Array<String> tmpLocations;
+    String tmpStr = "";
+    for (int i = 0; i < locs.size(); ++i) {
+    	tmpStr << "\"" << locs[i].city << "\",";
+    	tmpStr << "\"" << locs[i].country << "\",\"";
+    	tmpStr << Helper::getPolygonStringFromPoints(locs[i].polygon);
+    	tmpStr << "\"";
+    	tmpLocations.add(tmpStr);
+    	tmpStr = "";
+    }
+    try{
+        sqlite3_transaction trans(*m_dbconn);
+        {
+
+            for (unsigned int i = 0; i < tmpLocations.size(); ++i) {
+                String query = "INSERT INTO 'location' ";
+                query << "(city,country,polygon)VALUES(";
+                query << tmpLocations[i];
+                query << ");";
+                sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
+                cmd.executenonquery();
+            }
+
+        }
+        trans.commit();
+        result = true;
+    }
+    CATCHDBERRORS
+    return result;
+
+}
+
+bool DBConnector::checkIfCityExists(const String& cityname)
+{
+	bool result = false;
+	try{
+		sqlite3_transaction trans(*m_dbconn);
+		{
+			String query;
+			query << "select city from location where city = '" << cityname << "';";
+			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
+			sqlite3_reader reader = cmd.executereader();
+			while (reader.read()) {
+				result = true;
+				break;
+			}
+		}
+		trans.commit();
+	}
+	CATCHDBERRORS
+	return result;
+}
 bool DBConnector::checkIfUserExists(const String& username)
 {
 	bool result = false;

@@ -571,9 +571,9 @@ void MainComponent::createNewDb()
 		dbCon->setupDbConnection();
 		dbCon->createNewDb();
 		if(m_useRadiusDegree)
-			dbCon->insertLocationData();
+			dbCon->insertInitLocationData();
 		else
-			dbCon->insertLocationDataGML();
+			dbCon->insertInitLocationDataGML();
 		dbCon->closeDbConnection();
 		delete dbCon;
 	}
