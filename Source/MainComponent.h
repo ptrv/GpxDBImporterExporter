@@ -73,6 +73,7 @@ public:
     void toggleRadiusDegree();
     const char getBoundingsType();
     void exportLocations();
+    void importLocations();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -120,7 +121,8 @@ private:
 		openUpdateLocations 	= 0x2005,
 		showAbout              	= 0x2006,
 		showHelp		       	= 0x2007,
-		openExportLocations		= 0x2008
+		openExportLocations		= 0x2008,
+		openImportLocations		= 0x2009
 	};
 
 	bool m_useNativeFileChooser;

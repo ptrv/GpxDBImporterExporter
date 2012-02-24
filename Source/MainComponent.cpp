@@ -682,6 +682,34 @@ void MainComponent::exportLocations()
 	}
 }
 
+void MainComponent::importLocations()
+{
+	FileChooser importLocationsChooser("Select file...",
+			File::getSpecialLocation(File::userHomeDirectory),
+			"*.gml", m_useNativeFileChooser);
+	if(importLocationsChooser.browseForFileToOpen())
+	{
+		File gmlFile(importLocationsChooser.getResult());
+	    Array<GpsLocation> locsNew = GMLUtils::parse(gmlFile.loadFileAsString());
+
+		DBConnector dbcon(m_dbPath);
+		dbcon.setupDbConnection();
+
+		for (int i = 0; i < locsNew.size(); ++i) {
+			if(dbcon.checkIfCityExists(locsNew[i].city))
+			{
+				locsNew.remove(i);
+				--i;
+			}
+		}
+
+		dbcon.insertLocationData(locsNew);
+		dbcon.closeDbConnection();
+
+		setStatusMessage("Imported GML file with " + String(locsNew.size()) + " locations!");
+	}
+	
+}
 //==============================================================================
 // Menubar
 //==============================================================================
@@ -724,6 +752,7 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	{
 		menu.addCommandItem(commandManager, openExecuteSql);
 		menu.addCommandItem(commandManager, openUpdateLocations);
+		menu.addCommandItem(commandManager, openImportLocations);
 		menu.addCommandItem(commandManager, openExportLocations);
 	}
 	else if (menuIndex == 2)
@@ -768,7 +797,8 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 			openUpdateLocations,
 			showAbout,
 			showHelp,
-			openExportLocations
+			openExportLocations,
+			openImportLocations
 	};
 
 	commands.addArray (ids, numElementsInArray (ids));
@@ -806,25 +836,25 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 	case openExecuteSql:
 		result.setInfo("Execute SQL", "Execute SQL commands from a file", toolsCategory, 0);
 		if(m_dbPath.isEmpty())
-		{
 			result.setActive(false);
-		}
 		break;
 
 	case openUpdateLocations:
 		result.setInfo("Update locations", "Update locations table", toolsCategory, 0);
 		if(m_dbPath.isEmpty())
-		{
 			result.setActive(false);
-		}
 		break;
 
 	case openExportLocations:
 		result.setInfo("Export locations", "Export location table as GML file", toolsCategory, 0);
 		if(m_dbPath.isEmpty())
-		{
 			result.setActive(false);
-		}
+		break;
+
+	case openImportLocations:
+		result.setInfo("Import locations", "Import location data from GML file", toolsCategory, 0);
+		if(m_dbPath.isEmpty())
+			result.setActive(false);
 		break;
 
 	case showAbout:
@@ -868,6 +898,9 @@ bool MainComponent::perform (const InvocationInfo& info)
 		break;
 	case openExportLocations:
 		exportLocations();
+		break;
+	case openImportLocations:
+		importLocations();
 		break;
 	case showAbout:
 		showAboutWindow();
