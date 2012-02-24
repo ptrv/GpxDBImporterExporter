@@ -32,8 +32,8 @@
 namespace ProjectInfo
 {
     const char* const  projectName    = "GpxDBImporterExporter";
-    const char* const  versionString  = "1.5.0";
-    const int          versionNumber  = 0x10500;
+    const char* const  versionString  = "1.6.0dev";
+    const int          versionNumber  = 0x10600;
 }
 
 #endif   // __APPHEADERFILE_KJDKALLG__
