@@ -699,3 +699,39 @@ bool DBConnector::getGpsDataForExport(Array<GpsData>& gpsDatas, GpsMinMax& gpsMi
 	CATCHDBERRORS
 	return res;
 }
+
+bool DBConnector::getCountTable(const String& tablename, int& count)
+{
+
+	bool res = false;
+	String queryStr = "select count(*) from " + tablename + ";";
+
+	try {
+		sqlite3_command cmd(*m_dbconn, queryStr.toUTF8().getAddress());
+		count = cmd.executeint();
+	}
+	CATCHDBERRORS
+	return res;
+}
+
+bool DBConnector::getTableNames(StringArray& names)
+{
+	bool res = false;
+	String queryStr = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;";
+
+	try {
+		sqlite3_command cmd(*m_dbconn, queryStr.toUTF8().getAddress());
+		sqlite3_reader reader=cmd.executereader();
+
+		while(reader.read())
+		{
+			String tableName = reader.getstring(0).c_str();
+			if(! tableName.contains("sqlite_"))
+			{
+				names.add(tableName);
+			}
+		}
+	}
+	CATCHDBERRORS
+	return res;
+}

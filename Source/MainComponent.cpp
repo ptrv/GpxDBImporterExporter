@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Feb 2012 11:01:52pm
+  Creation date:  25 Feb 2012 2:01:58pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -44,6 +44,7 @@ MainComponent::MainComponent (MainWindow* mainWindow)
       m_selectedFileToImport(String::empty),
       m_selectFolder(false),
       m_lastExportFolder(String::empty),
+      m_lastDBFolder(String::empty),
       m_btFileImport (0),
       m_labelName (0),
       m_userSelectComboBox (0),
@@ -186,10 +187,11 @@ MainComponent::MainComponent (MainWindow* mainWindow)
     m_useRadiusDegree = StoredSettings::getInstance()->useRadiusDegree();
 
 	m_helpComponent = new HelpComponent();
-    
-    if (m_useLastDB) 
+	m_dbStatsComp = new DBStatsComponent();
+
+    if (m_useLastDB)
     {
-        if (StoredSettings::getInstance()->recentFiles.getNumFiles() > 0) 
+        if (StoredSettings::getInstance()->recentFiles.getNumFiles() > 0)
         {
             openDatabase(File(StoredSettings::getInstance()->recentFiles.getFile(0)));
         }
@@ -210,7 +212,7 @@ MainComponent::~MainComponent()
     StoredSettings::getInstance()->useLastDatabase(m_useLastDB);
     StoredSettings::getInstance()->setLastDBFolder(m_lastDBFolder);
     StoredSettings::getInstance()->useRadiusDegree(m_useRadiusDegree);
-    
+
 	StoredSettings::deleteInstance();
 
     //[/Destructor_pre]
@@ -233,6 +235,7 @@ MainComponent::~MainComponent()
 
     //[Destructor]. You can add your own custom destruction code here..
 	deleteAndZero(m_helpComponent);
+	deleteAndZero(m_dbStatsComp);
     //[/Destructor]
 }
 
@@ -359,15 +362,23 @@ void MainComponent::showOnlineHelp()
 		setStatusMessage("Open online help failed!");
 }
 
+void MainComponent::showDBStats()
+{
+	setDBStats();
+	Colour color(0,0,0);
+	DialogWindow::showModalDialog("Database statistics", m_dbStatsComp,
+			nullptr, color, true);
+}
+
 void MainComponent::openDbFileChooser()
 {
 	FileChooser dbChooser("Select a database file...", File::nonexistent,
                           "*.sqlite;*.db", m_useNativeFileChooser);
-    
+
 	if (dbChooser.browseForFileToOpen()) {
 		openDatabase(dbChooser.getResult());
 	} else {
-        
+
 	}
 }
 
@@ -476,7 +487,7 @@ const Array<File> MainComponent::getFilesToImport()
 
 void MainComponent::importFile()
 {
-    
+
 	if(m_userSelectComboBox->getSelectedId() == 0)
 	{
 		String tmpUsertext = m_userSelectComboBox->getText();
@@ -506,7 +517,7 @@ void MainComponent::importFile()
 		dbCon->closeDbConnection();
 		delete dbCon;
 	}
-    
+
 	FileImporter fileImporter(m_dbPath,
                               getFilesToImport(),
                               m_userSelectComboBox->getSelectedId(),
@@ -535,18 +546,18 @@ void MainComponent::exportGpxFile()
 	if (gpxExportChooser.browseForFileToSave(true))
 	{
 		File gpxExportFile (gpxExportChooser.getResult());
-        
+
 		if (gpxExportFile.existsAsFile())
 		{
 			gpxExportFile.deleteFile();
 		}
-        
+
 		m_lastExportFolder = gpxExportFile.getParentDirectory().getFullPathName();
-        
+
 		DBG(m_sqlQuery->getText());
 		FileExporter fileExporter(m_dbPath, gpxExportFile.getFullPathName(),
                                   m_sqlQuery->getText());
-        
+
 		if (fileExporter.runThread())
 		{
 			setStatusMessage(fileExporter.getStatus());
@@ -558,7 +569,7 @@ void MainComponent::exportGpxFile()
 }
 
 //==============================================================================
-// Database 
+// Database
 //==============================================================================
 
 void MainComponent::createNewDb()
@@ -597,6 +608,7 @@ void MainComponent::setCurrentWorkingDb(const File& file)
 	m_userSelectComboBox->setEnabled(true);
 	m_btSelectFile->setEnabled(true);
     m_lastDBFolder = file.getParentDirectory().getFullPathName();
+
 	DBG(m_dbPath);
 }
 
@@ -718,7 +730,52 @@ void MainComponent::importLocations()
 
 		setStatusMessage("Imported GML file with " + String(locsNew.size()) + " locations!");
 	}
-	
+
+}
+
+void MainComponent::setDBStats()
+{
+	DBConnector* dbCon = new DBConnector(m_dbPath);
+	dbCon->setupDbConnection();
+
+	StringArray tableNames;
+	if(dbCon->getTableNames(tableNames))
+		setStatusMessage("");
+	else
+		setStatusMessage("");
+
+	StringArray stats;
+	stats.add("Tables:\n-------\n");
+	for (int i = 0; i < tableNames.size(); ++i) {
+		String st = tableNames[i];
+		int count = 0;
+		if(! dbCon->getCountTable(st, count))
+			setStatusMessage("");
+
+		st << ": " << count << " entries" << newLine;
+		stats.add(st);
+	}
+
+	dbCon->closeDbConnection();
+
+	stats.add("\n");
+	File dbFile(m_dbPath);
+	String fileStats = "DB size: ";
+	double dbSize = dbFile.getSize();
+//	fileStats << String(dbSize ) << newLine;
+	String units[] = { "Bytes", "KB", "MB", "GB"};
+	int k = 0;
+	while(dbSize > 1024 && k < 4 )
+	{
+		dbSize /= 1024;
+		++k;
+	}
+	fileStats << String(dbSize) << " " << units[k] << newLine;
+
+	stats.add(fileStats);
+
+	m_dbStatsComp->setStats(stats);
+
 }
 //==============================================================================
 // Menubar
@@ -745,13 +802,15 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 		PopupMenu recentFiles;
 		StoredSettings::getInstance()->recentFiles.createPopupMenuItems (recentFiles, 100, true, true);
 		menu.addSubMenu ("Recent", recentFiles);
-        
+
+        menu.addSeparator();
+        menu.addCommandItem(commandManager, openDBStats);
+
         menu.addSeparator();
         menu.addCommandItem(commandManager, useLastDatabase);
 
         menu.addSeparator();
         menu.addCommandItem(commandManager, useOldStyleRadius);
-
 
 #if ! JUCE_MAC
         menu.addSeparator();
@@ -810,7 +869,8 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 			showHelp,
 			openExportLocations,
 			openImportLocations,
-			openOnlineHelp
+			openOnlineHelp,
+			openDBStats
 	};
 
 	commands.addArray (ids, numElementsInArray (ids));
@@ -834,13 +894,17 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
         result.setInfo("Autoload last DB", "Use last open database on startup", generalCategory, 0);
         result.setTicked(m_useLastDB);
         break;
-            
+
     case useOldStyleRadius:
         result.setInfo("Use degree radius", "Use old style radius in degrees.", generalCategory, 0);
         result.setTicked(m_useRadiusDegree);
         break;
 
-	case openCreateNewDb:
+    case openDBStats:
+        result.setInfo("Show DB stats", "Show database stats.", generalCategory, 0);
+        break;
+
+    case openCreateNewDb:
 		result.setInfo("New", "Create an new database", generalCategory, 0);
         result.addDefaultKeypress('n', ModifierKeys::commandModifier);
 		break;
@@ -903,6 +967,9 @@ bool MainComponent::perform (const InvocationInfo& info)
     case useOldStyleRadius:
         toggleRadiusDegree();
         break;
+    case openDBStats:
+        showDBStats();
+        break;
 	case openCreateNewDb:
 		createNewDb();
 		break;
@@ -950,7 +1017,7 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MainComponent" componentName=""
                  parentClasses="public Component, public ButtonListener, public MenuBarModel, public ApplicationCommandTarget"
-                 constructorParams="MainWindow* mainWindow" variableInitialisers="m_mainWindow(mainWindow),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty)"
+                 constructorParams="MainWindow* mainWindow" variableInitialisers="m_mainWindow(mainWindow),&#10;m_lastImportedFile(String::empty),&#10;m_dbPath(String::empty),&#10;m_selectedUser(0),&#10;m_lastImportFolder(String::empty),&#10;m_selectedFileToImport(String::empty),&#10;m_selectFolder(false),&#10;m_lastExportFolder(String::empty),&#10;m_lastDBFolder(String::empty),&#10;"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330000013"
                  fixedSize="1" initialWidth="630" initialHeight="300">
   <BACKGROUND backgroundColour="ff959d9d">

@@ -3,7 +3,7 @@
 
   This is an automatically generated file created by the Jucer!
 
-  Creation date:  2 Feb 2012 11:01:52pm
+  Creation date:  25 Feb 2012 2:01:58pm
 
   Be careful when adding custom code to these files, as only the code within
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
@@ -19,13 +19,14 @@
   ==============================================================================
 */
 
-#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_EE8D1629__
-#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_EE8D1629__
+#ifndef __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_AF64F8FD__
+#define __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_AF64F8FD__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "includes.h"
 #include "DBConnector.h"
 #include "HelpComponent.h"
+#include "DBStatsComponent.h"
 
 class MainWindow;
 //[/Headers]
@@ -75,6 +76,8 @@ public:
     void exportLocations();
     void importLocations();
     void showOnlineHelp();
+    void showDBStats();
+    void setDBStats();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -88,7 +91,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    
+
     MainWindow* m_mainWindow;
 	//DBConnector* m_dbCon;
 	String m_lastImportedFile;
@@ -101,6 +104,7 @@ private:
 	String m_lastExportFolder;
     String m_lastDBFolder;
 	HelpComponent* m_helpComponent;
+	DBStatsComponent* m_dbStatsComp;
 
 	void getAllCommands (Array <CommandID>& commands);
 	const PopupMenu getMenuForIndex (int topLevelMenuIndex,
@@ -124,7 +128,8 @@ private:
 		showHelp		       	= 0x2007,
 		openExportLocations		= 0x2008,
 		openImportLocations		= 0x2009,
-		openOnlineHelp			= 0x2010
+		openOnlineHelp			= 0x2010,
+		openDBStats				= 0x2011
 	};
 
 	bool m_useNativeFileChooser;
@@ -158,4 +163,4 @@ private:
 };
 
 
-#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_EE8D1629__
+#endif   // __JUCER_HEADER_MAINCOMPONENT_MAINCOMPONENT_AF64F8FD__

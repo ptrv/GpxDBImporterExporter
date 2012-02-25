@@ -55,6 +55,11 @@
             file="data/sql/insert_predefineddata.sql"/>
     </GROUP>
     <GROUP id="f7dPoBd5m" name="Source">
+      <FILE id="LBbfAa" name="DBStatsComponent.cpp" compile="1" resource="0"
+            file="Source/DBStatsComponent.cpp"/>
+      <FILE id="Y1Evub" name="DBStatsComponent.h" compile="0" resource="0"
+            file="Source/DBStatsComponent.h"/>
+      <FILE id="G8YYzb" name="TextConsole.h" compile="0" resource="0" file="Source/TextConsole.h"/>
       <FILE id="ac6iiP" name="GMLUtils.cpp" compile="1" resource="0" file="Source/GMLUtils.cpp"/>
       <FILE id="gOhy3R" name="GMLUtils.h" compile="0" resource="0" file="Source/GMLUtils.h"/>
       <FILE id="mcUSVv" name="HelperFunctions.cpp" compile="1" resource="0"

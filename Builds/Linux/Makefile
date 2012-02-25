@@ -43,6 +43,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/DBStatsComponent_d8024fa5.o \
   $(OBJDIR)/GMLUtils_ad8b8d14.o \
   $(OBJDIR)/HelperFunctions_844316e.o \
   $(OBJDIR)/Distance_4d9bc3fe.o \
@@ -83,6 +84,11 @@ clean:
 	-@rm -f $(OUTDIR)/$(TARGET)
 	-@rm -rf $(OBJDIR)/*
 	-@rm -rf $(OBJDIR)
+
+$(OBJDIR)/DBStatsComponent_d8024fa5.o: ../../Source/DBStatsComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling DBStatsComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/GMLUtils_ad8b8d14.o: ../../Source/GMLUtils.cpp
 	-@mkdir -p $(OBJDIR)

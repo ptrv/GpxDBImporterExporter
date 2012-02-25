@@ -43,6 +43,8 @@ public:
 	bool getGpsDataUnknownLocation(Array<GpsData>& gpsDataVec);
 	bool updateGpsDataLocation(int gpsdataid, int location);
 	bool getGpsDataForExport(Array<GpsData>& gpsDatas, GpsMinMax& gpsMinMax, const String& query);
+	bool getCountTable(const String& tablename, int& count);
+	bool getTableNames(StringArray& names);
 
 private:
 	String m_database;

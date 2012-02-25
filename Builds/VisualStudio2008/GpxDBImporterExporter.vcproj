@@ -166,6 +166,9 @@
         <File RelativePath="..\..\data\sql\insert_predefineddata.sql"/>
       </Filter>
       <Filter Name="Source">
+        <File RelativePath="..\..\Source\DBStatsComponent.cpp"/>
+        <File RelativePath="..\..\Source\DBStatsComponent.h"/>
+        <File RelativePath="..\..\Source\TextConsole.h"/>
         <File RelativePath="..\..\Source\GMLUtils.cpp"/>
         <File RelativePath="..\..\Source\GMLUtils.h"/>
         <File RelativePath="..\..\Source\HelperFunctions.cpp"/>
