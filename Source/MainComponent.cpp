@@ -351,7 +351,7 @@ void MainComponent::showHelpWindow()
 
 void MainComponent::showOnlineHelp()
 {
-	URL helpUrl("https://github.com/ptrv/GpxDBImporterExporter/wiki");
+	URL helpUrl("https://github.com/ptrv/GpxDBImporterExporter/wiki/Help");
 	bool openOnlineHelpOk = helpUrl.launchInDefaultBrowser();
 	if(openOnlineHelp)
 		setStatusMessage("Open online help");
@@ -768,7 +768,7 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	else if (menuIndex == 2)
 	{
 		menu.addCommandItem (commandManager, openOnlineHelp);
-		menu.addCommandItem (commandManager, showHelp);
+//		menu.addCommandItem (commandManager, showHelp);
 		menu.addSeparator();
 		menu.addCommandItem (commandManager, showAbout);
 	}
