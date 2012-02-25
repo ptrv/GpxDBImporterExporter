@@ -14,7 +14,6 @@ To change project properties, JUCE source code and Introjucer (JUCE's project cr
 
 ## TODOs
 
-* Menu option to import locations from GML file
 * Test class for DBConnector
 * More unit testing
 * More locations in GML format
