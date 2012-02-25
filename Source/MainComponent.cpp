@@ -349,6 +349,16 @@ void MainComponent::showHelpWindow()
 	DialogWindow::showModalDialog("Help", m_helpComponent, nullptr, color, true);
 }
 
+void MainComponent::showOnlineHelp()
+{
+	URL helpUrl("https://github.com/ptrv/GpxDBImporterExporter/wiki");
+	bool openOnlineHelpOk = helpUrl.launchInDefaultBrowser();
+	if(openOnlineHelp)
+		setStatusMessage("Open online help");
+	else
+		setStatusMessage("Open online help failed!");
+}
+
 void MainComponent::openDbFileChooser()
 {
 	FileChooser dbChooser("Select a database file...", File::nonexistent,
@@ -757,6 +767,7 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	}
 	else if (menuIndex == 2)
 	{
+		menu.addCommandItem (commandManager, openOnlineHelp);
 		menu.addCommandItem (commandManager, showHelp);
 		menu.addSeparator();
 		menu.addCommandItem (commandManager, showAbout);
@@ -798,7 +809,8 @@ void MainComponent::getAllCommands (Array <CommandID>& commands)
 			showAbout,
 			showHelp,
 			openExportLocations,
-			openImportLocations
+			openImportLocations,
+			openOnlineHelp
 	};
 
 	commands.addArray (ids, numElementsInArray (ids));
@@ -867,6 +879,10 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 		result.addDefaultKeypress ('e', ModifierKeys::commandModifier);
 		break;
 
+	case openOnlineHelp:
+		result.setInfo ("Online help", "Opens online help", generalCategory, 0);
+		result.addDefaultKeypress ('g', ModifierKeys::commandModifier);
+		break;
 
 	default:
 		break;
@@ -905,11 +921,12 @@ bool MainComponent::perform (const InvocationInfo& info)
 	case showAbout:
 		showAboutWindow();
 		break;
-
 	case showHelp:
 		showHelpWindow();
 		break;
-
+	case openOnlineHelp:
+		showOnlineHelp();
+		break;
 
 	default:
 		return false;

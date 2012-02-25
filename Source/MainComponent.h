@@ -74,6 +74,7 @@ public:
     const char getBoundingsType();
     void exportLocations();
     void importLocations();
+    void showOnlineHelp();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -122,7 +123,8 @@ private:
 		showAbout              	= 0x2006,
 		showHelp		       	= 0x2007,
 		openExportLocations		= 0x2008,
-		openImportLocations		= 0x2009
+		openImportLocations		= 0x2009,
+		openOnlineHelp			= 0x2010
 	};
 
 	bool m_useNativeFileChooser;
