@@ -4,6 +4,14 @@ GpxDBImporterExporter is an application to import GPX files int an sqlite3 datab
 
 Thanks to Daniel Belasco Rogers for the location list.
 
+## Release notes
+
+### v1.5.0
+
+* Major GUI overhaul.
+* Started with unit testing.
+* A lot of under the hood stuff.
+
 ## Screenshot
 
 ![GpxDBImporterExporter](https://github.com/ptrv/GpxDBImporterExporter/raw/master/screenshot.png "GpxDBImporterExporter")
@@ -17,3 +25,4 @@ To change project properties, JUCE source code and Introjucer (JUCE's project cr
 * Test class for DBConnector
 * More unit testing
 * More locations in GML format
+* Refactor MainComponent, FileImporter and FileExporter
