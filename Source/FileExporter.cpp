@@ -103,7 +103,6 @@ void FileExporter::getGpsSegmentsAndPoints(Array<GpsData>& data, Array< Array<Gp
 void FileExporter::generateGpxFile(Array< Array<GpsData> >& segAndPoint, GpsMinMax gpsMinMax, int size)
 {
     setStatusMessage("Generating Gpx file structure...");
-    DBG(size);
 	// -----------------------------------------------------------------------------
 	// Header
 	// -----------------------------------------------------------------------------
