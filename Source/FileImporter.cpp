@@ -67,7 +67,7 @@ void FileImporter::run()
 			int lastFileId = -1;
 			if (!dbCon->getLastId(lastFileId, "file"))
 			{
-				std::cout << "lastFileId = " << lastFileId << std::endl;
+//				std::cout << "lastFileId = " << lastFileId << std::endl;
 			}
 			++lastFileId;
 			MD5 md5hash(m_xmlFiles[fileNum]);

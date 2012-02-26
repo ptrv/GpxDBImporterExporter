@@ -492,10 +492,10 @@ void MainComponent::importFile()
 	{
 		String tmpUsertext = m_userSelectComboBox->getText();
 		// small hack for empty combobox
-		if(tmpUsertext[0] == '\0')
+		if(tmpUsertext[0] == '\0' || tmpUsertext == String::empty)
 		{
-			String title = "Error";
-			String message = "You have to enter a name!";
+			String title = "Error!";
+			String message = "Please enter a name!";
 			AlertWindow::showMessageBox(AlertWindow::WarningIcon, title, message, "OK");
 			return;
 		}
