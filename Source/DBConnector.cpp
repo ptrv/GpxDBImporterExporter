@@ -538,46 +538,51 @@ bool DBConnector::commitTransaction()
 }
 bool DBConnector::executeSqlScript(const File& sqlFile)
 {
-	bool result = false;
 	String sqlScriptString = sqlFile.loadFileAsString();
-	//DBG_VAL(sqlScriptString);
-	Array<String> tmpSqlQueries;
-	String tmpStr = "";
-
-	for (int i = 0; i < sqlScriptString.length(); ++i) {
-		if (sqlScriptString[i] != ';')
-		{
-			tmpStr += sqlScriptString[i];
-		}
-		else
-		{
-			tmpSqlQueries.add(tmpStr);
-			tmpStr = "";
-		}
-	}
-
-	
-//		sqlite3_transaction trans(*m_dbconn);
-//		{
-
-        for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
-			try {
-			sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
-			//DBG_VAL(tmpSqlQueries[i]);
-			cmd.executenonquery();
-			}
-			CATCHDBERRORS
-			result = true;
-		}
-//		}
-//		trans.commit();
-		//result = true;
-//    }
-    
-
-	return result;
+	return executeSqlString(sqlScriptString);
 }
 
+bool DBConnector::executeSqlString(const String& sqlString)
+{
+	bool result = false;
+//		String sqlScriptString = sqlFile.loadFileAsString();
+		//DBG_VAL(sqlScriptString);
+		Array<String> tmpSqlQueries;
+		String tmpStr = "";
+
+		for (int i = 0; i < sqlString.length(); ++i) {
+			if (sqlString[i] != ';')
+			{
+				tmpStr += sqlString[i];
+			}
+			else
+			{
+				tmpSqlQueries.add(tmpStr);
+				tmpStr = "";
+			}
+		}
+
+
+	//		sqlite3_transaction trans(*m_dbconn);
+	//		{
+
+	        for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
+				try {
+				sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
+				//DBG_VAL(tmpSqlQueries[i]);
+				cmd.executenonquery();
+				}
+				CATCHDBERRORS
+				result = true;
+			}
+	//		}
+	//		trans.commit();
+			//result = true;
+	//    }
+
+
+		return result;
+}
 bool DBConnector::getGpsDataUnknownLocation(Array<GpsData>& gpsDataVec)
 {
     bool result = false;

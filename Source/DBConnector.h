@@ -40,6 +40,7 @@ public:
 	void beginTransaction();
 	bool commitTransaction();
 	bool executeSqlScript(const File& sqlFile);
+	bool executeSqlString(const String& sqlString);
 	bool getGpsDataUnknownLocation(Array<GpsData>& gpsDataVec);
 	bool updateGpsDataLocation(int gpsdataid, int location);
 	bool getGpsDataForExport(Array<GpsData>& gpsDatas, GpsMinMax& gpsMinMax, const String& query);
