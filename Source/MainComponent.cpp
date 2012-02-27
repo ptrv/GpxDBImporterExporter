@@ -356,7 +356,7 @@ void MainComponent::showOnlineHelp()
 {
 	URL helpUrl("https://github.com/ptrv/GpxDBImporterExporter/wiki/Help");
 	bool openOnlineHelpOk = helpUrl.launchInDefaultBrowser();
-	if(openOnlineHelp)
+	if(openOnlineHelpOk)
 		setStatusMessage("Open online help");
 	else
 		setStatusMessage("Open online help failed!");

@@ -17,7 +17,7 @@
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"
                        headerPath="../../libs/sqlite3x" defines="UNIT_TESTS=1"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="GpxDBImporterExporter"
-                       osxSDK="10.5 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"
+                       osxSDK="10.6 SDK" osxCompatibility="10.4 SDK" osxArchitecture="default"
                        headerPath="../../libs/sqlite3x"/>
       </CONFIGURATIONS>
     </XCODE_MAC>

@@ -9,7 +9,7 @@ namespace BinaryData
 {
 
 //================== citydefs.gml ==================
-static const unsigned char temp_454d276[] =
+static const unsigned char temp_337e3123[] =
 "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
 "<ogr:FeatureCollection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ogr=\"http://ogr.maptools.org/\" xmlns:gml=\"http://www.opengis.net/gml\" xsi:schemaLocation=\"http://ogr.maptools.org/ citydefs.xsd\">\n"
 "  <gml:boundedBy>\n"
@@ -378,10 +378,10 @@ static const unsigned char temp_454d276[] =
 "  </gml:featureMember>\n"
 "</ogr:FeatureCollection>\n";
 
-const char* citydefs_gml = (const char*) temp_454d276;
+const char* citydefs_gml = (const char*) temp_337e3123;
 
 //================== locations.csv ==================
-static const unsigned char temp_805e371[] =
+static const unsigned char temp_be085a64[] =
 "number,city,country,longitude,latitude,radius\n"
 "1,'Unknown','Unknown',0.0,0.0,0.0\n"
 "2,'Berlin','Germany',13.37,52.51,0.25\n"
@@ -552,10 +552,10 @@ static const unsigned char temp_805e371[] =
 "168,'Mannheim','Germany',8.471618,49.511818,0.1\n"
 "169,'Frankfurt-Hahn Airport','Germany',7.269645,49.947258,0.02\n";
 
-const char* locations_csv = (const char*) temp_805e371;
+const char* locations_csv = (const char*) temp_be085a64;
 
 //================== create_tables.sql ==================
-static const unsigned char temp_be7d28e2[] =
+static const unsigned char temp_9a9efcd5[] =
 "CREATE TABLE user (\n"
 "\tuserid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
 "\tname TEXT NOT NULL\n"
@@ -596,7 +596,7 @@ static const unsigned char temp_be7d28e2[] =
 "\tUNIQUE (city, country)\n"
 ");\n";
 
-const char* create_tables_sql = (const char*) temp_be7d28e2;
+const char* create_tables_sql = (const char*) temp_9a9efcd5;
 
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
