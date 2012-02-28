@@ -2,8 +2,6 @@
 #ifndef _DBCONNECTORTEST_H_
 #define _DBCONNECTORTEST_H_
 
-#include "../testsuite/testdata/BinaryDataTest.cpp"
-
 class DBConnectorTest : public UnitTest {
 public:
 	DBConnectorTest() : UnitTest("DBConnector") {}
