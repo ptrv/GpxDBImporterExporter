@@ -194,6 +194,11 @@
         <File RelativePath="..\..\Source\StoredSettings.cpp"/>
         <File RelativePath="..\..\Source\StoredSettings.h"/>
       </Filter>
+      <Filter Name="testsuite">
+        <File RelativePath="..\..\testsuite\DBConnectorTest.h"/>
+        <File RelativePath="..\..\testsuite\GMLUtilsTest.h"/>
+        <File RelativePath="..\..\testsuite\HelperFunctionsTest.h"/>
+      </Filter>
       <Filter Name="sqlite3x">
         <File RelativePath="..\..\libs\sqlite3x\sqlite3.c"/>
         <File RelativePath="..\..\libs\sqlite3x\sqlite3.h"/>

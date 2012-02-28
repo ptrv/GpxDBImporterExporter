@@ -95,6 +95,13 @@
       <FILE id="hjAcsXP" name="StoredSettings.h" compile="0" resource="0"
             file="Source/StoredSettings.h"/>
     </GROUP>
+    <GROUP id="{FBE5919D-5E13-36E5-471F-624DE873B884}" name="testsuite">
+      <FILE id="vQzKBb" name="DBConnectorTest.h" compile="0" resource="0"
+            file="testsuite/DBConnectorTest.h"/>
+      <FILE id="eRfmCZ" name="GMLUtilsTest.h" compile="0" resource="0" file="testsuite/GMLUtilsTest.h"/>
+      <FILE id="bNEGmD" name="HelperFunctionsTest.h" compile="0" resource="0"
+            file="testsuite/HelperFunctionsTest.h"/>
+    </GROUP>
     <GROUP id="KifVG4Cbi" name="sqlite3x">
       <FILE id="WYLyiJ" name="sqlite3.c" compile="1" resource="0" file="libs/sqlite3x/sqlite3.c"/>
       <FILE id="pLfomG" name="sqlite3.h" compile="0" resource="0" file="libs/sqlite3x/sqlite3.h"/>
