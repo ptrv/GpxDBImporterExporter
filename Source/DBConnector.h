@@ -36,7 +36,7 @@ public:
 	bool getNameId(int& nameId, const String& name);
 	bool getGpsLocations(Array<GpsLocation>& locations);
 	bool insertFileName(int& fileid, const String& filename, const String& md5);
-	void insertGpsData(const GpsData& gpsData);
+	bool insertGpsData(const GpsData& gpsData);
 	void beginTransaction();
 	bool commitTransaction();
 	bool executeSqlScript(const File& sqlFile);

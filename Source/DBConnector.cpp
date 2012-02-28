@@ -503,17 +503,20 @@ bool DBConnector::checkIfGpsDataExsist(const String& timedate, int user)
 	CATCHDBERRORS
 	return result;
 }
-void DBConnector::insertGpsData(const GpsData& gpsData)
+bool DBConnector::insertGpsData(const GpsData& gpsData)
 {
+	bool result = false;
 	String query;
 	try{
 
 		query << "INSERT INTO gpsdata " << gpsData.getInsertList();// <<  ")";
 		sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 		cmd.executenonquery();
+		result = true;
 	}
 	CATCHDBERRORSQ(query)
 	//DBG_VAL(query);
+	return result;
 }
 
 void DBConnector::beginTransaction()

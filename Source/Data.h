@@ -27,7 +27,7 @@ public:
 	void setGpsData(int gpsdataid_,
 					double latitude_,
 					double longitude_,
-					String& time_,
+					const String& time_,
 					double elevation_,
 					int segment_,
 					int user_,
