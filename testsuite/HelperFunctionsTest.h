@@ -41,10 +41,12 @@ public:
 
 	    beginTest("IsInBoundingBox");
 
-	    Point<double> topLeft(13.1, 52.9);
-	    Point<double> bottomRight(13.9, 52.1);
-	    expect(Helper::isInBoundingBox(cX2, cY2, topLeft.x, topLeft.y,
-	    		bottomRight.x, bottomRight.y));
+	    Point<double> bottomLeft(13.1, 52.1);
+	    Point<double> topRight(13.9, 52.9);
+	    expect(Helper::isInBoundingBox(cX2, cY2, bottomLeft.x, bottomLeft.y,
+	    		topRight.x, topRight.y));
+	    expect(! Helper::isInBoundingBox(cX2, cY2, bottomLeft.x, bottomLeft.y,
+	    		topRight.x-0.7, topRight.y-0.7));
 
 
 	}

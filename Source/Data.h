@@ -62,8 +62,8 @@ struct GpsLocation
 	double radiusKm;
 	double radiusMiles;
 	double radiusNautical;
-	Point<double> topLeft;
-	Point<double> bottomRight;
+	Point<double> bottomLeft;
+	Point<double> topRight;
 	String city;
 	String country;
 	Array<Point<double> > polygon;

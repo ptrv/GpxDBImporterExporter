@@ -406,10 +406,10 @@ bool DBConnector::getGpsLocations(Array<GpsLocation>& locations)
 				location.radiusKm = reader.getdouble(6);
 				String polygonStr(CharPointer_UTF8(reader.getstring(7).data()));
 				Helper::getPointsFromPolygonString(polygonStr, location.polygon);
-				location.topLeft.setX(reader.getdouble(8));
-				location.topLeft.setY(reader.getdouble(9));
-				location.bottomRight.setX(reader.getdouble(10));
-				location.bottomRight.setY(reader.getdouble(11));
+				location.bottomLeft.setX(reader.getdouble(8));
+				location.bottomLeft.setY(reader.getdouble(9));
+				location.topRight.setX(reader.getdouble(10));
+				location.topRight.setY(reader.getdouble(11));
 				locations.add(location);
 //				DBG_VAL(location.index);
 //				DBG_VAL(location.city);

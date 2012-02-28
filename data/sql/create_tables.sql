@@ -31,9 +31,9 @@ CREATE TABLE location (
 	radius REAL,
     radiuskm REAL,
     polygon TEXT,
-    upperleftlon REAL,
-    upperleftlat REAL,
-    bottomrightlon REAL,
-    bottomrightlat REAL,
+    bottomleftlon REAL,
+    bottomleftlat REAL,
+    toprightlon REAL,
+    toprightlat REAL,
 	UNIQUE (city, country)
 );

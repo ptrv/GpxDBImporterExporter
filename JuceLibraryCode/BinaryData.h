@@ -14,7 +14,7 @@ namespace BinaryData
     const int            locations_csvSize = 7876;
 
     extern const char*   create_tables_sql;
-    const int            create_tables_sqlSize = 1063;
+    const int            create_tables_sqlSize = 1059;
 
     // If you provide the name of one of the binary resource variables above, this function will
     // return the corresponding data and its size (or a null pointer if the name isn't found).

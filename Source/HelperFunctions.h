@@ -27,8 +27,8 @@ public:
                         const char unit='K');
 
     static bool isInBoundingBox(const double lon, const double lat,
-    		const double lonTopLeft, const double latTopLeft,
-    		const double lonBottomRight, const double latBottomRight);
+    		const double lonBottomLeft, const double latBottomLeft,
+    		const double lonTopRight, const double latTopRight);
 
     static bool isInPolygon(const double lon, const double lat,
     		const Array<Point<double> >& points);

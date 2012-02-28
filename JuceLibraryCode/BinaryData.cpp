@@ -1846,10 +1846,10 @@ static const unsigned char temp_be7d28e2[] =
 "\tradius REAL,\n"
 "    radiuskm REAL,\n"
 "    polygon TEXT,\n"
-"    upperleftlon REAL,\n"
-"    upperleftlat REAL,\n"
-"    bottomrightlon REAL,\n"
-"    bottomrightlat REAL,\n"
+"    bottomleftlon REAL,\n"
+"    bottomleftlat REAL,\n"
+"    toprightlon REAL,\n"
+"    toprightlat REAL,\n"
 "\tUNIQUE (city, country)\n"
 ");\n";
 
@@ -1870,7 +1870,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0x95fa29a5:
         case 0xd6a3c5a3:  numBytes = 7876; return locations_csv;
         case 0xb1f7f017:
-        case 0x2d7e39eb:  numBytes = 1063; return create_tables_sql;
+        case 0x2d7e39eb:  numBytes = 1059; return create_tables_sql;
         default: break;
     }
 

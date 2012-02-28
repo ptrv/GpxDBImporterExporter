@@ -34,10 +34,10 @@ int Helper::findLocation(const Array<GpsLocation>& locations,
 				break;
 			case 'B':
 				if(isInBoundingBox(lon, lat,
-						locations[i].topLeft.getX(),
-						locations[i].topLeft.getY(),
-						locations[i].bottomRight.getX(),
-						locations[i].bottomRight.getY()))
+						locations[i].bottomLeft.getX(),
+						locations[i].bottomLeft.getY(),
+						locations[i].topRight.getX(),
+						locations[i].topRight.getY()))
 				{
 					locationId = locations[i].index;
 					break;
@@ -71,22 +71,22 @@ bool Helper::isInCircle2(const double centreX, const double centreY,
 }
 
 bool Helper::isInBoundingBox(const double lon, const double lat,
-		const double lonTopLeft, const double latTopLeft,
-		const double lonBottomRight, const double latBottomRight)
+		const double lonBottomLeft, const double latBottomLeft,
+		const double lonTopRight, const double latTopRight)
 {
 	//checks to see if bounding box crosses 180 degrees
-	  if(lonTopLeft > lonBottomRight)
+	  if(lonBottomLeft > lonTopRight)
 	  {
-	      if(lonTopLeft >= lon && lonBottomRight <= lon
-	         && latTopLeft >= lat && latBottomRight <= lat)
+	      if(lonBottomLeft >= lon && lonTopRight <= lon
+	         && latTopRight >= lat && latBottomLeft <= lat)
 	      {
 	    	  return true;
 	      }
 	  }
 	  else
 	  {
-	      if(lonTopLeft <= lon && lonBottomRight >= lon
-	        && latTopLeft >= lat && latBottomRight <= lat)
+	      if(lonBottomLeft <= lon && lonTopRight >= lon
+	        && latBottomLeft <= lat && latTopRight >= lat)
 	      {
 	    	  return true;
 	       }
