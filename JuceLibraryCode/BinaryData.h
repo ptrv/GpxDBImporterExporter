@@ -8,7 +8,7 @@
 namespace BinaryData
 {
     extern const char*   citydefs_gml;
-    const int            citydefs_gmlSize = 15192;
+    const int            citydefs_gmlSize = 120104;
 
     extern const char*   locations_csv;
     const int            locations_csvSize = 7876;
