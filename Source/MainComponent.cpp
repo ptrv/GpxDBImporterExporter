@@ -336,13 +336,14 @@ void MainComponent::setStatusMessage(const String& statusMessage)
 void MainComponent::showAboutWindow()
 {
 	String title = ProjectInfo::projectName;
-	title << " Version " << ProjectInfo::versionString;
-	String message = RC_COMPANY_STR;
-	message += ". All rights reserved.\n";
-    message += "http://petervasil.net\n";
-    message += "http://github.com/ptrv/GpxDBImporterExporter\n\n";
-    message += "JUCE v" + String(JUCE_MAJOR_VERSION) + "." +
-    		String(JUCE_MINOR_VERSION) + "." + String(JUCE_BUILDNUMBER);
+	String message = "Version: ";
+	message << ProjectInfo::versionString << newLine << newLine;
+	message << RC_COMPANY_STR;
+	message << ". All rights reserved." << newLine;
+    message << "http://petervasil.net" << newLine;
+    message << "http://github.com/ptrv/GpxDBImporterExporter" << newLine << newLine;
+    message << "JUCE v" << String(JUCE_MAJOR_VERSION) << "." <<
+    		String(JUCE_MINOR_VERSION) << "." << String(JUCE_BUILDNUMBER);
 	AlertWindow::showMessageBox(AlertWindow::InfoIcon, title, message, "OK");
 }
 
