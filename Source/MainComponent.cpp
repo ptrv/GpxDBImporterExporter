@@ -588,6 +588,9 @@ void MainComponent::createNewDb()
 
 		setCurrentWorkingDb(dbFile);
 
+		m_userSelectComboBox->clear(false);
+		m_userSelectComboBox->setText("");
+
 		DBConnector* dbCon = new DBConnector(dbFile.getFullPathName());
 		dbCon->setupDbConnection();
 		dbCon->createNewDb();
