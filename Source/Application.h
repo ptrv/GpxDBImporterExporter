@@ -62,7 +62,8 @@ public:
 			runner.setAssertOnFailure(false);
 			runner.runAllTests();
 
-			JUCEApplication::getInstance()->quit();
+			quit();
+            return;
 		}
 #endif
 		// just create the main window...
