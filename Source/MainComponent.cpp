@@ -823,10 +823,10 @@ const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*m
 	}
 	else if (menuIndex == 1)
 	{
-		menu.addCommandItem(commandManager, openExecuteSql);
-		menu.addCommandItem(commandManager, openUpdateLocations);
 		menu.addCommandItem(commandManager, openImportLocations);
 		menu.addCommandItem(commandManager, openExportLocations);
+		menu.addCommandItem(commandManager, openUpdateLocations);
+		menu.addCommandItem(commandManager, openExecuteSql);
 	}
 	else if (menuIndex == 2)
 	{
