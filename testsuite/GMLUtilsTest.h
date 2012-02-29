@@ -63,20 +63,22 @@ public:
 	    if(! sizeBothLocsEquals)
 	    	return;
 
-	    double epsilon = 0.000001;
+	    double epsilon = 0.0000000000001;
 	    for (int i = 0; i < locs.size(); ++i) {
-		    expectEquals(locs[i].city, locs2[i].city);
-		    expectEquals(locs[i].country, locs2[i].country);
-		    expect(isEqualWithEpsilon(locs[i].polygon[0].x, locs2[i].polygon[0].x,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[0].y, locs2[i].polygon[0].y,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[1].x, locs2[i].polygon[1].x,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[1].y, locs2[i].polygon[1].y,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[2].x, locs2[i].polygon[2].x,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[2].y, locs2[i].polygon[2].y,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[3].x, locs2[i].polygon[3].x,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[3].y, locs2[i].polygon[3].y,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[4].x, locs2[i].polygon[4].x,epsilon));
-		    expect(isEqualWithEpsilon(locs[i].polygon[4].y, locs2[i].polygon[4].y,epsilon));
+            String msg = "Location " + String(i) + ": ";
+		    expectEquals(locs[i].city, locs2[i].city, (msg+"city"));
+		    expectEquals(locs[i].country, locs2[i].country, (msg+"country"));
+            msg << locs[i].city << ": ";
+		    expect(isEqualWithEpsilon(locs[i].polygon[0].x, locs2[i].polygon[0].x,epsilon), (msg+"polygon 0 x"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[0].y, locs2[i].polygon[0].y,epsilon), (msg+"polygon 0 y"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[1].x, locs2[i].polygon[1].x,epsilon), (msg+"polygon 1 x"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[1].y, locs2[i].polygon[1].y,epsilon), (msg+"polygon 1 y"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[2].x, locs2[i].polygon[2].x,epsilon), (msg+"polygon 2 x"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[2].y, locs2[i].polygon[2].y,epsilon), (msg+"polygon 2 y"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[3].x, locs2[i].polygon[3].x,epsilon), (msg+"polygon 3 x"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[3].y, locs2[i].polygon[3].y,epsilon), (msg+"polygon 3 y"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[4].x, locs2[i].polygon[4].x,epsilon), (msg+"polygon 4 x"));
+		    expect(isEqualWithEpsilon(locs[i].polygon[4].y, locs2[i].polygon[4].y,epsilon), (msg+"polygon 4 y"));
 	    }
 
         if(testFile.existsAsFile())

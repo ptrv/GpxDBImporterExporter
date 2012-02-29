@@ -195,6 +195,7 @@
         <File RelativePath="..\..\Source\StoredSettings.h"/>
       </Filter>
       <Filter Name="testsuite">
+        <File RelativePath="..\..\testsuite\TestRunner.h"/>
         <File RelativePath="..\..\testsuite\DBConnectorTest.h"/>
         <File RelativePath="..\..\testsuite\GMLUtilsTest.h"/>
         <File RelativePath="..\..\testsuite\HelperFunctionsTest.h"/>

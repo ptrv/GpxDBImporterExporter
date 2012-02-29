@@ -138,7 +138,7 @@ String Helper::getPolygonStringFromPoints(const Array<Point<double> >& points)
 	String polyStr = "";
 	for (int j = 0; j < points.size(); ++j) {
 		const Point<double>& p = points[j];
-		polyStr << p.x << "," << p.y;
+		polyStr << String(p.x, 16) << "," << String(p.y, 16);
 		if(j < points.size()-1)
 		{
 			polyStr << " ";

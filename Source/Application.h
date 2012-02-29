@@ -15,6 +15,9 @@
 #include "includes.h"
 #include "MainComponent.h"
 #include "MainWindow.h"
+#if UNIT_TESTS
+#include "../testsuite/TestRunner.h"
+#endif
 
 //==============================================================================
 
@@ -58,10 +61,7 @@ public:
 #if UNIT_TESTS
 		if(commandLine.contains("--test"))
 		{
-			UnitTestRunner runner;
-			runner.setAssertOnFailure(false);
-			runner.runAllTests();
-
+            TestRunner::doTests();
 			quit();
             return;
 		}

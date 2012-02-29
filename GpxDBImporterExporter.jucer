@@ -96,6 +96,7 @@
             file="Source/StoredSettings.h"/>
     </GROUP>
     <GROUP id="{FBE5919D-5E13-36E5-471F-624DE873B884}" name="testsuite">
+      <FILE id="oJRtHe" name="TestRunner.h" compile="0" resource="0" file="testsuite/TestRunner.h"/>
       <FILE id="vQzKBb" name="DBConnectorTest.h" compile="0" resource="0"
             file="testsuite/DBConnectorTest.h"/>
       <FILE id="eRfmCZ" name="GMLUtilsTest.h" compile="0" resource="0" file="testsuite/GMLUtilsTest.h"/>
