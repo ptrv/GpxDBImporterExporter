@@ -44,12 +44,16 @@ public:
 
 	    beginTest("write");
 
-	    bool writeOk = GMLUtils::write(locs,
-	    		File::getSpecialLocation(File::tempDirectory).getChildFile("testFile.gml").getFullPathName());
+	    File testFile(File::getSpecialLocation(File::tempDirectory).getChildFile("testFile.gml"));
+        
+        if(testFile.existsAsFile())
+            testFile.deleteFile();
+        
+        bool writeOk = GMLUtils::write(locs, testFile.getFullPathName());
 
 	    expect(writeOk, "Could not write file");
 
-	    File testFile(File::getSpecialLocation(File::tempDirectory).getChildFile("testFile.gml"));
+	    
 	    String testFileAsString = testFile.loadFileAsString();
 	    Array<GpsLocation> locs2 = GMLUtils::parse(testFileAsString);
 
@@ -59,7 +63,7 @@ public:
 	    if(! sizeBothLocsEquals)
 	    	return;
 
-	    double epsilon = 0.0000001;
+	    double epsilon = 0.000001;
 	    for (int i = 0; i < locs.size(); ++i) {
 		    expectEquals(locs[i].city, locs2[i].city);
 		    expectEquals(locs[i].country, locs2[i].country);
@@ -74,6 +78,9 @@ public:
 		    expect(isEqualWithEpsilon(locs[i].polygon[4].x, locs2[i].polygon[4].x,epsilon));
 		    expect(isEqualWithEpsilon(locs[i].polygon[4].y, locs2[i].polygon[4].y,epsilon));
 	    }
+
+        if(testFile.existsAsFile())
+            testFile.deleteFile();
 	}
 };
 
