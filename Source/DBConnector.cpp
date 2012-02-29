@@ -717,6 +717,7 @@ bool DBConnector::getCountTable(const String& tablename, int& count)
 	try {
 		sqlite3_command cmd(*m_dbconn, queryStr.toUTF8().getAddress());
 		count = cmd.executeint();
+		res = true;
 	}
 	CATCHDBERRORS
 	return res;

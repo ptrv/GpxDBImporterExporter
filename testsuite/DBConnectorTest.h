@@ -29,10 +29,14 @@ public:
 		expect(db->insertInitLocationDataGML(), "Insert predefined data");
 
 		beginTest("Insert user");
-		int lastRowId;
-		expect(! db->getLastId(lastRowId, "user"), "last row id should be false");
-		expectEquals(lastRowId, -1, "Last row id not -1");
-		++lastRowId;
+
+		int lastRowId = 0;
+		int count = -1;
+		expect(db->getCountTable("user", count));
+		expectEquals(count, 0);
+//		expect(! db->getLastId(lastRowId, "user"), "last row id should be false");
+//		expectEquals(lastRowId, -1, "Last row id not -1");
+//		++lastRowId;
 		expect(db->insertUser(lastRowId, userName), "could not insert user");
 		expect(db->getLastId(lastRowId, "user"), "last row id should be false");
 		expectEquals(lastRowId, 0, "Last row id not 0");
