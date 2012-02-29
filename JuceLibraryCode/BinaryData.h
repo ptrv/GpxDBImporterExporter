@@ -7,6 +7,9 @@
 
 namespace BinaryData
 {
+    extern const char*   gpxdbimporterexporter_icon_png;
+    const int            gpxdbimporterexporter_icon_pngSize = 124549;
+
     extern const char*   citydefs_gml;
     const int            citydefs_gmlSize = 120104;
 

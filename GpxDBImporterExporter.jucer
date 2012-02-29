@@ -11,7 +11,8 @@
               jucerVersion="3.0.0">
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" vstFolder="~/SDKs/vstsdk2.4" rtasFolder="~/SDKs/PT_80_SDK"
-               juceFolder="../Common/juce" objCExtraSuffix="ZnrkkT">
+               juceFolder="../Common/juce" objCExtraSuffix="ZnrkkT" bigIcon="pDxgUa"
+               smallIcon="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
                        osxSDK="default" osxCompatibility="default" osxArchitecture="default"
@@ -22,7 +23,8 @@
       </CONFIGURATIONS>
     </XCODE_MAC>
     <VS2008 targetFolder="Builds/VisualStudio2008" vstFolder="c:\SDKs\vstsdk2.4"
-            rtasFolder="c:\SDKs\PT_80_SDK" juceFolder="../Common/juce" libraryType="1">
+            rtasFolder="c:\SDKs\PT_80_SDK" juceFolder="../Common/juce" libraryType="1"
+            bigIcon="pDxgUa">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
                        headerPath="../../libs/sqlite3x" winWarningLevel="4" generateManifest="1"
@@ -32,7 +34,7 @@
       </CONFIGURATIONS>
     </VS2008>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/SDKs/vstsdk2.4" juceFolder="../Common/juce"
-                extraLinkerFlags="" extraCompilerFlags="" extraDefs="">
+                extraLinkerFlags="" extraCompilerFlags="" extraDefs="" bigIcon="pDxgUa">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
                        headerPath="../../libs/sqlite3x" libraryPath="/usr/X11R6/lib/"
@@ -44,6 +46,8 @@
   </EXPORTFORMATS>
   <MAINGROUP id="TmWdmrNln" name="GpxDBImporterExporter">
     <GROUP id="{0FF7D83A-B8D3-039D-BDEE-5438D4733FCA}" name="BinaryData">
+      <FILE id="pDxgUa" name="gpxdbimporterexporter_icon.png" compile="0"
+            resource="1" file="data/icon/gpxdbimporterexporter_icon.png"/>
       <FILE id="QOM8GJ" name="citydefs.gml" compile="0" resource="1" file="data/citydefs.gml"/>
       <FILE id="Bh6Z8R" name="locations.csv" compile="0" resource="1" file="data/locations.csv"/>
     </GROUP>
