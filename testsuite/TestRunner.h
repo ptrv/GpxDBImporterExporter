@@ -9,6 +9,7 @@
 #ifndef GpxDBImporterExporter_TestRunner_h
 #define GpxDBImporterExporter_TestRunner_h
 
+static const char* delimLine = "-----------------------------------------------------------------";
 class TestRunner {
 private:
     TestRunner(){}
@@ -46,7 +47,7 @@ public:
         
         //----------------------------------------------------------------------
         String logMsg;
-        logMsg << newLine << "-----------------------------------------------------------------" << newLine;
+        logMsg << newLine << delimLine << newLine;
         if (numTestsFailed > 0)
         {   // return the number of failed tests
             JUCEApplication::getInstance()->setApplicationReturnValue(numTestsFailed);
@@ -57,7 +58,7 @@ public:
         {
             logMsg << "All " << numTestsPassed << " tests passed." << newLine;
         }
-        logMsg << "-----------------------------------------------------------------" << newLine;
+        logMsg << delimLine << newLine;
         Logger::writeToLog(logMsg);
 
     }
