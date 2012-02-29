@@ -42,16 +42,18 @@ public:
 
 		setContentOwned (contentComp, true);
 
+        int toolbarHeight = 0;
 #ifdef JUCE_MAC
         setMenuBar(nullptr);
         MenuBarModel::setMacMainMenu(contentComp);
+        toolbarHeight = getLookAndFeel().getDefaultMenuBarHeight();
 #else
         setMenuBar (contentComp);
 #endif
 
 		contentComp->setApplicationCommandManagerToWatch (&commandManager);
 
-		centreWithSize (getWidth(), getHeight());
+        centreWithSize (getWidth(), getHeight()-toolbarHeight);
 
 		setVisible (true);
 	}
