@@ -9,7 +9,7 @@ namespace BinaryData
 {
 
 //================== citydefs.gml ==================
-static const unsigned char temp_454d276[] =
+static const unsigned char temp_337e3123[] =
 { 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,110,99,111,100,105,110,103,61,34,117,116,102,45,56,34,32,63,62,10,60,111,103,114,58,70,101,97,116,117,114,101,67,111,108,108,101,99,116,105,111,110,10,32,32,32,32,32,120,109,108,
 110,115,58,120,115,105,61,34,104,116,116,112,58,47,47,119,119,119,46,119,51,46,111,114,103,47,50,48,48,49,47,88,77,76,83,99,104,101,109,97,45,105,110,115,116,97,110,99,101,34,10,32,32,32,32,32,120,115,105,58,115,99,104,101,109,97,76,111,99,97,116,105,
 111,110,61,34,104,116,116,112,58,47,47,111,103,114,46,109,97,112,116,111,111,108,115,46,111,114,103,47,32,99,105,116,121,100,101,102,115,46,120,115,100,34,10,32,32,32,32,32,120,109,108,110,115,58,111,103,114,61,34,104,116,116,112,58,47,47,111,103,114,
@@ -1635,10 +1635,10 @@ static const unsigned char temp_454d276[] =
 60,47,111,103,114,58,99,111,117,110,116,114,121,62,10,32,32,32,32,60,47,111,103,114,58,99,105,116,121,100,101,102,115,62,10,32,32,60,47,103,109,108,58,102,101,97,116,117,114,101,77,101,109,98,101,114,62,10,60,47,111,103,114,58,70,101,97,116,117,114,101,
 67,111,108,108,101,99,116,105,111,110,62,10,0,0 };
 
-const char* citydefs_gml = (const char*) temp_454d276;
+const char* citydefs_gml = (const char*) temp_337e3123;
 
 //================== locations.csv ==================
-static const unsigned char temp_805e371[] =
+static const unsigned char temp_be085a64[] =
 "number,city,country,longitude,latitude,radius\n"
 "1,'Unknown','Unknown',0.0,0.0,0.0\n"
 "2,'Berlin','Germany',13.37,52.51,0.25\n"
@@ -1809,10 +1809,10 @@ static const unsigned char temp_805e371[] =
 "168,'Mannheim','Germany',8.471618,49.511818,0.1\n"
 "169,'Frankfurt-Hahn Airport','Germany',7.269645,49.947258,0.02\n";
 
-const char* locations_csv = (const char*) temp_805e371;
+const char* locations_csv = (const char*) temp_be085a64;
 
 //================== create_tables.sql ==================
-static const unsigned char temp_be7d28e2[] =
+static const unsigned char temp_9a9efcd5[] =
 "CREATE TABLE user (\n"
 "\tuserid INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n"
 "\tname TEXT NOT NULL\n"
@@ -1853,7 +1853,7 @@ static const unsigned char temp_be7d28e2[] =
 "\tUNIQUE (city, country)\n"
 ");\n";
 
-const char* create_tables_sql = (const char*) temp_be7d28e2;
+const char* create_tables_sql = (const char*) temp_9a9efcd5;
 
 
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
