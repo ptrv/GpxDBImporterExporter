@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=GpxDBImporterExporter
+Comment=GpxDBImporterExporter
+Exec=GpxDBImporterExporter
+Icon=gpxdbimporterexporter_icon.png
+Terminal=false
+Type=Application
+Categories=Application;
