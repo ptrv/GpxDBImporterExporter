@@ -8,7 +8,7 @@ public:
 
 	void runTest()
 	{
-		String userName = "John";
+		String userName = "d'Artagnan";
 
 		String gpxMD5 = "24e0b307d905c2a2b6abc3945cdd8078";
 		String gpxName = "test.gpx";
