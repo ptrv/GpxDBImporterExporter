@@ -254,7 +254,7 @@ bool DBConnector::checkIfCityExists(const String& cityname)
 		sqlite3_transaction trans(*m_dbconn);
 		{
 			String query;
-			query << "select city from location where city = '" << cityname << "';";
+			query << "select city from location where city = \"" << cityname << "\";";
 			sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
 			sqlite3_reader reader = cmd.executereader();
 			while (reader.read()) {
