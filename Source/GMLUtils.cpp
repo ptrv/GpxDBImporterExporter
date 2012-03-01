@@ -14,38 +14,38 @@ Array<GpsLocation> GMLUtils::parse(const String& gmlFile)
 	XmlDocument xmlDoc(gmlFile);
 	XmlElement* xmlRoot = xmlDoc.getDocumentElement();
 
-	 if (xmlRoot == nullptr)
-	 {
-		 String error = xmlDoc.getLastParseError();
-	 }
-	 else
-	 {
-		 int index = 0;
-		 forEachXmlChildElementWithTagName(*xmlRoot, featureMember, "gml:featureMember")
-		 {
-			 ++index;
-			 GpsLocation loc;
-			 loc.index = index;
+	if (xmlRoot == nullptr)
+	{
+		String error = xmlDoc.getLastParseError();
+	}
+	else
+	{
+		int index = 0;
+		forEachXmlChildElementWithTagName(*xmlRoot, featureMember, "gml:featureMember")
+		{
+			++index;
+			GpsLocation loc;
+			loc.index = index;
 
-			 XmlElement* citydefs = featureMember->getChildByName("ogr:citydefs");
-			 XmlElement* geometryProperty = citydefs->getChildByName("ogr:geometryProperty");
-			 XmlElement* polygon = geometryProperty->getChildByName("gml:Polygon");
-			 XmlElement* outerBoundaryIs = polygon->getChildByName("gml:outerBoundaryIs");
-			 XmlElement* linearRing = outerBoundaryIs->getChildByName("gml:LinearRing");
-			 XmlElement* coordinates = linearRing->getChildByName("gml:coordinates");
+			XmlElement* citydefs = featureMember->getChildByName("ogr:citydefs");
+			XmlElement* geometryProperty = citydefs->getChildByName("ogr:geometryProperty");
+			XmlElement* polygon = geometryProperty->getChildByName("gml:Polygon");
+			XmlElement* outerBoundaryIs = polygon->getChildByName("gml:outerBoundaryIs");
+			XmlElement* linearRing = outerBoundaryIs->getChildByName("gml:LinearRing");
+			XmlElement* coordinates = linearRing->getChildByName("gml:coordinates");
 
-			 String coordsStr = coordinates->getAllSubText();
-			 Helper::getPointsFromPolygonString(coordsStr, loc.polygon);
+			String coordsStr = coordinates->getAllSubText();
+			Helper::getPointsFromPolygonString(coordsStr, loc.polygon);
 
-			 XmlElement* city = citydefs->getChildByName("ogr:city");
-			 loc.city = city->getAllSubText();
+			XmlElement* city = citydefs->getChildByName("ogr:city");
+			loc.city = city->getAllSubText();
 
-			 XmlElement* country = citydefs->getChildByName("ogr:country");
-			 loc.country = country->getAllSubText();
-			 gpsLocVec.add(loc);
-		 }
-	 }
-	 delete xmlRoot;
+			XmlElement* country = citydefs->getChildByName("ogr:country");
+			loc.country = country->getAllSubText();
+			gpsLocVec.add(loc);
+		}
+	}
+	delete xmlRoot;
 	return gpsLocVec;
 }
 
@@ -88,7 +88,8 @@ bool GMLUtils::write(const Array<GpsLocation>& locs, const String& filePathToWri
 
 	// -------------------------------------------------------------------------
 
-	for (int i = 0; i < locs.size(); ++i) {
+	for (int i = 0; i < locs.size(); ++i)
+	{
 		XmlElement* featureMember = new XmlElement("gml:featureMember");
 		XmlElement* citydefs = new XmlElement("ogr:citydefs");
 		XmlElement* geometryProperty = new XmlElement("ogr:geometryProperty");
@@ -102,7 +103,7 @@ bool GMLUtils::write(const Array<GpsLocation>& locs, const String& filePathToWri
 		XmlElement* country = new XmlElement("ogr:country");
 
 		gml->addChildElement(featureMember);
-		citydefs->setAttribute("fid", ("F"+String(i+2)));
+		citydefs->setAttribute("fid", ("F"+String(i)));
 		featureMember->addChildElement(citydefs);
 		citydefs->addChildElement(geometryProperty);
 		geometryProperty->addChildElement(polygon);
@@ -112,7 +113,7 @@ bool GMLUtils::write(const Array<GpsLocation>& locs, const String& filePathToWri
 		coordinates->addTextElement(polyStr);
 		linearRing->addChildElement(coordinates);
 
-		pkuid->addTextElement(String(i+2));
+		pkuid->addTextElement(String(i));
 		citydefs->addChildElement(pkuid);
 		city->addTextElement(locs[i].city.toUTF8());
 		citydefs->addChildElement(city);

@@ -46,6 +46,7 @@ public:
 	bool getGpsDataForExport(Array<GpsData>& gpsDatas, GpsMinMax& gpsMinMax, const String& query);
 	bool getCountTable(const String& tablename, int& count);
 	bool getTableNames(StringArray& names);
+	StringArray getDbStats(String* status=nullptr);
 
 private:
 	String m_database;

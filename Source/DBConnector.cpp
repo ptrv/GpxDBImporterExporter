@@ -740,11 +740,57 @@ bool DBConnector::getTableNames(StringArray& names)
 				names.add(tableName);
 			}
 		}
+		res = true;
 	}
 	CATCHDBERRORS
 	return res;
 }
 
+StringArray DBConnector::getDbStats(String* status)
+{
+	setupDbConnection();
+
+	StringArray stats;
+	String statusMsg;
+	StringArray tableNames;
+	bool dbWorkOk = getTableNames(tableNames);
+
+	stats.add("Tables:\n-------\n");
+	for (int i = 0; i < tableNames.size(); ++i) {
+		String st = tableNames[i];
+		int count = 0;
+		if(! getCountTable(st, count))
+			dbWorkOk = false;
+
+		st << ": " << count << " entries" << newLine;
+		stats.add(st);
+	}
+
+	closeDbConnection();
+
+	stats.add("\n");
+	File dbFile(m_database);
+	String fileStats = "DB size: ";
+	double dbSize = dbFile.getSize();
+	//	fileStats << String(dbSize ) << newLine;
+	String units[] = { "Bytes", "KB", "MB", "GB"};
+	int k = 0;
+	while(dbSize > 1024 && k < 4 )
+	{
+		dbSize /= 1024;
+		++k;
+	}
+	fileStats << String(dbSize) << " " << units[k] << newLine;
+
+	stats.add(fileStats);
+
+	if(! dbWorkOk)
+		statusMsg = "error getting db stats";
+	if(status != nullptr && ! statusMsg.isEmpty())
+		(*status) = statusMsg;
+
+	return stats;
+}
 //==============================================================================
 #if UNIT_TESTS
 

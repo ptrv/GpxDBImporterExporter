@@ -740,43 +740,10 @@ void MainComponent::importLocations()
 void MainComponent::setDBStats()
 {
 	DBConnector* dbCon = new DBConnector(m_dbPath);
-	dbCon->setupDbConnection();
 
-	StringArray tableNames;
-	if(dbCon->getTableNames(tableNames))
-		setStatusMessage("");
-	else
-		setStatusMessage("");
-
-	StringArray stats;
-	stats.add("Tables:\n-------\n");
-	for (int i = 0; i < tableNames.size(); ++i) {
-		String st = tableNames[i];
-		int count = 0;
-		if(! dbCon->getCountTable(st, count))
-			setStatusMessage("");
-
-		st << ": " << count << " entries" << newLine;
-		stats.add(st);
-	}
-
-	dbCon->closeDbConnection();
-
-	stats.add("\n");
-	File dbFile(m_dbPath);
-	String fileStats = "DB size: ";
-	double dbSize = dbFile.getSize();
-//	fileStats << String(dbSize ) << newLine;
-	String units[] = { "Bytes", "KB", "MB", "GB"};
-	int k = 0;
-	while(dbSize > 1024 && k < 4 )
-	{
-		dbSize /= 1024;
-		++k;
-	}
-	fileStats << String(dbSize) << " " << units[k] << newLine;
-
-	stats.add(fileStats);
+	String statusMsg;
+	StringArray stats = dbCon->getDbStats(&statusMsg);
+	setStatusMessage(statusMsg);
 
 	m_dbStatsComp->setStats(stats);
 
