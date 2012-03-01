@@ -1667,4 +1667,12 @@
       <ogr:country>SG</ogr:country>
     </ogr:citydefs>
   </gml:featureMember>
+  <gml:featureMember>
+    <ogr:citydefs fid="F210">
+      <ogr:geometryProperty><gml:Polygon><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>-4.111825899309534,53.237374670599351 -4.111825899309534,53.21119427254181 -4.157099208707278,53.21119427254181 -4.157099208707278,53.237374670599351 -4.111825899309534,53.237374670599351</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>
+      <ogr:pkuid>210</ogr:pkuid>
+      <ogr:city>Bangor (Gwynedd)</ogr:city>
+      <ogr:country>GB</ogr:country>
+    </ogr:citydefs>
+  </gml:featureMember>
 </ogr:FeatureCollection>
