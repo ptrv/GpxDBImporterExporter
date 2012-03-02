@@ -9,7 +9,7 @@ public:
 	void runTest()
 	{
 		String userName = "d'Artagnan";
-
+        String cityToTest = CharPointer_UTF8 ("Saint-Martin-d\'Ard\xc3\xa8""che");
 		String gpxMD5 = "24e0b307d905c2a2b6abc3945cdd8078";
 		String gpxName = "test.gpx";
 		String gpxPathRel = "../../../testsuite/" + gpxName;
@@ -52,7 +52,7 @@ public:
 
 		beginTest("Check if city exists");
 
-		expect(db->checkIfCityExists("Berlin"));
+		expect(db->checkIfCityExists(cityToTest));
 		expect(! db->checkIfCityExists("foobar"));
 
 		beginTest("Check if file exists");
