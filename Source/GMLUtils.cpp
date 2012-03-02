@@ -76,13 +76,13 @@ bool GMLUtils::write(const Array<GpsLocation>& locs, const String& filePathToWri
 	gml->addChildElement(boundedBy);
 	boundedBy->addChildElement(box);
 	box->addChildElement(coordBottomLeft);
-	bottomLeftX->addTextElement(String(gpsMaxMin.minLon));
-	bottomLeftY->addTextElement(String(gpsMaxMin.minLat));
+	bottomLeftX->addTextElement(String(gpsMaxMin.minLon, 16));
+	bottomLeftY->addTextElement(String(gpsMaxMin.minLat, 16));
 	coordBottomLeft->addChildElement(bottomLeftX);
 	coordBottomLeft->addChildElement(bottomLeftY);
 	box->addChildElement(coordUpperRight);
-	upperRightX->addTextElement(String(gpsMaxMin.maxLon));
-	upperRightY->addTextElement(String(gpsMaxMin.maxLat));
+	upperRightX->addTextElement(String(gpsMaxMin.maxLon, 16));
+	upperRightY->addTextElement(String(gpsMaxMin.maxLat, 16));
 	coordUpperRight->addChildElement(upperRightX);
 	coordUpperRight->addChildElement(upperRightY);
 
