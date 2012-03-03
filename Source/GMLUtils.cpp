@@ -27,7 +27,7 @@ Array<GpsLocation> GMLUtils::parse(const String& gmlFile)
 			GpsLocation loc;
 			loc.index = index;
 
-			XmlElement* citydefs = featureMember->getChildByName("ogr:citydefs");
+			XmlElement* citydefs = featureMember->getChildElement(0); //
 			XmlElement* geometryProperty = citydefs->getChildByName("ogr:geometryProperty");
 			XmlElement* polygon = geometryProperty->getChildByName("gml:Polygon");
 			XmlElement* outerBoundaryIs = polygon->getChildByName("gml:outerBoundaryIs");
@@ -88,10 +88,12 @@ bool GMLUtils::write(const Array<GpsLocation>& locs, const String& filePathToWri
 
 	// -------------------------------------------------------------------------
 
+	File saveFile(filePathToWrite);
+
 	for (int i = 0; i < locs.size(); ++i)
 	{
 		XmlElement* featureMember = new XmlElement("gml:featureMember");
-		XmlElement* citydefs = new XmlElement("ogr:citydefs");
+		XmlElement* citydefs = new XmlElement("ogr:"+saveFile.getFileNameWithoutExtension());
 		XmlElement* geometryProperty = new XmlElement("ogr:geometryProperty");
 		XmlElement* polygon = new XmlElement("gml:Polygon");
 		XmlElement* outerBoundaryIs = new XmlElement("gml:outerBoundaryIs");
@@ -122,7 +124,7 @@ bool GMLUtils::write(const Array<GpsLocation>& locs, const String& filePathToWri
 	}
 	// -------------------------------------------------------------------------
 
-	File saveFile(filePathToWrite);
+
 	if(saveFile.existsAsFile())
 	{
 		saveFile.deleteFile();
