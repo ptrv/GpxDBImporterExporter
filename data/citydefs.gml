@@ -3342,4 +3342,20 @@
       <ogr:country>GB</ogr:country>
     </ogr:citydefs>
   </gml:featureMember>
+  <gml:featureMember>
+    <ogr:citydefs fid="F208">
+      <ogr:geometryProperty>
+        <gml:Polygon>
+          <gml:outerBoundaryIs>
+            <gml:LinearRing>
+              <gml:coordinates>11.0096215962076496,49.4848659198306048 11.1687641383330832,49.4848659198306048 11.1687641383330832,49.3853889703215360 11.0096215962076496,49.3853889703215360 11.0096215962076496,49.4848659198306048</gml:coordinates>
+            </gml:LinearRing>
+          </gml:outerBoundaryIs>
+        </gml:Polygon>
+      </ogr:geometryProperty>
+      <ogr:pkuid>208</ogr:pkuid>
+      <ogr:city>N&#252;rnberg</ogr:city>
+      <ogr:country>DE</ogr:country>
+    </ogr:citydefs>
+  </gml:featureMember>
 </ogr:FeatureCollection>
