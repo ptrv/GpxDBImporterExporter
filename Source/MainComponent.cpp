@@ -337,7 +337,9 @@ void MainComponent::showAboutWindow()
 {
 	String title = ProjectInfo::projectName;
 	String message = "Version: ";
-	message << ProjectInfo::versionString << newLine << newLine;
+	message << ProjectInfo::versionString << newLine;
+	message << "Build: " << BUILD_NUM << newLine;
+	message << newLine;
 	message << RC_COMPANY_STR;
 	message << ". All rights reserved." << newLine;
     message << "http://petervasil.net" << newLine;

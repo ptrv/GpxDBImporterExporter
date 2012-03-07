@@ -34,7 +34,8 @@
       </CONFIGURATIONS>
     </VS2008>
     <LINUX_MAKE targetFolder="Builds/Linux" vstFolder="~/SDKs/vstsdk2.4" juceFolder="../Common/juce"
-                extraLinkerFlags="" extraCompilerFlags="" extraDefs="" bigIcon="pDxgUa">
+                extraLinkerFlags="" extraCompilerFlags="" extraDefs="GIT_REV=&quot;\&quot;$(shell\ ../../git_rev.sh)\&quot;&quot;"
+                bigIcon="pDxgUa">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="GpxDBImporterExporter"
                        headerPath="../../libs/sqlite3x" libraryPath="/usr/X11R6/lib/"

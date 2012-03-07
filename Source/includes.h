@@ -13,4 +13,10 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#ifdef GIT_REV
+#define BUILD_NUM GIT_REV
+#else
+#define BUILD_NUM "unknown"
+#endif
+
 #endif // _DBIMPORTERHEADERS_
