@@ -6,6 +6,19 @@ Thanks to Daniel Belasco Rogers for the location list.
 
 ## Release notes
 
+### v1.6.0
+
+* Bounding boxes of locations are now polygons instead of radius in degrees.
+* New location resource format (GML).
+* Import/export locations.
+* Database statistics window.
+* Faster location update.
+* Fixes in database class.
+* Unit testing.
+* Linux install scripts.
+* Application icon.
+* Online help.
+
 ### v1.5.0
 
 * Major GUI overhaul.
