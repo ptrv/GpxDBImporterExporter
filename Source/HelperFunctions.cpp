@@ -14,7 +14,7 @@ extern double distance(double lat1, double lon1, double lat2, double lon2,
 int Helper::findLocation(const Array<GpsLocation>& locations,
 		const double lon, const double lat, const char boundingType) {
 	int locationId = 0;
-	for (unsigned int i = 0; i < locations.size(); ++i) {
+	for (int i = 0; i < locations.size(); ++i) {
 		switch (boundingType) {
 			case 'U':
 				if (isInCircle(locations[i].longitude, locations[i].latitude,
@@ -156,8 +156,8 @@ GpsMinMax Helper::getMinMaxForGpsLocations(const Array<GpsLocation>& locs)
 	double maxLon = -std::numeric_limits<double>::max();
 	double maxLat = -std::numeric_limits<double>::max();
 
-	for (unsigned int i = 0; i < locs.size(); ++i) {
-		for (unsigned int j = 0; j < locs[i].polygon.size(); ++j)
+	for (int i = 0; i < locs.size(); ++i) {
+		for (int j = 0; j < locs[i].polygon.size(); ++j)
 		{
 			double x = locs[i].polygon[j].x;
 			double y = locs[i].polygon[j].y;

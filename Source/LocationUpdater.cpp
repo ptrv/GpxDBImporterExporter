@@ -42,7 +42,7 @@ void LocationUpdater::run()
 
 	dbCon->beginTransaction();
 
-    for(unsigned int i = 0; i < gpsDataVec.size(); ++i)
+    for(int i = 0; i < gpsDataVec.size(); ++i)
     {
         int res = Helper::findLocation(gpsLocationVec,
                                gpsDataVec[i].getLongitude(),

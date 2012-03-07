@@ -480,7 +480,7 @@ const File MainComponent::getFileToImport()
 const Array<File> MainComponent::getFilesToImport()
 {
 	Array<File> filesToImport;
-	for(unsigned int i = 0; i < m_selectedFilesToImport.size(); ++i)
+	for(int i = 0; i < m_selectedFilesToImport.size(); ++i)
 	{
 		File fileToImport(m_selectedFilesToImport[i]);
 		filesToImport.add(fileToImport);
@@ -631,7 +631,7 @@ void MainComponent::openDatabase(const File& file)
 		m_userSelectComboBox->clear();
 		if (dbCon->getAvailableUsers(users))
 		{
-			for (unsigned int i = 0; i < users.size(); ++i)
+			for (int i = 0; i < users.size(); ++i)
 			{
 				m_userSelectComboBox->addItem(users[i], i+1);
 			}

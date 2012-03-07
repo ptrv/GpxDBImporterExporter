@@ -12,7 +12,7 @@ public:
 		double cY = 52.5137;
 
 		double cX = 13.474;
-		double radius = 6;
+//		double radius = 6;
 		double cY2 = 52.535;
 		double cX2 = 13.407;
 

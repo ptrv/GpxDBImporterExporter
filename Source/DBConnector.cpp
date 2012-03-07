@@ -119,7 +119,7 @@ const String GpsData::getInsertList() const
 	try {
 		sqlite3_transaction trans(*m_dbconn);
 		{
-			for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
+			for (int i = 0; i < tmpSqlQueries.size(); ++i) {
 				sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
 				cmd.executenonquery();
 				//m_dbconn->executenonquery(tmpSqlQueries[i].toUTF8().getAddress());
@@ -153,7 +153,7 @@ bool DBConnector::insertInitLocationData()
         sqlite3_transaction trans(*m_dbconn);
         {
 
-            for (unsigned int i = 1; i < tmpLocations.size(); ++i) {
+            for (int i = 1; i < tmpLocations.size(); ++i) {
                 String query = "INSERT INTO 'location' ";
                 query << "(locationid,city,country,longitude,latitude,radius)VALUES(";
                 query << tmpLocations[i];
@@ -193,7 +193,7 @@ bool DBConnector::insertInitLocationDataGML()
         sqlite3_transaction trans(*m_dbconn);
         {
 
-            for (unsigned int i = 0; i < tmpLocations.size(); ++i) {
+            for (int i = 0; i < tmpLocations.size(); ++i) {
                 String query = "INSERT INTO 'location' ";
                 query << "(locationid,city,country,polygon)VALUES(";
                 query << tmpLocations[i];
@@ -229,7 +229,7 @@ bool DBConnector::insertLocationData(Array<GpsLocation>& locs)
         sqlite3_transaction trans(*m_dbconn);
         {
 
-            for (unsigned int i = 0; i < tmpLocations.size(); ++i) {
+            for (int i = 0; i < tmpLocations.size(); ++i) {
                 String query = "INSERT INTO 'location' ";
                 query << "(city,country,polygon)VALUES(";
                 query << tmpLocations[i];
@@ -569,7 +569,7 @@ bool DBConnector::executeSqlString(const String& sqlString)
 	//		sqlite3_transaction trans(*m_dbconn);
 	//		{
 
-	        for (unsigned int i = 0; i < tmpSqlQueries.size(); ++i) {
+	        for (int i = 0; i < tmpSqlQueries.size(); ++i) {
 				try {
 				sqlite3_command cmd(*m_dbconn, std::string(tmpSqlQueries[i].toUTF8().getAddress()));
 				//DBG_VAL(tmpSqlQueries[i]);

@@ -54,7 +54,7 @@ void FileImporter::run()
 	int countGpxFiles = 0;
 	m_status = String::empty;
 
-	for(unsigned int fileNum = 0; fileNum < m_xmlFiles.size(); ++fileNum)
+	for(int fileNum = 0; fileNum < m_xmlFiles.size(); ++fileNum)
 	{
 		XmlDocument* xmlDoc = new XmlDocument(m_xmlFiles[fileNum]);
 		XmlElement* xmlRootElem = xmlDoc->getDocumentElement();
