@@ -3374,4 +3374,36 @@
       <ogr:country>US</ogr:country>
     </ogr:citydefs>
   </gml:featureMember>
+  <gml:featureMember>
+    <ogr:citydefs fid="F210">
+      <ogr:geometryProperty>
+        <gml:Polygon>
+          <gml:outerBoundaryIs>
+            <gml:LinearRing>
+              <gml:coordinates>-121.9216719404129024,36.4193431328981376 -121.1972989900488192,36.4193431328981376 -121.1972989900488192,35.7797439380858496 -121.9216719404129024,35.7797439380858496 -121.9216719404129024,36.4193431328981376</gml:coordinates>
+            </gml:LinearRing>
+          </gml:outerBoundaryIs>
+        </gml:Polygon>
+      </ogr:geometryProperty>
+      <ogr:pkuid>210</ogr:pkuid>
+      <ogr:city>Capitola</ogr:city>
+      <ogr:country>US</ogr:country>
+    </ogr:citydefs>
+  </gml:featureMember>
+  <gml:featureMember>
+    <ogr:citydefs fid="F211">
+      <ogr:geometryProperty>
+        <gml:Polygon>
+          <gml:outerBoundaryIs>
+            <gml:LinearRing>
+              <gml:coordinates>-122.0883600341046784,37.0085401109698176 -121.9957555376092928,37.0085401109698176 -121.9957555376092928,36.9466169187106880 -122.0883600341046784,36.9466169187106880 -122.0883600341046784,37.0085401109698176</gml:coordinates>
+            </gml:LinearRing>
+          </gml:outerBoundaryIs>
+        </gml:Polygon>
+      </ogr:geometryProperty>
+      <ogr:pkuid>211</ogr:pkuid>
+      <ogr:city>Santa Cruz</ogr:city>
+      <ogr:country>US</ogr:country>
+    </ogr:citydefs>
+  </gml:featureMember>
 </ogr:FeatureCollection>
