@@ -22,7 +22,6 @@ To change project properties, JUCE source code and Introjucer (JUCE's project cr
 
 ## TODOs
 
-* Test class for DBConnector
 * More unit testing
 * More locations in GML format
 * Refactor MainComponent, FileImporter and FileExporter
