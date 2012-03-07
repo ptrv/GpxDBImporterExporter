@@ -627,18 +627,14 @@ bool DBConnector::updateGpsDataLocation(int gpsdataid, int location)
 
     try
     {
-        sqlite3_transaction trans(*m_dbconn);
-        {
-            String query = "UPDATE gpsdata SET location = \"";
-            query << location;
-            query << "\" ";
-            query << "WHERE gpsdataid = \"";
-            query << gpsdataid;
-            query << "\";";
-            sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
-            cmd.executenonquery();
-        }
-        trans.commit();
+		String query = "UPDATE gpsdata SET location = \"";
+		query << location;
+		query << "\" ";
+		query << "WHERE gpsdataid = \"";
+		query << gpsdataid;
+		query << "\";";
+		sqlite3_command cmd(*m_dbconn, std::string(query.toUTF8().getAddress()));
+		cmd.executenonquery();
         result = true;
     }
     CATCHDBERRORS

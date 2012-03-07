@@ -39,6 +39,9 @@ void LocationUpdater::run()
 
     setProgress(0.0);
 	int k = 0;
+
+	dbCon->beginTransaction();
+
     for(unsigned int i = 0; i < gpsDataVec.size(); ++i)
     {
         int res = Helper::findLocation(gpsLocationVec,
@@ -46,13 +49,14 @@ void LocationUpdater::run()
                                gpsDataVec[i].getLatitude(),
                                m_boundingsType);
 
-        if (res != 0)
+        if (res > 1)
         {
             dbCon->updateGpsDataLocation(gpsDataVec[i].getGpsDataId(), res);
 			++k;
         }
         setProgress((double)i / gpsDataVec.size());
     }
+    dbCon->commitTransaction();
     dbCon->closeDbConnection();
 	m_status = "Updated locations! Changed ";
 	m_status << k;
