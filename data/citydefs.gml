@@ -3358,4 +3358,20 @@
       <ogr:country>DE</ogr:country>
     </ogr:citydefs>
   </gml:featureMember>
+  <gml:featureMember>
+    <ogr:citydefs fid="F209">
+      <ogr:geometryProperty>
+        <gml:Polygon>
+          <gml:outerBoundaryIs>
+            <gml:LinearRing>
+              <gml:coordinates>-121.9216719404129024,36.4193431328981376 -121.1972989900488192,36.4193431328981376 -121.1972989900488192,35.7797439380858496 -121.9216719404129024,35.7797439380858496 -121.9216719404129024,36.4193431328981376</gml:coordinates>
+            </gml:LinearRing>
+          </gml:outerBoundaryIs>
+        </gml:Polygon>
+      </ogr:geometryProperty>
+      <ogr:pkuid>209</ogr:pkuid>
+      <ogr:city>Big Sur</ogr:city>
+      <ogr:country>US</ogr:country>
+    </ogr:citydefs>
+  </gml:featureMember>
 </ogr:FeatureCollection>
