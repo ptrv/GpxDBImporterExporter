@@ -35,6 +35,8 @@ To change project properties, JUCE source code and Introjucer (JUCE's project cr
 
 ## TODOs
 
+* Integrate libspatialite
+* Option for spatialite database
 * More unit testing
 * More locations in GML format
 * Refactor MainComponent, FileImporter and FileExporter
