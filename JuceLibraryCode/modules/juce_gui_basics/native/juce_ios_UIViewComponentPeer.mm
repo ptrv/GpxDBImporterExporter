@@ -705,7 +705,7 @@ void UIViewComponentPeer::toBehind (ComponentPeer* other)
         }
         else
         {
-            jassertfalse; // don't know how to do this
+            // don't know how to do this
         }
     }
 }
@@ -915,7 +915,15 @@ void UIViewComponentPeer::redirectMovedOrResized()
 //==============================================================================
 void Desktop::setKioskComponent (Component* kioskModeComponent, bool enableOrDisable, bool allowMenusAndBars)
 {
-    // TODO
+    [[UIApplication sharedApplication] setStatusBarHidden: enableOrDisable
+                                            withAnimation: UIStatusBarAnimationSlide];
+
+    Desktop::getInstance().refreshMonitorSizes();
+
+    ComponentPeer* const peer = kioskModeComponent->getPeer();
+
+    if (peer != nullptr)
+        peer->setFullScreen (enableOrDisable);
 }
 
 //==============================================================================
