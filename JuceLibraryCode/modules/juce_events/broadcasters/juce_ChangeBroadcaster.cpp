@@ -23,19 +23,13 @@
   ==============================================================================
 */
 
-
 ChangeBroadcaster::ChangeBroadcaster() noexcept
 {
-    // are you trying to create this object before or after juce has been intialised??
-    jassert (MessageManager::instance != nullptr);
-
     callback.owner = this;
 }
 
 ChangeBroadcaster::~ChangeBroadcaster()
 {
-    // all event-based objects must be deleted BEFORE juce is shut down!
-    jassert (MessageManager::instance != nullptr);
 }
 
 void ChangeBroadcaster::addChangeListener (ChangeListener* const listener)

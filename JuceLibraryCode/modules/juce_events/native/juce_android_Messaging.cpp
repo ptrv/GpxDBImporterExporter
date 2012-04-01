@@ -36,57 +36,22 @@ bool MessageManager::dispatchNextMessageOnSystemQueue (const bool returnIfNoPend
 }
 
 //==============================================================================
-bool MessageManager::postMessageToSystemQueue (Message* message)
+bool MessageManager::postMessageToSystemQueue (MessageManager::MessageBase* const message)
 {
     message->incReferenceCount();
-    getEnv()->CallVoidMethod (android.activity, JuceAppActivity.postMessage, (jlong) (pointer_sized_uint) message);
+    android.activity.callVoidMethod (JuceAppActivity.postMessage, (jlong) (pointer_sized_uint) message);
     return true;
 }
 
 JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, deliverMessage, void, (jobject activity, jlong value))
 {
-    Message* const message = (Message*) (pointer_sized_uint) value;
-    MessageManager::getInstance()->deliverMessage (message);
-    message->decReferenceCount();
-}
-
-//==============================================================================
-class AsyncFunctionCaller   : public AsyncUpdater
-{
-public:
-    static void* call (MessageCallbackFunction* func_, void* parameter_)
+    JUCE_TRY
     {
-        if (MessageManager::getInstance()->isThisTheMessageThread())
-            return func_ (parameter_);
-
-        AsyncFunctionCaller caller (func_, parameter_);
-        caller.triggerAsyncUpdate();
-        caller.finished.wait();
-        return caller.result;
+        MessageManager::MessageBase* const message = (MessageManager::MessageBase*) (pointer_sized_uint) value;
+        message->messageCallback();
+        message->decReferenceCount();
     }
-
-    void handleAsyncUpdate()
-    {
-        result = (*func) (parameter);
-        finished.signal();
-    }
-
-private:
-    WaitableEvent finished;
-    MessageCallbackFunction* func;
-    void* parameter;
-    void* volatile result;
-
-    AsyncFunctionCaller (MessageCallbackFunction* func_, void* parameter_)
-        : result (nullptr), func (func_), parameter (parameter_)
-    {}
-
-    JUCE_DECLARE_NON_COPYABLE (AsyncFunctionCaller);
-};
-
-void* MessageManager::callFunctionOnMessageThread (MessageCallbackFunction* func, void* parameter)
-{
-    return AsyncFunctionCaller::call (func, parameter);
+    JUCE_CATCH_EXCEPTION
 }
 
 //==============================================================================
@@ -98,19 +63,18 @@ void MessageManager::runDispatchLoop()
 {
 }
 
-class QuitCallback  : public CallbackMessage
-{
-public:
-    QuitCallback() {}
-
-    void messageCallback()
-    {
-        android.activity.callVoidMethod (JuceAppActivity.finish);
-    }
-};
-
 void MessageManager::stopDispatchLoop()
 {
+    struct QuitCallback  : public CallbackMessage
+    {
+        QuitCallback() {}
+
+        void messageCallback()
+        {
+            android.activity.callVoidMethod (JuceAppActivity.finish);
+        }
+    };
+
     (new QuitCallback())->post();
     quitMessagePosted = true;
 }

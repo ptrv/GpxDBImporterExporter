@@ -23,7 +23,6 @@
   ==============================================================================
 */
 
-
 namespace
 {
     inline size_t bitToIndex (const int bit) noexcept   { return (size_t) (bit >> 5); }
@@ -119,6 +118,7 @@ BigInteger& BigInteger::operator= (const BigInteger& other)
     if (this != &other)
     {
         highestBit = other.getHighestBit();
+        jassert (other.numValues >= 4);
         numValues = (size_t) jmax ((size_t) 4, bitToIndex (highestBit) + 1);
         negative = other.negative;
         values.malloc (numValues + 1);

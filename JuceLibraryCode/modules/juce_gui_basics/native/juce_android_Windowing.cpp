@@ -45,6 +45,8 @@ JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, launchApp, void, (JNIEnv* en
     JUCEApplication* app = dynamic_cast <JUCEApplication*> (JUCEApplicationBase::createInstance());
     if (! app->initialiseApp (String::empty))
         exit (0);
+
+    jassert (MessageManager::getInstance()->isThisTheMessageThread());
 }
 
 JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, quitApp, void, (JNIEnv* env, jobject activity))
@@ -111,14 +113,9 @@ public:
         }
         else
         {
-            class ViewDeleter  : public CallbackMessage
+            struct ViewDeleter  : public CallbackMessage
             {
-            public:
-                ViewDeleter (const GlobalRef& view_)
-                    : view (view_)
-                {
-                    post();
-                }
+                ViewDeleter (const GlobalRef& view_) : view (view_) {}
 
                 void messageCallback()
                 {
@@ -129,7 +126,7 @@ public:
                 GlobalRef view;
             };
 
-            new ViewDeleter (view);
+            (new ViewDeleter (view))->post();
         }
 
         view.clear();
@@ -148,14 +145,11 @@ public:
         }
         else
         {
-            class VisibilityChanger  : public CallbackMessage
+            struct VisibilityChanger  : public CallbackMessage
             {
-            public:
                 VisibilityChanger (const GlobalRef& view_, bool shouldBeVisible_)
                     : view (view_), shouldBeVisible (shouldBeVisible_)
-                {
-                    post();
-                }
+                {}
 
                 void messageCallback()
                 {
@@ -167,7 +161,7 @@ public:
                 bool shouldBeVisible;
             };
 
-            new VisibilityChanger (view, shouldBeVisible);
+            (new VisibilityChanger (view, shouldBeVisible))->post();
         }
     }
 
@@ -375,53 +369,43 @@ public:
     //==============================================================================
     void handlePaintCallback (JNIEnv* env, jobject canvas)
     {
-       #if USE_ANDROID_CANVAS
-        if (usingAndroidGraphics)
+        jobject rect = env->CallObjectMethod (canvas, CanvasMinimal.getClipBounds);
+        const int left   = env->GetIntField (rect, RectClass.left);
+        const int top    = env->GetIntField (rect, RectClass.top);
+        const int right  = env->GetIntField (rect, RectClass.right);
+        const int bottom = env->GetIntField (rect, RectClass.bottom);
+        env->DeleteLocalRef (rect);
+
+        const Rectangle<int> clip (left, top, right - left, bottom - top);
+
+        const int sizeNeeded = clip.getWidth() * clip.getHeight();
+        if (sizeAllocated < sizeNeeded)
         {
-            AndroidLowLevelGraphicsContext g (canvas);
-            handlePaint (g);
+            buffer.clear();
+            sizeAllocated = sizeNeeded;
+            buffer = GlobalRef (env->NewIntArray (sizeNeeded));
         }
-        else
-       #endif
+
+        jint* dest = env->GetIntArrayElements ((jintArray) buffer.get(), 0);
+
+        if (dest != nullptr)
         {
-            jobject rect = env->CallObjectMethod (canvas, CanvasMinimal.getClipBounds);
-            const int left   = env->GetIntField (rect, RectClass.left);
-            const int top    = env->GetIntField (rect, RectClass.top);
-            const int right  = env->GetIntField (rect, RectClass.right);
-            const int bottom = env->GetIntField (rect, RectClass.bottom);
-            env->DeleteLocalRef (rect);
-
-            const Rectangle<int> clip (left, top, right - left, bottom - top);
-
-            const int sizeNeeded = clip.getWidth() * clip.getHeight();
-            if (sizeAllocated < sizeNeeded)
             {
-                buffer.clear();
-                sizeAllocated = sizeNeeded;
-                buffer = GlobalRef (env->NewIntArray (sizeNeeded));
-            }
+                Image temp (new PreallocatedImage (clip.getWidth(), clip.getHeight(),
+                                                   dest, ! component->isOpaque()));
 
-            jint* dest = env->GetIntArrayElements ((jintArray) buffer.get(), 0);
-
-            if (dest != 0)
-            {
                 {
-                    Image temp (new PreallocatedImage (clip.getWidth(), clip.getHeight(),
-                                                       dest, ! component->isOpaque()));
-
-                    {
-                        LowLevelGraphicsSoftwareRenderer g (temp);
-                        g.setOrigin (-clip.getX(), -clip.getY());
-                        handlePaint (g);
-                    }
+                    LowLevelGraphicsSoftwareRenderer g (temp);
+                    g.setOrigin (-clip.getX(), -clip.getY());
+                    handlePaint (g);
                 }
-
-                env->ReleaseIntArrayElements ((jintArray) buffer.get(), dest, 0);
-
-                env->CallVoidMethod (canvas, CanvasMinimal.drawBitmap, (jintArray) buffer.get(), 0, clip.getWidth(),
-                                     (jfloat) clip.getX(), (jfloat) clip.getY(),
-                                     clip.getWidth(), clip.getHeight(), true, (jobject) 0);
             }
+
+            env->ReleaseIntArrayElements ((jintArray) buffer.get(), dest, 0);
+
+            env->CallVoidMethod (canvas, CanvasMinimal.drawBitmap, (jintArray) buffer.get(), 0, clip.getWidth(),
+                                 (jfloat) clip.getX(), (jfloat) clip.getY(),
+                                 clip.getWidth(), clip.getHeight(), true, (jobject) 0);
         }
     }
 
@@ -433,26 +417,23 @@ public:
         }
         else
         {
-            class ViewRepainter  : public CallbackMessage
+            struct ViewRepainter  : public CallbackMessage
             {
-            public:
                 ViewRepainter (const GlobalRef& view_, const Rectangle<int>& area_)
-                    : view (view_), area (area_)
-                {
-                    post();
-                }
+                    : view (view_), area (area_) {}
 
                 void messageCallback()
                 {
-                    view.callVoidMethod (ComponentPeerView.invalidate, area.getX(), area.getY(), area.getRight(), area.getBottom());
+                    view.callVoidMethod (ComponentPeerView.invalidate, area.getX(), area.getY(),
+                                         area.getRight(), area.getBottom());
                 }
 
             private:
                 GlobalRef view;
-                const Rectangle<int>& area;
+                const Rectangle<int> area;
             };
 
-            new ViewRepainter (view, area);
+            (new ViewRepainter (view, area))->post();
         }
     }
 
@@ -465,29 +446,6 @@ public:
     {
         // TODO
     }
-
-   #if USE_ANDROID_CANVAS
-    StringArray getAvailableRenderingEngines()
-    {
-        StringArray s (ComponentPeer::getAvailableRenderingEngines());
-        s.add ("Android Canvas Renderer");
-        return s;
-    }
-
-    int getCurrentRenderingEngine() const
-    {
-        return usingAndroidGraphics ? 1 : 0;
-    }
-
-    void setCurrentRenderingEngine (int index)
-    {
-        if (usingAndroidGraphics != (index > 0))
-        {
-            usingAndroidGraphics = index > 0;
-            component->repaint();
-        }
-    }
-   #endif
 
     //==============================================================================
     static AndroidComponentPeer* findPeerForJavaView (JNIEnv* env, jobject viewToFind)
@@ -724,8 +682,7 @@ JUCE_JNI_CALLBACK (JUCE_ANDROID_ACTIVITY_CLASSNAME, setScreenSize, void, (JNIEnv
     android.screenWidth = screenWidth;
     android.screenHeight = screenHeight;
 
-    if (isSystemInitialised)
-        Desktop::getInstance().refreshMonitorSizes();
+    Desktop::getInstance().refreshMonitorSizes();
 }
 
 //==============================================================================

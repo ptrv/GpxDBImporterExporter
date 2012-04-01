@@ -26,10 +26,6 @@
 #ifndef __JUCE_ANDROID_JNIHELPERS_JUCEHEADER__
 #define __JUCE_ANDROID_JNIHELPERS_JUCEHEADER__
 
-#ifndef USE_ANDROID_CANVAS
- #define USE_ANDROID_CANVAS 0
-#endif
-
 #if ! (defined (JUCE_ANDROID_ACTIVITY_CLASSNAME) && defined (JUCE_ANDROID_ACTIVITY_CLASSPATH))
  #error "The JUCE_ANDROID_ACTIVITY_CLASSNAME and JUCE_ANDROID_ACTIVITY_CLASSPATH macros must be set!"
 #endif
@@ -112,7 +108,7 @@ template <typename JavaType>
 class LocalRef
 {
 public:
-    explicit inline LocalRef (JavaType obj_) noexcept   : obj (obj_){}
+    explicit inline LocalRef (JavaType obj_) noexcept   : obj (obj_) {}
     inline LocalRef (const LocalRef& other) noexcept    : obj (retain (other.obj)) {}
     ~LocalRef()                                         { clear(); }
 
@@ -147,8 +143,7 @@ namespace
 {
     String juceString (JNIEnv* env, jstring s)
     {
-        jboolean isCopy;
-        const char* const utf8 = env->GetStringUTFChars (s, &isCopy);
+        const char* const utf8 = env->GetStringUTFChars (s, nullptr);
         CharPointer_UTF8 utf8CP (utf8);
         const String result (utf8CP);
         env->ReleaseStringUTFChars (s, utf8);
@@ -262,6 +257,11 @@ public:
 
     void initialise (JNIEnv* env)
     {
+        // NB: the DLL can be left loaded by the JVM, so the same static
+        // objects can end up being reused by subsequent runs of the app
+        zeromem (threads, sizeof (threads));
+        zeromem (envs, sizeof (envs));
+
         env->GetJavaVM (&jvm);
         addEnv (env);
     }
@@ -269,7 +269,7 @@ public:
     JNIEnv* attach()
     {
         JNIEnv* env = nullptr;
-        jvm->AttachCurrentThread (&env, 0);
+        jvm->AttachCurrentThread (&env, nullptr);
 
         if (env != nullptr)
             addEnv (env);

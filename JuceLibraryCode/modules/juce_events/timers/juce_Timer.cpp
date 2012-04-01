@@ -23,9 +23,7 @@
   ==============================================================================
 */
 
-
 class Timer::TimerThread  : private Thread,
-                            private MessageListener,
                             private DeletedAtShutdown,
                             private AsyncUpdater
 {
@@ -52,7 +50,7 @@ public:
     void run()
     {
         uint32 lastTime = Time::getMillisecondCounter();
-        Message::Ptr messageToSend (new Message());
+        MessageManager::MessageBase::Ptr messageToSend (new CallTimersMessage());
 
         while (! threadShouldExit())
         {
@@ -79,7 +77,7 @@ public:
                 */
                 if (callbackNeeded.compareAndSetBool (1, 0))
                 {
-                    postMessage (messageToSend);
+                    messageToSend->post();
 
                     /* Sometimes our message can get discarded by the OS (e.g. when running as an RTAS
                        when the app has a modal loop), so this is how long to wait before assuming the
@@ -138,11 +136,6 @@ public:
         callbackNeeded.set (0);
     }
 
-    void handleMessage (const Message&)
-    {
-        callTimers();
-    }
-
     void callTimersSynchronously()
     {
         if (! isThreadRunning())
@@ -192,6 +185,17 @@ public:
 private:
     Timer* volatile firstTimer;
     Atomic <int> callbackNeeded;
+
+    struct CallTimersMessage  : public MessageManager::MessageBase
+    {
+        CallTimersMessage() {}
+
+        void messageCallback()
+        {
+            if (instance != nullptr)
+                instance->callTimers();
+        }
+    };
 
     //==============================================================================
     void addTimer (Timer* const t) noexcept

@@ -23,7 +23,6 @@
   ==============================================================================
 */
 
-
 ToolbarItemFactory::ToolbarItemFactory()
 {
 }
@@ -46,7 +45,7 @@ public:
 
     void paint (Graphics& g)
     {
-        ToolbarItemComponent* const tc = dynamic_cast <ToolbarItemComponent*> (getParentComponent());
+        ToolbarItemComponent* const tc = getToolbarItemComponent();
 
         if (isMouseOverOrDragging()
               && tc != nullptr
@@ -61,7 +60,7 @@ public:
     void mouseDown (const MouseEvent& e)
     {
         isDragging = false;
-        ToolbarItemComponent* const tc = dynamic_cast <ToolbarItemComponent*> (getParentComponent());
+        ToolbarItemComponent* const tc = getToolbarItemComponent();
 
         if (tc != nullptr)
         {
@@ -81,7 +80,7 @@ public:
             {
                 dnd->startDragging (Toolbar::toolbarDragDescriptor, getParentComponent(), Image::null, true);
 
-                ToolbarItemComponent* const tc = dynamic_cast <ToolbarItemComponent*> (getParentComponent());
+                ToolbarItemComponent* const tc = getToolbarItemComponent();
 
                 if (tc != nullptr)
                 {
@@ -97,7 +96,7 @@ public:
     void mouseUp (const MouseEvent&)
     {
         isDragging = false;
-        ToolbarItemComponent* const tc = dynamic_cast <ToolbarItemComponent*> (getParentComponent());
+        ToolbarItemComponent* const tc = getToolbarItemComponent();
 
         if (tc != nullptr)
         {
@@ -120,6 +119,11 @@ public:
 private:
     //==============================================================================
     bool isDragging;
+
+    ToolbarItemComponent* getToolbarItemComponent() const noexcept
+    {
+        return dynamic_cast <ToolbarItemComponent*> (getParentComponent());
+    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ItemDragAndDropOverlayComponent);
 };

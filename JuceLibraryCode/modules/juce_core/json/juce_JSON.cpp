@@ -23,7 +23,6 @@
   ==============================================================================
 */
 
-
 class JSONParser
 {
 public:
@@ -330,7 +329,7 @@ public:
         }
         else if (v.isObject())
         {
-            DynamicObject* object = dynamic_cast<DynamicObject*> (v.getObject());
+            DynamicObject* const object = v.getDynamicObject();
 
             jassert (object != nullptr); // Only DynamicObjects can be converted to JSON!
 
