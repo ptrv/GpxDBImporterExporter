@@ -169,6 +169,7 @@ void NamedPipe::cancelPendingReads()
 
 void NamedPipe::close()
 {
+    cancelPendingReads();
     ScopedPointer<Pimpl> deleter (pimpl); // (clears the pimpl member variable before deleting it)
 }
 
@@ -200,4 +201,9 @@ int NamedPipe::read (void* destBuffer, int maxBytesToRead, int /*timeOutMillisec
 int NamedPipe::write (const void* sourceBuffer, int numBytesToWrite, int timeOutMilliseconds)
 {
     return pimpl != nullptr ? pimpl->write (static_cast <const char*> (sourceBuffer), numBytesToWrite, timeOutMilliseconds) : -1;
+}
+
+bool NamedPipe::isOpen() const
+{
+    return pimpl != nullptr;
 }

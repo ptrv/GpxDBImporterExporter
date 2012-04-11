@@ -27,14 +27,14 @@ namespace TabbedComponentHelpers
 {
     const Identifier deleteComponentId ("deleteByTabComp_");
 
-    void deleteIfNecessary (Component* const comp)
+    static void deleteIfNecessary (Component* const comp)
     {
         if (comp != nullptr && (bool) comp->getProperties() [deleteComponentId])
             delete comp;
     }
 
-    Rectangle<int> getTabArea (Rectangle<int>& content, BorderSize<int>& outline,
-                               const TabbedButtonBar::Orientation orientation, const int tabDepth)
+    static Rectangle<int> getTabArea (Rectangle<int>& content, BorderSize<int>& outline,
+                                      const TabbedButtonBar::Orientation orientation, const int tabDepth)
     {
         switch (orientation)
         {
@@ -157,6 +157,7 @@ void TabbedComponent::addTab (const String& tabName,
         contentComponent->getProperties().set (TabbedComponentHelpers::deleteComponentId, true);
 
     tabs->addTab (tabName, tabBackgroundColour, insertIndex);
+    resized();
 }
 
 void TabbedComponent::setTabName (const int tabIndex, const String& newName)

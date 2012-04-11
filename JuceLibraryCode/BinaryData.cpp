@@ -3909,6 +3909,7 @@ static const unsigned char temp_be7d28e2[] =
 const char* create_tables_sql = (const char*) temp_be7d28e2;
 
 
+const char* getNamedResource (const char*, int&) throw();
 const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
 {
     int hash = 0;
