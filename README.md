@@ -75,3 +75,5 @@ For an optimized release version without debugging symbols and debug console tex
 * More unit testing
 * More locations in GML format
 * Refactor MainComponent, FileImporter and FileExporter
+* Better debug messages
+
