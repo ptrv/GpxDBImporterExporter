@@ -33,6 +33,24 @@ Thanks to Daniel Belasco Rogers for the location list.
 
 To change project properties, JUCE source code and Introjucer (JUCE's project creation tool) are required.
 
+### Prerequisites
+
+You can get the Introjucer by checking out the JUCE repository
+
+    git clone --depth 1 git://juce.git.sourceforge.net/gitroot/juce/juce
+
+and build Introjucer from source
+
+    cd /path/to/JUCE
+    cd extras/Introjucer/Builds/Linux (or MacOSX)
+    make
+
+run Introjucer
+
+    build/Introjucer (or Xcode project file)
+
+and open the GpxDBImporterExporter.jucer file to edit project settings.
+
 ### Building
 
 #### Mac
