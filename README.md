@@ -35,10 +35,16 @@ To change project properties, JUCE source code and Introjucer (JUCE's project cr
 
 ### Building
 
+#### Mac
+
+There is an Xcode project file under `cd Builds/MacOSX/`.
+
+#### Linux
+
     cd Builds/Linux
     make
 
-for an optimized release version without debugging symbols and debug console text
+For an optimized release version without debugging symbols and debug console text.
 
     cd Builds/Linux
     make CONFIG=Release
