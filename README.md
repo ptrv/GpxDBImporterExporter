@@ -33,6 +33,17 @@ Thanks to Daniel Belasco Rogers for the location list.
 
 To change project properties, JUCE source code and Introjucer (JUCE's project creation tool) are required.
 
+### Building
+
+    cd Builds/Linux
+    make
+
+for an optimized release version without debugging symbols and debug console text
+
+    cd Builds/Linux
+    make CONFIG=Release
+
+
 ## TODOs
 
 * Integrate libspatialite
