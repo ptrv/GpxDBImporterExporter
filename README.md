@@ -43,11 +43,11 @@ and build Introjucer from source
 
     cd /path/to/JUCE
     cd extras/Introjucer/Builds/Linux (or MacOSX)
-    make
+    make (or Xcode project file)
 
 run Introjucer
 
-    build/Introjucer (or Xcode project file)
+    build/Introjucer
 
 and open the GpxDBImporterExporter.jucer file to edit project settings.
 
