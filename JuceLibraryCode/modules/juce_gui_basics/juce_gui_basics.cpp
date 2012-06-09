@@ -96,6 +96,7 @@
  #include <X11/Xutil.h>
  #include <X11/Xmd.h>
  #include <X11/keysym.h>
+ #include <X11/XKBlib.h>
  #include <X11/cursorfont.h>
  #include <unistd.h>
 
@@ -255,7 +256,6 @@ namespace juce
 
 #if JUCE_MAC || JUCE_IOS
  #include "../juce_core/native/juce_osx_ObjCHelpers.h"
- #include "../juce_core/native/juce_mac_ObjCSuffix.h"
  #include "../juce_graphics/native/juce_mac_CoreGraphicsHelpers.h"
  #include "../juce_graphics/native/juce_mac_CoreGraphicsContext.h"
 

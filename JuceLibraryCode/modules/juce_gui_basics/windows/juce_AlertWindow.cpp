@@ -262,7 +262,7 @@ public:
     {
         AttributedString s;
         s.setJustification (Justification::topLeft);
-        s.append (getName(), getFont());
+        s.append (getText(), getFont());
 
         TextLayout text;
         text.createLayoutWithBalancedLineLengths (s, width - 8.0f);
@@ -392,7 +392,7 @@ void AlertWindow::updateLayout (const bool onlyIncreaseSize)
     int iconSpace = 0;
 
     AttributedString attributedText;
-    attributedText.append (getName(), Font (font.getHeight() * 1.1f, Font::bold));
+    attributedText.append (getName(), font.withHeight (font.getHeight() * 1.1f).boldened());
 
     if (text.isNotEmpty())
         attributedText.append ("\n\n" + text, font);

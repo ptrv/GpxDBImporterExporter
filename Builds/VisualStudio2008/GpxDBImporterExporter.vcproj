@@ -26,7 +26,7 @@
             MkTypLibCompatible="true"
             SuppressStartupBanner="true"
             TargetEnvironment="1"
-            TypeLibraryName=".\Debug\GpxDBImporterExporter.tlb"
+            TypeLibraryName="$(IntDir)\GpxDBImporterExporter.tlb"
             HeaderFileName=""/>
       <Tool Name="VCCLCompilerTool"
             Optimization="0"
@@ -37,10 +37,10 @@
             RuntimeLibrary="1"
             RuntimeTypeInfo="true"
             UsePrecompiledHeader="0"
-            PrecompiledHeaderFile=".\Debug\GpxDBImporterExporter.pch"
-            AssemblerListingLocation=".\Debug\"
-            ObjectFile=".\Debug\"
-            ProgramDataBaseFileName=".\Debug\"
+            PrecompiledHeaderFile="$(IntDir)\GpxDBImporterExporter.pch"
+            AssemblerListingLocation="$(IntDir)\"
+            ObjectFile="$(IntDir)\"
+            ProgramDataBaseFileName="$(IntDir)\"
             WarningLevel="4"
             SuppressStartupBanner="true"/>
       <Tool Name="VCManagedResourceCompilerTool"/>
@@ -48,11 +48,11 @@
             PreprocessorDefinitions="_DEBUG"/>
       <Tool Name="VCPreLinkEventTool"/>
       <Tool Name="VCLinkerTool"
-            OutputFile=".\Debug\GpxDBImporterExporter.exe"
+            OutputFile="$(OutDir)\GpxDBImporterExporter.exe"
             SuppressStartupBanner="true"
             IgnoreDefaultLibraryNames="libcmt.lib, msvcrt.lib"
             GenerateDebugInformation="true"
-            ProgramDatabaseFile=".\Debug\GpxDBImporterExporter.pdb"
+            ProgramDatabaseFile="$(IntDir)\GpxDBImporterExporter.pdb"
             SubSystem="2"
             GenerateManifest="true"
             TargetMachine="1"/>
@@ -61,7 +61,7 @@
       <Tool Name="VCXDCMakeTool"/>
       <Tool Name="VCBscMakeTool"
             SuppressStartupBanner="true"
-            OutputFile=".\Debug\GpxDBImporterExporter.bsc"/>
+            OutputFile="$(IntDir)\GpxDBImporterExporter.bsc"/>
       <Tool Name="VCFxCopTool"/>
       <Tool Name="VCAppVerifierTool"/>
       <Tool Name="VCPostBuildEventTool"/>
@@ -83,7 +83,7 @@
             MkTypLibCompatible="true"
             SuppressStartupBanner="true"
             TargetEnvironment="1"
-            TypeLibraryName=".\Release\GpxDBImporterExporter.tlb"
+            TypeLibraryName="$(IntDir)\GpxDBImporterExporter.tlb"
             HeaderFileName=""/>
       <Tool Name="VCCLCompilerTool"
             Optimization="1"
@@ -94,10 +94,10 @@
             RuntimeLibrary="0"
             RuntimeTypeInfo="true"
             UsePrecompiledHeader="0"
-            PrecompiledHeaderFile=".\Release\GpxDBImporterExporter.pch"
-            AssemblerListingLocation=".\Release\"
-            ObjectFile=".\Release\"
-            ProgramDataBaseFileName=".\Release\"
+            PrecompiledHeaderFile="$(IntDir)\GpxDBImporterExporter.pch"
+            AssemblerListingLocation="$(IntDir)\"
+            ObjectFile="$(IntDir)\"
+            ProgramDataBaseFileName="$(IntDir)\"
             WarningLevel="4"
             SuppressStartupBanner="true"/>
       <Tool Name="VCManagedResourceCompilerTool"/>
@@ -105,11 +105,11 @@
             PreprocessorDefinitions="NDEBUG"/>
       <Tool Name="VCPreLinkEventTool"/>
       <Tool Name="VCLinkerTool"
-            OutputFile=".\Release\GpxDBImporterExporter.exe"
+            OutputFile="$(OutDir)\GpxDBImporterExporter.exe"
             SuppressStartupBanner="true"
             IgnoreDefaultLibraryNames=""
             GenerateDebugInformation="false"
-            ProgramDatabaseFile=".\Release\GpxDBImporterExporter.pdb"
+            ProgramDatabaseFile="$(IntDir)\GpxDBImporterExporter.pdb"
             SubSystem="2"
             GenerateManifest="true"
             OptimizeReferences="2"
@@ -120,7 +120,7 @@
       <Tool Name="VCXDCMakeTool"/>
       <Tool Name="VCBscMakeTool"
             SuppressStartupBanner="true"
-            OutputFile=".\Release\GpxDBImporterExporter.bsc"/>
+            OutputFile="$(IntDir)\GpxDBImporterExporter.bsc"/>
       <Tool Name="VCFxCopTool"/>
       <Tool Name="VCAppVerifierTool"/>
       <Tool Name="VCPostBuildEventTool"/>
@@ -977,7 +977,6 @@
           </File>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_core\native\juce_mac_Files.mm"/>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_core\native\juce_mac_Network.mm"/>
-          <File RelativePath="..\..\JuceLibraryCode\modules\juce_core\native\juce_mac_ObjCSuffix.h"/>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_core\native\juce_mac_Strings.mm"/>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_core\native\juce_mac_SystemStats.mm"/>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_core\native\juce_mac_Threads.mm"/>
@@ -1947,6 +1946,7 @@
           </File>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_gui_basics\mouse\juce_MouseListener.h"/>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_gui_basics\mouse\juce_SelectedItemSet.h"/>
+          <File RelativePath="..\..\JuceLibraryCode\modules\juce_gui_basics\mouse\juce_TextDragAndDropTarget.h"/>
           <File RelativePath="..\..\JuceLibraryCode\modules\juce_gui_basics\mouse\juce_TooltipClient.h"/>
         </Filter>
         <Filter Name="keyboard">

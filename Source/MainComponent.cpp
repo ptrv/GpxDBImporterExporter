@@ -754,14 +754,14 @@ void MainComponent::setDBStats()
 // Menubar
 //==============================================================================
 
-const StringArray MainComponent::getMenuBarNames()
+StringArray MainComponent::getMenuBarNames()
 {
 	const char* const names[] = { "Database", "Tools", "Help", nullptr };
 
 	return StringArray (names);
 }
 
-const PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuName*/)
+PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuName*/)
 {
 	ApplicationCommandManager* commandManager = &m_mainWindow->commandManager;
 	PopupMenu menu;

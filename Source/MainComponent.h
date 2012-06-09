@@ -107,9 +107,8 @@ private:
 	DBStatsComponent* m_dbStatsComp;
 
 	void getAllCommands (Array <CommandID>& commands);
-	const PopupMenu getMenuForIndex (int topLevelMenuIndex,
-			const String& menuName);
-	const StringArray getMenuBarNames();
+	PopupMenu getMenuForIndex (int topLevelMenuIndex, const String& menuName);
+	StringArray getMenuBarNames();
 	void getCommandInfo (CommandID commandID, ApplicationCommandInfo& result);
 	ApplicationCommandTarget* getNextCommandTarget();
 	void menuItemSelected (int menuItemID,

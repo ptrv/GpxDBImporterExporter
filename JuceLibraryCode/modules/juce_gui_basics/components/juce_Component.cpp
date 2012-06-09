@@ -114,8 +114,8 @@ public:
         }
     }
 
-    static void sendWheelEvent (Component& comp, Component::BailOutChecker& checker, const MouseEvent& e,
-                                const float wheelIncrementX, const float wheelIncrementY)
+    static void sendWheelEvent (Component& comp, Component::BailOutChecker& checker,
+                                const MouseEvent& e, const MouseWheelDetails& wheel)
     {
         {
             MouseListenerList* const list = comp.mouseListeners;
@@ -124,7 +124,7 @@ public:
             {
                 for (int i = list->listeners.size(); --i >= 0;)
                 {
-                    list->listeners.getUnchecked(i)->mouseWheelMove (e, wheelIncrementX, wheelIncrementY);
+                    list->listeners.getUnchecked(i)->mouseWheelMove (e, wheel);
 
                     if (checker.shouldBailOut())
                         return;
@@ -144,7 +144,7 @@ public:
 
                 for (int i = list->numDeepMouseListeners; --i >= 0;)
                 {
-                    list->listeners.getUnchecked(i)->mouseWheelMove (e, wheelIncrementX, wheelIncrementY);
+                    list->listeners.getUnchecked(i)->mouseWheelMove (e, wheel);
 
                     if (checker2.shouldBailOut())
                         return;
@@ -363,7 +363,7 @@ struct Component::ComponentHelpers
     static Rectangle<int> getParentOrMainMonitorBounds (const Component& comp)
     {
         return comp.getParentComponent() != nullptr ? comp.getParentComponent()->getLocalBounds()
-                                                    : Desktop::getInstance().getMainMonitorArea();
+                                                    : Desktop::getInstance().getDisplays().getMainDisplay().userArea;
     }
 };
 
@@ -983,7 +983,7 @@ Rectangle<int> Component::getScreenBounds() const     { return localAreaToGlobal
 
 Rectangle<int> Component::getParentMonitorArea() const
 {
-    return Desktop::getInstance().getMonitorAreaContaining (getScreenBounds().getCentre());
+    return Desktop::getInstance().getDisplays().getDisplayContaining (getScreenBounds().getCentre()).userArea;
 }
 
 Point<int> Component::getLocalPoint (const Component* source, const Point<int>& point) const
@@ -2049,14 +2049,19 @@ void Component::sendLookAndFeelChange()
 
     if (safePointer != nullptr)
     {
-        for (int i = childComponentList.size(); --i >= 0;)
+        colourChanged();
+
+        if (safePointer != nullptr)
         {
-            childComponentList.getUnchecked (i)->sendLookAndFeelChange();
+            for (int i = childComponentList.size(); --i >= 0;)
+            {
+                childComponentList.getUnchecked (i)->sendLookAndFeelChange();
 
-            if (safePointer == nullptr)
-                return;
+                if (safePointer == nullptr)
+                    return;
 
-            i = jmin (i, childComponentList.size());
+                i = jmin (i, childComponentList.size());
+            }
         }
     }
 }
@@ -2176,12 +2181,11 @@ void Component::mouseDrag  (const MouseEvent&)          {}
 void Component::mouseMove  (const MouseEvent&)          {}
 void Component::mouseDoubleClick (const MouseEvent&)    {}
 
-void Component::mouseWheelMove (const MouseEvent& e, float wheelIncrementX, float wheelIncrementY)
+void Component::mouseWheelMove (const MouseEvent& e, const MouseWheelDetails& wheel)
 {
     // the base class just passes this event up to its parent..
     if (parentComponent != nullptr)
-        parentComponent->mouseWheelMove (e.getEventRelativeTo (parentComponent),
-                                         wheelIncrementX, wheelIncrementY);
+        parentComponent->mouseWheelMove (e.getEventRelativeTo (parentComponent), wheel);
 }
 
 
@@ -2310,6 +2314,9 @@ void Component::internalMouseEnter (MouseInputSource& source, const Point<int>& 
 
 void Component::internalMouseExit (MouseInputSource& source, const Point<int>& relativePos, const Time& time)
 {
+    if (isCurrentlyBlockedByAnotherModalComponent() && source.getComponentUnderMouse() != this)
+        return;
+
     if (flags.repaintOnMouseActivityFlag)
         repaint();
 
@@ -2482,13 +2489,10 @@ void Component::internalMouseMove (MouseInputSource& source, const Point<int>& r
 }
 
 void Component::internalMouseWheel (MouseInputSource& source, const Point<int>& relativePos,
-                                    const Time& time, const float amountX, const float amountY)
+                                    const Time& time, const MouseWheelDetails& wheel)
 {
     Desktop& desktop = Desktop::getInstance();
     BailOutChecker checker (this);
-
-    const float wheelIncrementX = amountX / 256.0f;
-    const float wheelIncrementY = amountY / 256.0f;
 
     const MouseEvent me (source, relativePos, source.getCurrentModifiers(),
                          this, this, time, relativePos, time, 0, false);
@@ -2496,19 +2500,19 @@ void Component::internalMouseWheel (MouseInputSource& source, const Point<int>& 
     if (isCurrentlyBlockedByAnotherModalComponent())
     {
         // allow blocked mouse-events to go to global listeners..
-        desktop.mouseListeners.callChecked (checker, &MouseListener::mouseWheelMove, me, wheelIncrementX, wheelIncrementY);
+        desktop.mouseListeners.callChecked (checker, &MouseListener::mouseWheelMove, me, wheel);
     }
     else
     {
-        mouseWheelMove (me, wheelIncrementX, wheelIncrementY);
+        mouseWheelMove (me, wheel);
 
         if (checker.shouldBailOut())
             return;
 
-        desktop.mouseListeners.callChecked (checker, &MouseListener::mouseWheelMove, me, wheelIncrementX, wheelIncrementY);
+        desktop.mouseListeners.callChecked (checker, &MouseListener::mouseWheelMove, me, wheel);
 
         if (! checker.shouldBailOut())
-            MouseListenerList::sendWheelEvent (*this, checker, me, wheelIncrementX, wheelIncrementY);
+            MouseListenerList::sendWheelEvent (*this, checker, me, wheel);
     }
 }
 

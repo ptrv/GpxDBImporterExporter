@@ -920,7 +920,7 @@ public:
             if (ownerInfo == nullptr)
                 return S_FALSE;
 
-            ownerInfo->owner.handleFileDragExit (ownerInfo->files);
+            ownerInfo->owner.handleDragExit (ownerInfo->dragInfo);
             return S_OK;
         }
 
@@ -929,7 +929,8 @@ public:
             if (ownerInfo == nullptr)
                 return S_FALSE;
 
-            const bool wasWanted = ownerInfo->owner.handleFileDragMove (ownerInfo->files, ownerInfo->getMousePos (mousePos));
+            ownerInfo->dragInfo.position = ownerInfo->getMousePos (mousePos);
+            const bool wasWanted = ownerInfo->owner.handleDragMove (ownerInfo->dragInfo);
             *pdwEffect = wasWanted ? (DWORD) DROPEFFECT_COPY : (DWORD) DROPEFFECT_NONE;
             return S_OK;
         }
@@ -939,7 +940,8 @@ public:
             HRESULT hr = updateFileList (pDataObject);
             if (SUCCEEDED (hr))
             {
-                const bool wasWanted = ownerInfo->owner.handleFileDragDrop (ownerInfo->files, ownerInfo->getMousePos (mousePos));
+                ownerInfo->dragInfo.position = ownerInfo->getMousePos (mousePos);
+                const bool wasWanted = ownerInfo->owner.handleDragDrop (ownerInfo->dragInfo);
                 *pdwEffect = wasWanted ? (DWORD) DROPEFFECT_COPY : (DWORD) DROPEFFECT_NONE;
                 hr = S_OK;
             }
@@ -971,46 +973,83 @@ public:
                     if (len == 0)
                         break;
 
-                    files.add (String (names + i, len));
+                    dragInfo.files.add (String (names + i, len));
                     i += len + 1;
                 }
             }
 
             HWNDComponentPeer& owner;
-            StringArray files;
+            ComponentPeer::DragInfo dragInfo;
 
             JUCE_DECLARE_NON_COPYABLE (OwnerInfo);
         };
 
         ScopedPointer<OwnerInfo> ownerInfo;
 
-        HRESULT updateFileList (IDataObject* const pDataObject)
+        struct DroppedData
+        {
+            DroppedData (IDataObject* const dataObject, const CLIPFORMAT type)
+                : data (nullptr)
+            {
+                FORMATETC format = { type, 0, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
+                STGMEDIUM resetMedium = { TYMED_HGLOBAL, { 0 }, 0 };
+                medium = resetMedium;
+
+                if (SUCCEEDED (error = dataObject->GetData (&format, &medium)))
+                {
+                    dataSize = GlobalSize (medium.hGlobal);
+                    data = GlobalLock (medium.hGlobal);
+                }
+            }
+
+            ~DroppedData()
+            {
+                if (data != nullptr)
+                    GlobalUnlock (medium.hGlobal);
+            }
+
+            HRESULT error;
+            STGMEDIUM medium;
+            void* data;
+            SIZE_T dataSize;
+        };
+
+        HRESULT updateFileList (IDataObject* const dataObject)
         {
             if (ownerInfo == nullptr)
                 return S_FALSE;
 
-            ownerInfo->files.clear();
+            ownerInfo->dragInfo.files.clear();
+            ownerInfo->dragInfo.text = String::empty;
 
-            FORMATETC format = { CF_HDROP, 0, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-            STGMEDIUM medium = { TYMED_HGLOBAL, { 0 }, 0 };
+            DroppedData textData (dataObject, CF_UNICODETEXT);
 
-            HRESULT hr = pDataObject->GetData (&format, &medium);
-
-            if (SUCCEEDED (hr))
+            if (SUCCEEDED (textData.error))
             {
-                const SIZE_T totalLen = GlobalSize (medium.hGlobal);
-                const LPDROPFILES dropFiles = (const LPDROPFILES) GlobalLock (medium.hGlobal);
-                const void* const names = addBytesToPointer (dropFiles, sizeof (DROPFILES));
+                ownerInfo->dragInfo.text = String (CharPointer_UTF16 ((LPCWCHAR) textData.data),
+                                                   CharPointer_UTF16 ((LPCWCHAR) addBytesToPointer (textData.data, textData.dataSize)));
+            }
+            else
+            {
+                DroppedData fileData (dataObject, CF_HDROP);
 
-                if (dropFiles->fWide)
-                    ownerInfo->parseFileList (static_cast <const WCHAR*> (names), totalLen);
+                if (SUCCEEDED (fileData.error))
+                {
+                    const LPDROPFILES dropFiles = static_cast <const LPDROPFILES> (fileData.data);
+                    const void* const names = addBytesToPointer (dropFiles, sizeof (DROPFILES));
+
+                    if (dropFiles->fWide)
+                        ownerInfo->parseFileList (static_cast <const WCHAR*> (names), fileData.dataSize);
+                    else
+                        ownerInfo->parseFileList (static_cast <const char*>  (names), fileData.dataSize);
+                }
                 else
-                    ownerInfo->parseFileList (static_cast <const char*>  (names), totalLen);
-
-                GlobalUnlock (medium.hGlobal);
+                {
+                    return fileData.error;
+                }
             }
 
-            return hr;
+            return S_OK;
         }
 
         JUCE_DECLARE_NON_COPYABLE (JuceDropTarget);
@@ -1245,10 +1284,6 @@ private:
         hwnd = CreateWindowEx (exstyle, WindowClassHolder::getInstance()->getWindowClassName(),
                                L"", type, 0, 0, 0, 0, parentToAddTo, 0,
                                (HINSTANCE) Process::getCurrentModuleInstanceHandle(), 0);
-
-       #if JUCE_DIRECT2D
-        setCurrentRenderingEngine (1);
-       #endif
 
         if (hwnd != 0)
         {
@@ -1658,7 +1693,7 @@ private:
     void doMouseWheel (const Point<int>& globalPos, const WPARAM wParam, const bool isVertical)
     {
         updateKeyModifiers();
-        const float amount = jlimit (-1000.0f, 1000.0f, 0.75f * (short) HIWORD (wParam));
+        const float amount = jlimit (-1000.0f, 1000.0f, 0.5f * (short) HIWORD (wParam));
 
         // Because Windows stupidly sends all wheel events to the window with the keyboard
         // focus, we have to redirect them here according to the mouse pos..
@@ -1668,9 +1703,13 @@ private:
         if (peer == nullptr)
             peer = this;
 
-        peer->handleMouseWheel (0, peer->globalToLocal (globalPos), getMouseEventTime(),
-                                isVertical ? 0.0f : -amount,
-                                isVertical ? amount : 0.0f);
+        MouseWheelDetails wheel;
+        wheel.deltaX = isVertical ? 0.0f : amount / -256.0f;
+        wheel.deltaY = isVertical ? amount / 256.0f : 0.0f;
+        wheel.isReversed = false;
+        wheel.isSmooth = false;
+
+        peer->handleMouseWheel (0, peer->globalToLocal (globalPos), getMouseEventTime(), wheel);
     }
 
     void doTouchEvent (const int numInputs, HTOUCHINPUT eventHandle)
@@ -1961,7 +2000,7 @@ private:
             Rectangle<int> pos (rectangleFromRECT (*r));
 
             constrainer->checkBounds (pos, windowBorder.addedTo (component->getBounds()),
-                                      Desktop::getInstance().getAllMonitorDisplayAreas().getBounds(),
+                                      Desktop::getInstance().getDisplays().getTotalBounds (true),
                                       wParam == WMSZ_TOP    || wParam == WMSZ_TOPLEFT    || wParam == WMSZ_TOPRIGHT,
                                       wParam == WMSZ_LEFT   || wParam == WMSZ_TOPLEFT    || wParam == WMSZ_BOTTOMLEFT,
                                       wParam == WMSZ_BOTTOM || wParam == WMSZ_BOTTOMLEFT || wParam == WMSZ_BOTTOMRIGHT,
@@ -1986,7 +2025,7 @@ private:
                 const Rectangle<int> current (windowBorder.addedTo (component->getBounds()));
 
                 constrainer->checkBounds (pos, current,
-                                          Desktop::getInstance().getAllMonitorDisplayAreas().getBounds(),
+                                          Desktop::getInstance().getDisplays().getTotalBounds (true),
                                           pos.getY() != current.getY() && pos.getBottom() == current.getBottom(),
                                           pos.getX() != current.getX() && pos.getRight() == current.getRight(),
                                           pos.getY() == current.getY() && pos.getBottom() != current.getBottom(),
@@ -2079,7 +2118,7 @@ private:
 
     void doSettingChange()
     {
-        Desktop::getInstance().refreshMonitorSizes();
+        const_cast <Desktop::Displays&> (Desktop::getInstance().getDisplays()).refresh();
 
         if (fullScreen && ! isMinimised())
         {
@@ -3024,7 +3063,7 @@ String SystemClipboard::getTextFromClipboard()
 void Desktop::setKioskComponent (Component* kioskModeComponent, bool enableOrDisable, bool /*allowMenusAndBars*/)
 {
     if (enableOrDisable)
-        kioskModeComponent->setBounds (Desktop::getInstance().getMainMonitorArea (false));
+        kioskModeComponent->setBounds (getDisplays().getMainDisplay().totalArea);
 }
 
 //==============================================================================
@@ -3035,30 +3074,37 @@ static BOOL CALLBACK enumMonitorsProc (HMONITOR, HDC, LPRECT r, LPARAM userInfo)
     return TRUE;
 }
 
-void Desktop::getCurrentMonitorPositions (Array <Rectangle<int> >& monitorCoords, const bool clipToWorkArea)
+void Desktop::Displays::findDisplays()
 {
-    EnumDisplayMonitors (0, 0, &enumMonitorsProc, (LPARAM) &monitorCoords);
+    Array <Rectangle<int> > monitors;
+    EnumDisplayMonitors (0, 0, &enumMonitorsProc, (LPARAM) &monitors);
 
     // make sure the first in the list is the main monitor
-    for (int i = 1; i < monitorCoords.size(); ++i)
-        if (monitorCoords[i].getX() == 0 && monitorCoords[i].getY() == 0)
-            monitorCoords.swap (i, 0);
+    for (int i = 1; i < monitors.size(); ++i)
+        if (monitors.getReference(i).getX() == 0 && monitors.getReference(i).getY() == 0)
+            monitors.swap (i, 0);
 
-    if (monitorCoords.size() == 0)
+    if (monitors.size() == 0)
     {
         RECT r;
         GetWindowRect (GetDesktopWindow(), &r);
-        monitorCoords.add (rectangleFromRECT (r));
+        monitors.add (rectangleFromRECT (r));
     }
 
-    if (clipToWorkArea)
-    {
-        // clip the main monitor to the active non-taskbar area
-        RECT r;
-        SystemParametersInfo (SPI_GETWORKAREA, 0, &r, 0);
+    RECT workArea;
+    SystemParametersInfo (SPI_GETWORKAREA, 0, &workArea, 0);
 
-        Rectangle<int>& screen = monitorCoords.getReference (0);
-        screen = screen.getIntersection (rectangleFromRECT (r));
+    for (int i = 0; i < monitors.size(); ++i)
+    {
+        Display d;
+        d.userArea = d.totalArea = monitors.getReference(i);
+        d.isMain = (i == 0);
+        d.scale = 1.0;
+
+        if (i == 0)
+            d.userArea = d.userArea.getIntersection (rectangleFromRECT (workArea));
+
+        displays.add (d);
     }
 }
 

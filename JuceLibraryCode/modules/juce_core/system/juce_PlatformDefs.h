@@ -73,7 +73,11 @@
   #endif
   #define juce_breakDebugger        { __debugbreak(); }
 #elif JUCE_GCC || JUCE_MAC
-  #define juce_breakDebugger        { asm ("int $3"); }
+  #if JUCE_NO_INLINE_ASM
+   #define juce_breakDebugger       { }
+  #else
+   #define juce_breakDebugger       { asm ("int $3"); }
+  #endif
 #else
   #define juce_breakDebugger        { __asm int 3 }
 #endif
@@ -213,11 +217,11 @@ namespace juce
     #define JUCE_CATCH_EXCEPTION \
       catch (const std::exception& e)  \
       { \
-          JUCEApplication::sendUnhandledException (&e, __FILE__, __LINE__); \
+          juce::JUCEApplication::sendUnhandledException (&e, __FILE__, __LINE__); \
       } \
       catch (...) \
       { \
-          JUCEApplication::sendUnhandledException (nullptr, __FILE__, __LINE__); \
+          juce::JUCEApplication::sendUnhandledException (nullptr, __FILE__, __LINE__); \
       }
   #endif
 
@@ -298,11 +302,6 @@ namespace juce
 #endif
 
 #if defined (_MSC_VER) && _MSC_VER >= 1600
- #if _MSC_VER >= 1700
-  #define JUCE_COMPILER_SUPPORTS_NOEXCEPT 1
- #else
-  #define JUCE_COMPILER_SUPPORTS_NOEXCEPT 0
- #endif
  #define JUCE_COMPILER_SUPPORTS_NULLPTR 1
  #define JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS 1
 #endif

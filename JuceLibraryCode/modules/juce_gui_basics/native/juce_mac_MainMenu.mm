@@ -23,43 +23,17 @@
   ==============================================================================
 */
 
-class JuceMainMenuHandler;
-
-} // (juce namespace)
-
-using namespace juce;
-
-#define JuceMenuCallback MakeObjCClassName(JuceMenuCallback)
-
-#if defined (MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
-@interface JuceMenuCallback  : NSObject <NSMenuDelegate>
-#else
-@interface JuceMenuCallback  : NSObject
-#endif
-{
-    JuceMainMenuHandler* owner;
-}
-
-- (JuceMenuCallback*) initWithOwner: (JuceMainMenuHandler*) owner_;
-- (void) dealloc;
-- (void) menuItemInvoked: (id) menu;
-- (void) menuNeedsUpdate: (NSMenu*) menu;
-@end
-
-namespace juce
-{
-
-//==============================================================================
 class JuceMainMenuHandler   : private MenuBarModel::Listener,
                               private DeletedAtShutdown
 {
 public:
-    //==============================================================================
     JuceMainMenuHandler()
         : currentModel (nullptr),
           lastUpdateTime (0)
     {
-        callback = [[JuceMenuCallback alloc] initWithOwner: this];
+        static JuceMenuCallbackClass cls;
+        callback = [cls.createInstance() init];
+        JuceMenuCallbackClass::setOwner (callback, this);
     }
 
     ~JuceMainMenuHandler()
@@ -119,9 +93,7 @@ public:
             while ([menu numberOfItems] > 0)
                 [menu removeItemAtIndex: 0];
 
-            PopupMenu::MenuItemIterator iter (menuToCopy);
-
-            while (iter.next())
+            for (PopupMenu::MenuItemIterator iter (menuToCopy); iter.next();)
                 addMenuItem (iter, menu, menuId, tag);
 
             [menu setAutoenablesItems: false];
@@ -135,8 +107,7 @@ public:
         // a new menu and replacing the old one with it, that problem seems to be avoided..
         NSMenu* menu = [[NSMenu alloc] initWithTitle: juceStringToNS (name)];
 
-        PopupMenu::MenuItemIterator iter (menuToCopy);
-        while (iter.next())
+        for (PopupMenu::MenuItemIterator iter (menuToCopy); iter.next();)
             addMenuItem (iter, menu, menuId, tag);
 
         [menu setAutoenablesItems: false];
@@ -292,7 +263,7 @@ public:
 
     MenuBarModel* currentModel;
     uint32 lastUpdateTime;
-    JuceMenuCallback* callback;
+    NSObject* callback;
 
 private:
     //==============================================================================
@@ -304,11 +275,14 @@ private:
         NSMenu* m = [[NSMenu alloc] initWithTitle: juceStringToNS (menuName)];
 
         [m setAutoenablesItems: false];
+
+       #if defined (MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
+        [m setDelegate: (id<NSMenuDelegate>) callback];
+       #else
         [m setDelegate: callback];
+       #endif
 
-        PopupMenu::MenuItemIterator iter (menu);
-
-        while (iter.next())
+        for (PopupMenu::MenuItemIterator iter (menu); iter.next();)
             addMenuItem (iter, m, topLevelMenuId, topLevelIndex);
 
         [m update];
@@ -390,8 +364,8 @@ private:
 
         void messageCallback()
         {
-            if (JuceMainMenuHandler::instance != nullptr)
-                JuceMainMenuHandler::instance->menuBarItemsChanged (nullptr);
+            if (instance != nullptr)
+                instance->menuBarItemsChanged (nullptr);
         }
 
     private:
@@ -407,8 +381,8 @@ private:
 
         void messageCallback()
         {
-            if (JuceMainMenuHandler::instance != nullptr)
-                JuceMainMenuHandler::instance->invokeDirectly (commandId, topLevelIndex);
+            if (instance != nullptr)
+                instance->invokeDirectly (commandId, topLevelIndex);
         }
 
     private:
@@ -416,74 +390,78 @@ private:
 
         JUCE_DECLARE_NON_COPYABLE (AsyncCommandInvoker);
     };
-};
 
-JuceMainMenuHandler* JuceMainMenuHandler::instance = nullptr;
-
-} // (juce namespace)
-
-//==============================================================================
-@implementation JuceMenuCallback
-
-- (JuceMenuCallback*) initWithOwner: (JuceMainMenuHandler*) owner_
-{
-    [super init];
-    owner = owner_;
-    return self;
-}
-
-- (void) dealloc
-{
-    [super dealloc];
-}
-
-- (void) menuItemInvoked: (id) menu
-{
-    NSMenuItem* item = (NSMenuItem*) menu;
-
-    if ([[item representedObject] isKindOfClass: [NSArray class]])
+    //==============================================================================
+    struct JuceMenuCallbackClass   : public ObjCClass <NSObject>
     {
-        // If the menu is being triggered by a keypress, the OS will have picked it up before we had a chance to offer it to
-        // our own components, which may have wanted to intercept it. So, rather than dispatching directly, we'll feed it back
-        // into the focused component and let it trigger the menu item indirectly.
-        NSEvent* e = [NSApp currentEvent];
-        if ([e type] == NSKeyDown || [e type] == NSKeyUp)
+        JuceMenuCallbackClass()  : ObjCClass <NSObject> ("JUCEMainMenu_")
         {
-            if (juce::Component::getCurrentlyFocusedComponent() != nullptr)
+            addIvar<JuceMainMenuHandler*> ("owner");
+
+            addMethod (@selector (menuItemInvoked:),  menuItemInvoked, "v@:@");
+            addMethod (@selector (menuNeedsUpdate:),  menuNeedsUpdate, "v@:@");
+
+           #if defined (MAC_OS_X_VERSION_10_6) && MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
+            addProtocol (@protocol (NSMenuDelegate));
+           #endif
+
+            registerClass();
+        }
+
+        static void setOwner (id self, JuceMainMenuHandler* owner)
+        {
+            object_setInstanceVariable (self, "owner", owner);
+        }
+
+    private:
+        static void menuItemInvoked (id self, SEL, id menu)
+        {
+            JuceMainMenuHandler* const owner = getIvar<JuceMainMenuHandler*> (self, "owner");
+
+            NSMenuItem* item = (NSMenuItem*) menu;
+
+            if ([[item representedObject] isKindOfClass: [NSArray class]])
             {
-                juce::NSViewComponentPeer* peer = dynamic_cast <juce::NSViewComponentPeer*> (juce::Component::getCurrentlyFocusedComponent()->getPeer());
-
-                if (peer != nullptr)
+                // If the menu is being triggered by a keypress, the OS will have picked it up before we had a chance to offer it to
+                // our own components, which may have wanted to intercept it. So, rather than dispatching directly, we'll feed it back
+                // into the focused component and let it trigger the menu item indirectly.
+                NSEvent* e = [NSApp currentEvent];
+                if ([e type] == NSKeyDown || [e type] == NSKeyUp)
                 {
-                    if ([e type] == NSKeyDown)
-                        peer->redirectKeyDown (e);
-                    else
-                        peer->redirectKeyUp (e);
+                    if (juce::Component::getCurrentlyFocusedComponent() != nullptr)
+                    {
+                        juce::NSViewComponentPeer* peer = dynamic_cast <juce::NSViewComponentPeer*> (juce::Component::getCurrentlyFocusedComponent()->getPeer());
 
-                    return;
+                        if (peer != nullptr)
+                        {
+                            if ([e type] == NSKeyDown)
+                                peer->redirectKeyDown (e);
+                            else
+                                peer->redirectKeyUp (e);
+
+                            return;
+                        }
+                    }
                 }
+
+                NSArray* info = (NSArray*) [item representedObject];
+
+                owner->invoke ((int) [item tag],
+                               (ApplicationCommandManager*) (pointer_sized_int)
+                                    [((NSNumber*) [info objectAtIndex: 0]) unsignedLongLongValue],
+                               (int) [((NSNumber*) [info objectAtIndex: 1]) intValue]);
             }
         }
 
-        NSArray* info = (NSArray*) [item representedObject];
+        static void menuNeedsUpdate (id self, SEL, NSMenu* menu)
+        {
+            if (instance != nullptr)
+                instance->updateMenus (menu);
+        }
+    };
+};
 
-        owner->invoke ((int) [item tag],
-                       (ApplicationCommandManager*) (pointer_sized_int)
-                            [((NSNumber*) [info objectAtIndex: 0]) unsignedLongLongValue],
-                       (int) [((NSNumber*) [info objectAtIndex: 1]) intValue]);
-    }
-}
-
-- (void) menuNeedsUpdate: (NSMenu*) menu;
-{
-    if (JuceMainMenuHandler::instance != nullptr)
-        JuceMainMenuHandler::instance->updateMenus (menu);
-}
-
-@end
-
-namespace juce
-{
+JuceMainMenuHandler* JuceMainMenuHandler::instance = nullptr;
 
 //==============================================================================
 namespace MainMenuHelpers
@@ -492,9 +470,7 @@ namespace MainMenuHelpers
     {
         if (extraItems != nullptr && JuceMainMenuHandler::instance != nullptr && extraItems->getNumItems() > 0)
         {
-            PopupMenu::MenuItemIterator iter (*extraItems);
-
-            while (iter.next())
+            for (PopupMenu::MenuItemIterator iter (*extraItems); iter.next();)
                 JuceMainMenuHandler::instance->addMenuItem (iter, menu, 0, -1);
 
             [menu addItem: [NSMenuItem separatorItem]];

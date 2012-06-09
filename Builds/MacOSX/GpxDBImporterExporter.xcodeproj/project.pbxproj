@@ -145,7 +145,6 @@
 		28970D2F281264C32C080FDE = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MenuBarComponent.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/menus/juce_MenuBarComponent.h"; sourceTree = "SOURCE_ROOT"; };
 		28B16A178D64B5756AD874BB = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_Value.cpp"; path = "../../JuceLibraryCode/modules/juce_data_structures/values/juce_Value.cpp"; sourceTree = "SOURCE_ROOT"; };
 		28BE3DC7CEB917A43770DC15 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_CallOutBox.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_CallOutBox.h"; sourceTree = "SOURCE_ROOT"; };
-		28D1B3CB12A0D27FDD6995C0 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_mac_ObjCSuffix.h"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_mac_ObjCSuffix.h"; sourceTree = "SOURCE_ROOT"; };
 		291CA920D1212C5C9BE5D9AF = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_FileOutputStream.h"; path = "../../JuceLibraryCode/modules/juce_core/files/juce_FileOutputStream.h"; sourceTree = "SOURCE_ROOT"; };
 		29332806012AA0D074197E5D = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_mac_CoreGraphicsContext.h"; path = "../../JuceLibraryCode/modules/juce_graphics/native/juce_mac_CoreGraphicsContext.h"; sourceTree = "SOURCE_ROOT"; };
 		295C0FC045EF45A1E42BEA08 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_UndoManager.h"; path = "../../JuceLibraryCode/modules/juce_data_structures/undomanager/juce_UndoManager.h"; sourceTree = "SOURCE_ROOT"; };
@@ -692,6 +691,7 @@
 		F54356131B0FF47F0FF471B9 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ArrayAllocationBase.h"; path = "../../JuceLibraryCode/modules/juce_core/containers/juce_ArrayAllocationBase.h"; sourceTree = "SOURCE_ROOT"; };
 		F5D5A33BB3BEDDF47E1A403A = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TextEditorKeyMapper.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/keyboard/juce_TextEditorKeyMapper.h"; sourceTree = "SOURCE_ROOT"; };
 		F67000E204121E19A69923D8 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HelperFunctionsTest.h; path = ../../testsuite/HelperFunctionsTest.h; sourceTree = "SOURCE_ROOT"; };
+		F6DC0E8B711F683BC634D479 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TextDragAndDropTarget.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_TextDragAndDropTarget.h"; sourceTree = "SOURCE_ROOT"; };
 		F77442A80BB912E258E6707B = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_RelativeCoordinatePositioner.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/positioning/juce_RelativeCoordinatePositioner.cpp"; sourceTree = "SOURCE_ROOT"; };
 		F7E749B744D94A11C1C719A3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DBConnector.cpp; path = ../../Source/DBConnector.cpp; sourceTree = "SOURCE_ROOT"; };
 		F901410989810A4FDBB49324 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ComponentListener.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/components/juce_ComponentListener.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -945,7 +945,6 @@
 				994445FB4FF4B8BCB423F8AC,
 				098F28213B9C82D0DE38F98A,
 				CACDD86AD1167440CC4B378D,
-				28D1B3CB12A0D27FDD6995C0,
 				8B3C456023D655352D38ED4A,
 				0FFFAB3E519A5BCC803D6F10,
 				7066A91A0AD65B8D871A2DC3,
@@ -1187,6 +1186,7 @@
 				5EB80F5481CB14689F8201A5,
 				79C452F281109528D0A6BDFB,
 				B02CF84281BE8372CDAAD56D,
+				F6DC0E8B711F683BC634D479,
 				C95386F8B7031369C1C16CCF ); name = mouse; sourceTree = "<group>"; };
 		1457E18D650A8B5FAC84E698 = { isa = PBXGroup; children = (
 				E31FBFAB52FBE8076EC0CD24,
@@ -1551,7 +1551,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 				"_DEBUG=1",
 				"DEBUG=1",
-				"JUCE_ObjCExtraSuffix=ZnrkkT",
 				"UNIT_TESTS=1",
 				"JUCER_XCODE_MAC_F6D2F4CF=1"); }; name = Debug; };
 		7E448590F2A3B52125D26765 = { isa = XCBuildConfiguration; buildSettings = {
@@ -1571,7 +1570,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 				"_NDEBUG=1",
 				"NDEBUG=1",
-				"JUCE_ObjCExtraSuffix=ZnrkkT",
 				"JUCER_XCODE_MAC_F6D2F4CF=1"); }; name = Release; };
 		7464A5A56C51656732EBC9A8 = { isa = XCBuildConfiguration; buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;

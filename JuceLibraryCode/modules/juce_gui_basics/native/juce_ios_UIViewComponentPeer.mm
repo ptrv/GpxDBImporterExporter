@@ -28,8 +28,6 @@ class UIViewComponentPeer;
 //==============================================================================
 } // (juce namespace)
 
-#define JuceUIView MakeObjCClassName(JuceUIView)
-
 @interface JuceUIView : UIView <UITextViewDelegate>
 {
 @public
@@ -54,9 +52,7 @@ class UIViewComponentPeer;
 - (BOOL) textView: (UITextView*) textView shouldChangeTextInRange: (NSRange) range replacementText: (NSString*) text;
 @end
 
-
-#define JuceUIViewController MakeObjCClassName(JuceUIViewController)
-
+//==============================================================================
 @interface JuceUIViewController : UIViewController
 {
 }
@@ -66,8 +62,6 @@ class UIViewComponentPeer;
 @end
 
 //==============================================================================
-#define JuceUIWindow MakeObjCClassName(JuceUIWindow)
-
 @interface JuceUIWindow : UIWindow
 {
 @private
@@ -553,7 +547,7 @@ CGRect UIViewComponentPeer::constrainRect (CGRect r)
         Rectangle<int> original (convertToRectInt (current));
 
         constrainer->checkBounds (pos, original,
-                                  Desktop::getInstance().getAllMonitorDisplayAreas().getBounds(),
+                                  Desktop::getInstance().getDisplays().getTotalBounds (true),
                                   pos.getY() != original.getY() && pos.getBottom() == original.getBottom(),
                                   pos.getX() != original.getX() && pos.getRight()  == original.getRight(),
                                   pos.getY() == original.getY() && pos.getBottom() != original.getBottom(),
@@ -586,7 +580,7 @@ void UIViewComponentPeer::setFullScreen (bool shouldBeFullScreen)
 {
     if (! isSharedWindow)
     {
-        Rectangle<int> r (shouldBeFullScreen ? Desktop::getInstance().getMainMonitorArea()
+        Rectangle<int> r (shouldBeFullScreen ? Desktop::getInstance().getDisplays().getMainDisplay().userArea
                                              : lastNonFullscreenBounds);
 
         if ((! shouldBeFullScreen) && r.isEmpty())
@@ -629,9 +623,11 @@ BOOL UIViewComponentPeer::shouldRotate (UIInterfaceOrientation interfaceOrientat
 
 void UIViewComponentPeer::displayRotated()
 {
+    Desktop& desktop = Desktop::getInstance();
     const Rectangle<int> oldArea (component->getBounds());
-    const Rectangle<int> oldDesktop (Desktop::getInstance().getMainMonitorArea());
-    Desktop::getInstance().refreshMonitorSizes();
+    const Rectangle<int> oldDesktop (desktop.getDisplays().getMainDisplay().userArea);
+
+    const_cast <Desktop::Displays&> (desktop.getDisplays()).refresh();
 
     if (fullScreen)
     {
@@ -645,7 +641,7 @@ void UIViewComponentPeer::displayRotated()
         const float t = oldArea.getY() / (float) oldDesktop.getHeight();
         const float b = oldArea.getBottom() / (float) oldDesktop.getHeight();
 
-        const Rectangle<int> newDesktop (Desktop::getInstance().getMainMonitorArea());
+        const Rectangle<int> newDesktop (desktop.getDisplays().getMainDisplay().userArea);
 
         setBounds ((int) (l * newDesktop.getWidth()),
                    (int) (t * newDesktop.getHeight()),
@@ -918,7 +914,7 @@ void Desktop::setKioskComponent (Component* kioskModeComponent, bool enableOrDis
     [[UIApplication sharedApplication] setStatusBarHidden: enableOrDisable
                                             withAnimation: UIStatusBarAnimationSlide];
 
-    Desktop::getInstance().refreshMonitorSizes();
+    displays.refresh();
 
     ComponentPeer* const peer = kioskModeComponent->getPeer();
 
